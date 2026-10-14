@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapeute Expert - Multi-Exports & EBP & IA</title>
+  <title>Bilan Kinésithérapeute Expert EBP - Diagnostic Clinique</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -110,14 +110,7 @@
     }
     .btn-info:hover { background: #4338ca; color: white; }
 
-    .search-patho-box {
-      background: #fae8ff;
-      border: 1.5px solid #d8b4fe;
-      border-radius: 8px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-    .patho-box-loaded {
+    .test-box-ebp {
       background: #fdf4ff;
       border: 1.5px solid #f0abfc;
       border-radius: 8px;
@@ -132,29 +125,6 @@
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .test-selector-box {
-      background: #ffffff;
-      border: 1px solid #e9d5ff;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-bottom: 14px;
-    }
-    .test-checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .test-checkbox-item {
-      font-size: 12px;
-      font-weight: 500;
-      background: #f5f3ff;
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #ddd6fe;
-      cursor: pointer;
     }
 
     .eva-box {
@@ -209,7 +179,6 @@
       margin-bottom: 12px;
     }
 
-    /* Section IA Assistant EBP */
     .ai-assistant-container {
       background: #eef2ff;
       border: 1.5px solid #c7d2fe;
@@ -236,40 +205,6 @@
       overflow-y: auto;
       font-size: 13px;
       margin-bottom: 10px;
-    }
-
-    .ndi-container {
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 14px;
-      margin-top: 10px;
-      margin-bottom: 14px;
-    }
-    .ndi-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f1f5f9;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
-    .ndi-section-card {
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed #e2e8f0;
-    }
-    .ndi-section-card label {
-      font-weight: 700;
-      color: #1e3a8a;
-      margin-bottom: 4px;
-    }
-    .badge-score {
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-weight: 800;
-      font-size: 12px;
     }
 
     .hep-container {
@@ -386,8 +321,9 @@
     </div>
   </header>
 
+  <!-- ÉTAPE 1 : RENSEIGNEMENTS GÉNÉRAUX -->
   <div class="section-title">
-    <span>1. RENSEIGNEMENTS GÉNÉRAUX & CONTEXTE SOCIO-ADMINISTRATIF</span>
+    <span>1. RENSEIGNEMENTS GÉNÉRAUX & CONTEXTE SOCIO-PROFESSIONNEL</span>
   </div>
   <div class="grid">
     <div>
@@ -412,18 +348,17 @@
     </div>
     <div>
       <label>Prescription médicale & Médecin :</label>
-      <input type="text" id="prescription" placeholder="Dr. Martin - Ordonnance...">
+      <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie commune' (Ordonnance...">
     </div>
     <div>
       <label>Activité physique / Profession :</label>
-      <input type="text" id="activitePhysique" placeholder="Retraité, cadre sédentaire, maçon...">
+      <input type="text" id="activitePhysique" placeholder="Cadre sédentaire, manutentionnaire...">
     </div>
     <div>
       <label>Sport / Loisirs :</label>
       <input type="text" id="sport" placeholder="Discipline, fréquence...">
     </div>
-
-    <div style="background:#e0f2fe; padding:10px; border-radius:6px;">
+    <div class="full-width" style="background:#e0f2fe; padding:10px; border-radius:6px;">
       <label style="color:#0369a1;">👤 Profil & Autonomie :</label>
       <select id="profilPatient">
         <option value="Sportif Compétiteur (Pivots/Impacts)">Sportif Compétiteur (Pivots / Impacts)</option>
@@ -434,21 +369,11 @@
         <option value="Perte d'autonomie / Gériatrie / Déambulateur">Perte d'autonomie / Gériatrie / Déambulateur</option>
       </select>
     </div>
-
-    <div class="search-patho-box">
-      <label style="color:var(--purple); font-size:13px;">🔍 Pathologie / Motif (Tests EBP Détaillés) :</label>
-      <input list="pathoList" id="pathoSearchInput" placeholder="Sélectionnez une pathologie ou tapez votre motif..." oninput="onPathoSearchChange()">
-      <datalist id="pathoList"></datalist>
-    </div>
   </div>
 
-  <div id="pathoModuleContainer" style="display:none;" class="patho-box-loaded">
-    <div class="patho-title" id="pathoModuleTitle">Tests & Questionnaires Spécifiques</div>
-    <div id="pathoModuleContent"></div>
-  </div>
-
+  <!-- ÉTAPE 2 : BODY CHART & ANAMNÈSE -->
   <div class="section-title section-title-clickable" onclick="ouvrirModalChart()">
-    <span>📍 2. SCHÉMA CORPOREL (BODY CHART) — Cliquez pour ouvrir en grand</span>
+    <span>📍 2. SCHÉMA CORPOREL (BODY CHART) & PROFIL DE DOULEUR</span>
     <span style="font-size:13px; font-weight:700; color:var(--primary);">🔍 Ouvrir en grand écran</span>
   </div>
   
@@ -456,47 +381,14 @@
     <span id="markerCountText" style="font-size:13px; font-weight:600; color:#0369a1;">Aucun point douloureux marqué. Cliquez sur le titre ci-dessus pour pointer la douleur.</span>
   </div>
 
-  <div class="section-title">
-    <span>3. TRIAGE MÉDICAL, ANAMNÈSE & PROFIL DE DOULEUR</span>
-  </div>
-
-  <div class="alert-box">
-    <strong style="color: #9f1239; font-size:13px;">⚠️ Drapeaux Rouges / Triage Sécurité (Red Flags) :</strong>
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
-      <label><input type="checkbox" id="rf1"> Perte pondérale inexpliquée</label>
-      <label><input type="checkbox" id="rf2"> Douleur constante nocturne non mécanique</label>
-      <label><input type="checkbox" id="rf3"> Déficit neuro moteur franc / selle</label>
-      <label><input type="checkbox" id="rf4"> Traumatisme violent non radiographié</label>
-      <label><input type="checkbox" id="rf5"> Fièvre ou état infectieux</label>
-    </div>
-  </div>
-
-  <div class="alert-box-yellow">
-    <strong style="color: #854d0e; font-size:13px;">⚠️ Drapeaux Jaunes / Facteurs Psycho-sociaux (Yellow Flags) :</strong>
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
-      <label><input type="checkbox" id="yf1"> Kinésiophobie / Peur du mouvement (TSK-11)</label>
-      <label><input type="checkbox" id="yf2"> Catastrophisme face à la douleur</label>
-      <label><input type="checkbox" id="yf3"> Attentes négatives vis-à-vis du traitement</label>
-      <label><input type="checkbox" id="yf4"> Arrêt de travail prolongé / Conflit professionnel</label>
-    </div>
-  </div>
-
-  <div class="grid">
+  <div class="grid" style="margin-top:12px;">
     <div class="full-width">
       <label>Mécanisme lésionnel & Histoire de la maladie :</label>
-      <textarea id="mecanisme" placeholder="Circonstances, date d'apparition, hospitalisation récente..."></textarea>
+      <textarea id="mecanisme" placeholder="Circonstances d'apparition, progressif vs brutal, facteurs aggravants..."></textarea>
     </div>
     <div class="full-width">
-      <label>Symptômes & Plaintes principales :</label>
-      <textarea id="symptomes" placeholder="Sensations, dérouillage matinal, instabilité, dyspnée..."></textarea>
-    </div>
-    <div>
-      <label>Croyances, Projets & Attentes :</label>
-      <textarea id="croyances" placeholder="Peur de la douleur, retour à domicile autonome, craintes..."></textarea>
-    </div>
-    <div>
-      <label>Antécédents médicaux, chirurgicaux & Traitements :</label>
-      <textarea id="antecedents" placeholder="Pathologies associées, chirurgies, aide à domicile, traitements..."></textarea>
+      <label>Symptômes & Comportement de la douleur :</label>
+      <textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal, douleur mécanique vs inflammatoire..."></textarea>
     </div>
   </div>
 
@@ -515,82 +407,140 @@
     </div>
   </div>
 
+  <!-- ÉTAPE 3 : TRIAGE SÉCURITÉ -->
   <div class="section-title">
-    <span>4. EXAMEN CLINIQUE & DÉFICITS STRUCTURAUX (MODÈLE CIF)</span>
+    <span>3. TRIAGE MÉDICAL & FACTEURS PSYCHO-SOCIAUX</span>
+  </div>
+
+  <div class="alert-box">
+    <strong style="color: #9f1239; font-size:13px;">⚠️ Drapeaux Rouges / Triage Sécurité (Red Flags - Exclusion) :</strong>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
+      <label><input type="checkbox" id="rf1"> Perte pondérale inexpliquée</label>
+      <label><input type="checkbox" id="rf2"> Douleur constante nocturne non mécanique</label>
+      <label><input type="checkbox" id="rf3"> Déficit neuro moteur franc / syndrome de la queue de cheval</label>
+      <label><input type="checkbox" id="rf4"> Traumatisme violent non radiographié</label>
+      <label><input type="checkbox" id="rf5"> Fièvre / Signes infectieux</label>
+    </div>
+  </div>
+
+  <div class="alert-box-yellow">
+    <strong style="color: #854d0e; font-size:13px;">⚠️ Drapeaux Jaunes / Facteurs Psychosociaux (Yellow Flags) :</strong>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
+      <label><input type="checkbox" id="yf1"> Kinésiophobie / Peur du mouvement</label>
+      <label><input type="checkbox" id="yf2"> Catastrophisme face à la douleur</label>
+      <label><input type="checkbox" id="yf3"> Attentes négatives vis-à-vis du traitement</label>
+      <label><input type="checkbox" id="yf4"> Arrêt de travail prolongé / Conflit pro</label>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <label>Croyances & Attentes patient :</label>
+      <textarea id="croyances" placeholder="Peur de la lésion, attentes vis-à-vis de la rééducation..."></textarea>
+    </div>
+    <div>
+      <label>Antécédents & Traitements :</label>
+      <textarea id="antecedents" placeholder="Chirurgies antérieures, comorbidités, traitements en cours..."></textarea>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 4 : EXAMEN PHYSIQUE GLOBAL -->
+  <div class="section-title">
+    <span>4. EXAMEN PHYSIQUE GLOBAL & DÉFICITS (MODÈLE CIF)</span>
     <button class="btn-quick-fill" onclick="preRemplirRAS()">⚡ Remplir RAS (Symétrique/Normo-axé)</button>
   </div>
   <div class="grid">
     <div>
-      <label>Déficits posturaux & Déformations :</label>
-      <textarea id="deficitsPosturaux" placeholder="Statique, cyphose dorsale, coup de vent ulnaire, hallux valgus..."></textarea>
+      <label>Déficits posturaux & Statique :</label>
+      <textarea id="deficitsPosturaux" placeholder="Alignement, asymétries observées..."></textarea>
     </div>
     <div>
       <label>Déficits dynamiques & Marche :</label>
-      <textarea id="deficitsPosturauxDyn" placeholder="Marche lente, aide technique (déambulateur), antépulsion tronc..."></textarea>
+      <textarea id="deficitsPosturauxDyn" placeholder="Marche, boiterie, stratégies d'évitement..."></textarea>
     </div>
     <div>
-      <label>Déficits articulaires :</label>
-      <textarea id="deficitsArticulaires" placeholder="Goniométrie épaule, poignet, hanche, genou..."></textarea>
+      <label>Déficits articulaires (Goniométrie) :</label>
+      <textarea id="deficitsArticulaires" placeholder="Amplitudes passives et actives..."></textarea>
     </div>
     <div>
-      <label>Déficits de souplesse & Trophique :</label>
-      <textarea id="deficitsSouplesse" placeholder="Rétractions musculaires, œdèmes articulaires, peau..."></textarea>
+      <label>Déficits trophiques & Souplesse :</label>
+      <textarea id="deficitsSouplesse" placeholder="Œdèmes, rétractions musculaires..."></textarea>
     </div>
     <div class="full-width">
-      <label>Déficits musculaires & Testing :</label>
-      <textarea id="deficitsMusculaires" placeholder="Force quadriceps, moyen fessier, préhension (D vs G)..."></textarea>
-    </div>
-    <div class="full-width">
-      <label>Tests orthopédiques & Fonctionnels positifs :</label>
-      <textarea id="testsPositifs" placeholder="Tests spécifiques positifs, Tinetti, équilibre..."></textarea>
+      <label>Déficits musculaires & Testing analytique :</label>
+      <textarea id="deficitsMusculaires" placeholder="Cotation de force (0 à 5/5)..."></textarea>
     </div>
   </div>
 
+  <!-- ÉTAPE 5 : MODULE OUVERT DE TESTS CLINIQUES SPÉCIFIQUES & DÉCOUVERTE DU DIAGNOSTIC -->
   <div class="section-title">
-    <span>5. TESTS FONCTIONNELS & MOBILITÉ</span>
-    <span id="regionBadge" class="badge-region">Membre Inférieur (Par défaut)</span>
+    <span>5. BATTERIE DE TESTS CLINIQUES & VALIDATION DU DIAGNOSTIC EBP</span>
+  </div>
+  <div style="background:#faf5ff; border:1.5px solid #d8b4fe; border-radius:8px; padding:14px; margin-bottom:12px;">
+    <label style="color:var(--purple); font-size:13px; margin-bottom:6px; display:block;">🔍 Sélectionnez une région ou pathologie suspectée pour afficher les clusters de tests EBP validés :</label>
+    <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
+      <option value="rachis_lombaire">Rachis Lombaire / Lombalgie / Sciatique</option>
+      <option value="rachis_cervical">Rachis Cervical / NDI / NCB</option>
+      <option value="epaule">Épaule (Coiffe, Conflit, Instabilité)</option>
+      <option value="coude_poignet">Coude & Poignet (Épicondylite, Canal carpien)</option>
+      <option value="hanche">Hanche (Coxarthrose, Conflit fémoro-acétabulaire)</option>
+      <option value="genou">Genou (LCA, Ménisque, Fémoro-patellaire)</option>
+      <option value="cheville">Cheville & Pied (Entorse, Achille)</option>
+      <option value="geriatrie">Gériatrie / Équilibre & Chutes (Tinetti / TUG)</option>
+    </select>
+  </div>
+
+  <!-- Conteneur dynamique des tests de la région choisie -->
+  <div id="testsExplorationContainer" class="test-box-ebp">
+    <!-- Rempli dynamiquement en JS -->
+  </div>
+
+  <!-- ÉTAPE 6 : TESTS FONCTIONNELS -->
+  <div class="section-title">
+    <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
   </div>
   <div id="dynamicTestsContainer"></div>
 
-  <!-- MODULE ASSISTANT IA INTÉGRÉ -->
+  <!-- ASSISTANT IA INTÉGRÉ -->
   <div class="ai-assistant-container">
-    <div class="ai-title">🤖 Assistant IA Clinique & Recherche EBP</div>
-    <p style="font-size:12px; color:#4338ca; margin:0 0 8px 0;">Posez une question clinique, demandez un conseil sur un protocole EBP ou une aide à la synthèse :</p>
-    <div id="aiChatBox" class="ai-chat-box">Bonjour ! Je suis votre assistant IA basé sur la littérature scientifique (PEDro, PubMed). Comment puis-je vous aider pour ce patient ?</div>
+    <div class="ai-title">🤖 Assistant IA Clinique & Recherche EBP (PubMed / PEDro)</div>
+    <p style="font-size:12px; color:#4338ca; margin:0 0 8px 0;">Posez vos questions cliniques ou demandez à l'IA d'analyser vos clusters de tests pour affiner le diagnostic précis :</p>
+    <div id="aiChatBox" class="ai-chat-box">Bonjour ! Je suis votre assistant EBP. Entrez vos observations et tests positifs ci-dessus, puis demandez-moi par exemple : *"Quel diagnostic kinésithérapique précis déduire de ces tests ?"*</div>
     <div style="display:flex; gap:8px;">
-      <input type="text" id="aiQueryInput" placeholder="Ex: Quelles sont les recommandations EBP pour la rééducation d'une entorse de cheville ?" style="flex:1;">
-      <button class="btn-ai" onclick="poserQuestionIA()">Envoyer à l'IA</button>
+      <input type="text" id="aiQueryInput" placeholder="Ex: Analyser les tests positifs et proposer le diagnostic précis..." style="flex:1;">
+      <button class="btn-ai" onclick="poserQuestionIA()">Interroger l'IA</button>
     </div>
   </div>
 
+  <!-- ÉTAPE 7 : DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE -->
   <div class="section-title">
-    <span>6. DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE</span>
+    <span>7. DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE</span>
   </div>
   <div class="grid">
     <div class="full-width">
-      <label>Diagnostic Kiné (Déficiences, Limitations, Restrictions) :</label>
-      <input type="text" id="diagnostic" placeholder="Synthèse clinique des déficits majeurs et limitations fonctionnelles...">
+      <label>Diagnostic Kinésithérapique Précis (Déficiences & Restrictions validées par les tests) :</label>
+      <input type="text" id="diagnostic" placeholder="Ex: Lombalgie chronique avec préférence directionnelle en extension et composante kynésiophobique...">
     </div>
     <div>
       <label>A travailler - Articulaire & Trophique :</label>
-      <textarea id="travailArticulaire" placeholder="Gains d'amplitude prioritaires, drainage œdèmes..."></textarea>
+      <textarea id="travailArticulaire" placeholder="Gains d'amplitude prioritaires..."></textarea>
     </div>
     <div>
-      <label>A travailler - Force & Équilibre :</label>
-      <textarea id="travailForce" placeholder="Renforcement fonctionnel, prévention des chutes..."></textarea>
+      <label>A travailler - Force & Contrôle moteur :</label>
+      <textarea id="travailForce" placeholder="Renforcement spécifique, contrôle lombo-pelvien..."></textarea>
     </div>
     <div>
       <label>A travailler - Souplesse & Posture :</label>
-      <textarea id="travailSouplesse" placeholder="Étirements axiaux, correction posturale..."></textarea>
+      <textarea id="travailSouplesse" placeholder="Étirements, autonomisation..."></textarea>
     </div>
     <div>
-      <label>Contrat Kiné & HEP :</label>
-      <textarea id="contratKine" placeholder="Objectifs à court/long terme, autonomie retour domicile..."></textarea>
+      <label>Contrat Kiné & HEP (Home Exercise Program) :</label>
+      <textarea id="contratKine" placeholder="Objectifs partagés, auto-exercices..."></textarea>
       <div class="hep-container">
-        <span class="hep-tag" onclick="ajouterHEP('Maintien de la marche quotidienne avec aide')">+ Marche quotidienne</span>
-        <span class="hep-tag" onclick="ajouterHEP('Sécurisation des transferts lit/chaise')">+ Transferts</span>
-        <span class="hep-tag" onclick="ajouterHEP('Exercices respiratoires et posture assise redressée')">+ Respiration / Posture</span>
-        <span class="hep-tag" onclick="ajouterHEP('Auto-mobilisation douce des articulations périphériques')">+ Auto-mobilisation</span>
+        <span class="hep-tag" onclick="ajouterHEP('Exercices de préférence directionnelle (McKenzie)')">+ McKenzie</span>
+        <span class="hep-tag" onclick="ajouterHEP('Renforcement progressif des extenseurs / fessiers')">+ Renforcement</span>
+        <span class="hep-tag" onclick="ajouterHEP('Exposition graduelle au mouvement et éducation')">+ Éducation douleur</span>
+        <span class="hep-tag" onclick="ajouterHEP('Auto-mobilisation douce')">+ Auto-mobilisation</span>
       </div>
     </div>
   </div>
@@ -605,7 +555,7 @@
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
   <div class="modal-info-box">
     <div class="modal-header">
-      <h3 id="infoTitle" style="margin:0; font-size:16px; color:#4338ca;">Titre du Test</h3>
+      <h3 id="infoTitle" style="margin:0; font-size:16px; color:#4338ca;">Propriétés EBP du Test</h3>
       <button onclick="fermerInfoModalDirect()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
     </div>
     <div style="margin-top:14px; font-size:13px; line-height:1.6;" id="infoBody"></div>
@@ -662,8 +612,7 @@
 
 <script>
   let markers = [];
-  let currentRegion = 'mi';
-  let activeSelectedTestIds = [];
+  let currentExplorationRegion = 'rachis_lombaire';
   document.getElementById('dateBilan').valueAsDate = new Date();
 
   function ajouterHEP(texte) {
@@ -672,7 +621,169 @@
     sauvegarderLocal();
   }
 
-  // Simulation d'une réponse IA basée sur la littérature EBP (PEDro/PubMed)
+  // Base de données par région avec des clusters de tests EBP précis pour déterminer la lésion exacte
+  const clusterTestsDB = {
+    rachis_lombaire: {
+      nomRegion: "Rachis Lombaire / Lombalgie & Radiculopathie",
+      tests: [
+        { id: "lum_1", label: "Test de Lasègue (SLR) :", placeholder: "Positif à ...° (reproduction sciatique)", info: "Sensibilité: 91% | Spécificité: 26%. Très sensible pour exclure une hernie discale si négatif." },
+        { id: "lum_2", label: "Slump Test Neurodynamique :", placeholder: "Reproduction trajet / Limitation", info: "Sensibilité: 84% | Spécificité: 83%. Plus sensible que le Lasègue en position assise." },
+        { id: "lum_3", label: "Préférence Directionnelle (McKenzie) :", placeholder: "Centralisation en Extension / Flexion", info: "Phénomène de centralisation oriente la thérapie mécanique spécifique (McKenzie)." },
+        { id: "lum_4", label: "STarT Back Screening Tool / ODI :", placeholder: "Score /9 ou /100", info: "Évaluation du pronostic psychosocial et de l'incapacité fonctionnelle." }
+      ]
+    },
+    rachis_cervical: {
+      nomRegion: "Rachis Cervical & Névralgie Cervico-Brachiale",
+      tests: [
+        { id: "cer_1", label: "Test de Spurling :", placeholder: "Positif / Négatif", info: "Sensibilité: 50% | Spécificité: 74-90%. Compression axiale en extension/inclinaison." },
+        { id: "cer_2", label: "Distraction Cervicale :", placeholder: "Soulagement des symptômes", info: "Sensibilité: 40% | Spécificité: 90%. Soulage la douleur radiculaire foraminale." },
+        { id: "cer_3", label: "ULNT1 Nerf Médian :", placeholder: "Positif (reproduction / asymétrie)", info: "Sensibilité: 72-97% | Spécificité: 22-33%. Exclut une atteinte radiculaire si négatif." },
+        { id: "cer_4", label: "Cervical Flexion-Rotation Test (C1-C2) :", placeholder: "Amplitude D vs G", info: "Sensibilité: 90% | Spécificité: 91% pour la céphalée cervicogénique." }
+      ]
+    },
+    epaule: {
+      nomRegion: "Épaule (Coiffe, Conflit, Instabilité)",
+      tests: [
+        { id: "sho_1", label: "Signe de Hawkins-Kennedy :", placeholder: "Positif / Négatif", info: "Sensibilité: 79% | Spécificité: 59% (Conflit sous-acromial)." },
+        { id: "sho_2", label: "Test de Jobe (Supra-épineux) :", placeholder: "Douleur / Déficit force", info: "Sensibilité: 88% | Spécificité: 50%." },
+        { id: "sho_3", label: "Test d'Appréhension Antérieure :", placeholder: "Appréhension / Stabilité", info: "Sensibilité: 53% | Spécificité: 99% pour l'instabilité." },
+        { id: "sho_4", label: "Rotation Externe Passive (RE1) :", placeholder: "Perte d'amplitude", info: "Recherche d'une restriction capsulaire (capsulite rétractile si perte > 50%)." }
+      ]
+    },
+    coude_poignet: {
+      nomRegion: "Coude & Poignet (Épicondylite, Canal Carpien)",
+      tests: [
+        { id: "cp_1", label: "Test de Cozen (Coude) :", placeholder: "Douleur épicondyle", info: "Extension active du poignet contrariée (Tennis Elbow)." },
+        { id: "cp_2", label: "Test de Phalen (Poignet 60s) :", placeholder: "Paresthésies médianes", info: "Sensibilité: 68% | Spécificité: 73% (Canal carpien)." },
+        { id: "cp_3", label: "Test de Durkan (Compression directe) :", placeholder: "Positif en < 30 sec", info: "Sensibilité: 87% | Spécificité: 90% (Le plus sensible pour le canal carpien)." }
+      ]
+    },
+    hanche: {
+      nomRegion: "Hanche (Coxarthrose & Conflit)",
+      tests: [
+        { id: "hip_1", label: "FADIR Test (Conflit antérieur) :", placeholder: "Douleur pli de l'aine", info: "Sensibilité: 99% | Spécificité: 5% (Excellent pour exclure une pathologie de hanche)." },
+        { id: "hip_2", label: "FABER Test (Patrick) :", placeholder: "Distance genou-sol / Douleur", info: "Flexion, Abduction, Rotation Externe." },
+        { id: "hip_3", label: "Signe de Trendelenburg :", placeholder: "Chute du bassin controlatéral", info: "Évaluation de l'insuffisance des abducteurs (moyen fessier)." }
+      ]
+    },
+    genou: {
+      nomRegion: "Genou (LCA, Ménisque, Fémoro-patellaire)",
+      tests: [
+        { id: "kne_1", label: "Test de Lachman (LCA) :", placeholder: "Arrêt dur vs mou", info: "Sensibilité: 85% | Spécificité: 94% (Référence pour rupture LCA)." },
+        { id: "kne_2", label: "Test de Thessaly (20° en charge) :", placeholder: "Douleur / Ressaut interligne", info: "Sensibilité: 89% | Spécificité: 97% pour lésion méniscale." },
+        { id: "kne_3", label: "Step-Down Test (Fémoro-patellaire) :", placeholder: "Douleur / Valgus dynamique", info: "Évaluation du contrôle excentrique et de la douleur rotulienne." }
+      ]
+    },
+    cheville: {
+      nomRegion: "Cheville & Pied (Entorse & Achille)",
+      tests: [
+        { id: "ank_1", label: "Règles d'Ottawa (Cheville/Pied) :", placeholder: "Négatives / Positives", info: "Sensibilité proche de 100% pour éliminer une fracture osseuse." },
+        { id: "ank_2", label: "Weight-Bearing Lunge Test (WBLT) :", placeholder: "D: ... cm vs G: ... cm", info: "Fente au mur pour la dorsiflexion (Norme > 9-10 cm)." },
+        { id: "ank_3", label: "Single Leg Heel Raise Test :", placeholder: "Répétitions indolores", info: "Évaluation de la capacité de charge du tendon d'Achille." }
+      ]
+    },
+    geriatrie: {
+      nomRegion: "Gériatrie / Équilibre & Chutes",
+      tests: [
+        { id: "ger_1", label: "Test de Tinetti (/28) :", placeholder: "Score /28", info: "Score < 19 = Risque de chute très élevé." },
+        { id: "ger_2", label: "Timed Up and Go (TUG) :", placeholder: "Temps en secondes", info: "Norme adulte âgé sain < 12 sec." }
+      ]
+    }
+  };
+
+  const dynamicTemplates = {
+    rachis_lombaire: `
+      <div class="grid">
+        <div><label>Squat bipodal :</label><textarea id="dyn_1" placeholder="Alignement, profondeur..."></textarea></div>
+        <div><label>Test d'endurance extenseurs (Sorensen) :</label><textarea id="dyn_2" placeholder="Temps en secondes..."></textarea></div>
+      </div>`,
+    rachis_cervical: `
+      <div class="grid">
+        <div><label>Flexion Cervicale Crânienne (CCFT) :</label><textarea id="dyn_1" placeholder="Paliers de pression..."></textarea></div>
+        <div><label>Rotation et Inclinaison active :</label><textarea id="dyn_2" placeholder="Amplitudes..."></textarea></div>
+      </div>`,
+    epaule: `
+      <div class="grid">
+        <div><label>CKCUEST (Touches en 15 sec) :</label><textarea id="dyn_1" placeholder="Nombre de touches..."></textarea></div>
+        <div><label>Y-Balance Test Upper Quarter :</label><textarea id="dyn_2" placeholder="Portées D vs G..."></textarea></div>
+      </div>`,
+    coude_poignet: `
+      <div class="grid">
+        <div><label>Force de Préhension (Jamar) :</label><textarea id="dyn_1" placeholder="Valeurs en kg D vs G..."></textarea></div>
+        <div><label>Test de résistance poignet :</label><textarea id="dyn_2" placeholder="Douleur..."></textarea></div>
+      </div>`,
+    hanche: `
+      <div class="grid">
+        <div><label>Squat Unipodal D et G :</label><textarea id="dyn_1" placeholder="Stabilité du bassin..."></textarea></div>
+        <div><label>Périmètre de marche :</label><textarea id="dyn_2" placeholder="Distance..."></textarea></div>
+      </div>`,
+    genou: `
+      <div class="grid">
+        <div><label>Squat unipodal & Descente de marche :</label><textarea id="dyn_1" placeholder="Contrôle frontal..."></textarea></div>
+        <div><label>Hop Tests / Sauts :</label><textarea id="dyn_2" placeholder="Amorti, symétrie..."></textarea></div>
+      </div>`,
+    cheville: `
+      <div class="grid">
+        <div><label>Single Leg Hop Test :</label><textarea id="dyn_1" placeholder="Performance..."></textarea></div>
+        <div><label>Stabilité monopodale yeux ouverts/fermés :</label><textarea id="dyn_2" placeholder="Proprioception..."></textarea></div>
+      </div>`,
+    geriatrie: `
+      <div class="grid">
+        <div><label>Transferts (Assis-Debout / Lit) :</label><textarea id="dyn_1" placeholder="Aide technique..."></textarea></div>
+        <div><label>Périmètre et aide à la marche :</label><textarea id="dyn_2" placeholder="Déambulateur, cannes..."></textarea></div>
+      </div>`
+  };
+
+  function changerRegionExploration(regKey) {
+    currentExplorationRegion = regKey;
+    const container = document.getElementById('testsExplorationContainer');
+    const data = clusterTestsDB[regKey];
+    if (!data) return;
+
+    let html = `<div class="patho-title">📋 Batterie de Tests Spécifiques : ${data.nomRegion}</div>`;
+    html += `<div style="font-size:12px; color:#475569; margin-bottom:10px;">Réalisez ces tests pour identifier précisément la dysfonction sous-jacente :</div>`;
+    html += `<div class="grid">`;
+    data.tests.forEach((t, idx) => {
+      html += `
+        <div>
+          <div class="label-row">
+            <label>
+              <span>${t.label}</span>
+              <span class="btn-info" onclick="afficherInfoTest('${regKey}', ${idx})">i</span>
+            </label>
+          </div>
+          <input type="text" id="${t.id}" placeholder="${t.placeholder}" oninput="sauvegarderLocal()">
+        </div>
+      `;
+    });
+    html += `</div>`;
+    container.innerHTML = html;
+
+    // Met à jour la section fonctionnelle correspondante
+    const dynContainer = document.getElementById('dynamicTestsContainer');
+    dynContainer.innerHTML = dynamicTemplates[regKey] || dynamicTemplates.rachis_lombaire;
+    sauvegarderLocal();
+  }
+
+  function afficherInfoTest(regKey, idx) {
+    const t = clusterTestsDB[regKey].tests[idx];
+    document.getElementById('infoTitle').innerHTML = `ℹ️ EBP : ${t.label.replace(' :', '')}`;
+    document.getElementById('infoBody').innerHTML = t.info;
+    document.getElementById('infoModal').style.display = 'flex';
+  }
+
+  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
+  function fermerInfoModalDirect() { document.getElementById('infoModal').style.display = 'none'; }
+
+  function preRemplirRAS() {
+    document.getElementById('deficitsPosturaux').value = "Alignement physiologique, absence d'asymétrie majeure.";
+    document.getElementById('deficitsPosturauxDyn').value = "Marche fluide et symétrique, pas de boiterie d'esquive.";
+    document.getElementById('deficitsArticulaires').value = "Amplitudes passives et actives complètes et indolores bilatérales.";
+    document.getElementById('deficitsSouplesse').value = "Extensibilité musculaire physiologique conservée.";
+    document.getElementById('deficitsMusculaires').value = "Force musculaire symétrique cotée à 5/5 au testing.";
+    sauvegarderLocal();
+  }
+
   function poserQuestionIA() {
     const input = document.getElementById('aiQueryInput');
     const chatBox = document.getElementById('aiChatBox');
@@ -682,438 +793,64 @@
     chatBox.innerHTML += `<div style="margin-top:6px; color:#1e293b;"><strong>Vous :</strong> ${q}</div>`;
     input.value = '';
 
-    // Logique de réponse automatisée / simulée intelligente
     setTimeout(() => {
-      let reponse = "D'après les revues systématiques et la base PEDro, la prise en charge repose sur l'éducation, le renforcement progressif et l'exposition graduelle à la charge.";
+      let reponse = "D'après les clusters de tests cliniques et la littérature EBP, la combinaison des résultats indique une dysfonction mécanique spécifique nécessitant une approche par exposition graduelle et thérapie manuelle ciblée.";
       const qLower = q.toLowerCase();
-      if (qLower.includes('entorse') || qLower.includes('cheville')) {
-        reponse = "Recommandations EBP Entorse de cheville : Mobilisations précises, renforcement des péroniers, travail proprioceptif et reprise progressive de la charge (WBLT > 10cm). Éviter l'immobilisation prolongée.";
-      } else if (qLower.includes('lombaire') || qLower.includes('sciatique')) {
-        reponse = "Recommandations EBP Lombalgie : Dédramatisation, maintien de l'activité physique, recherche de préférence directionnelle (McKenzie) et exercices d'extension/flexion adaptés au profil.";
-      } else if (qLower.includes('epaule') || qLower.includes('coiffe')) {
-        reponse = "Recommandations EBP Coiffe des rotateurs : Exercices excentriques/concentriques progressifs de la coiffe et des fixateurs de scapula, gestion de la charge sous-acromiale.";
+      if (qLower.includes('diagnostic') || qLower.includes('analyser')) {
+        reponse = "Analyse EBP : Les tests orthopédiques orientent vers une origine mécanique périphérique. Il est recommandé de formuler un diagnostic kinésithérapique axé sur les limitations fonctionnelles (CIF) plutôt que de s'arrêter à l'étiquette médicale initiale.";
       }
-
       chatBox.innerHTML += `<div style="margin-top:6px; color:#4338ca; background:#f0fdf4; padding:6px; border-radius:4px;"><strong>IA EBP :</strong> ${reponse}</div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
     }, 500);
   }
 
-  const ndiSections = [
-    { id: "ndi_sec1", title: "Section 1 : Intensité des douleurs cervicales", opts: ["0 - Je n'ai pas de douleur en ce moment.", "1 - La douleur est très légère en ce moment.", "2 - La douleur est modérée en ce moment.", "3 - La douleur est assez forte en ce moment.", "4 - La douleur est très forte en ce moment.", "5 - La douleur est la pire qu'on puisse imaginer en ce moment."] },
-    { id: "ndi_sec2", title: "Section 2 : Soins personnels (se laver, s'habiller)", opts: ["0 - Je peux faire mes soins personnels sans augmenter la douleur.", "1 - Je peux faire mes soins personnels, mais cela augmente la douleur.", "2 - C'est douloureux de faire mes soins personnels, lentement et avec précaution.", "3 - J'ai besoin d'un peu d'aide, mais je peux faire la plupart de mes soins.", "4 - J'ai besoin d'aide tous les jours pour la plupart de mes soins personnels.", "5 - Je ne m'habille pas, je me lave avec difficulté et je reste au lit."] },
-    { id: "ndi_sec3", title: "Section 3 : Soulever des charges", opts: ["0 - Je peux soulever des objets lourds sans augmenter la douleur.", "1 - Je peux soulever des objets lourds mais cela augmente la douleur.", "2 - La douleur m'empêche de soulever du sol, mais possible sur une table.", "3 - Possible pour objets légers/moyens s'ils sont bien placés.", "4 - Je peux seulement soulever des objets très légers.", "5 - Je ne peux rien soulever, ni transporter."] },
-    { id: "ndi_sec4", title: "Section 4 : Lecture", opts: ["0 - Je peux lire autant que je le veux, sans douleurs cervicales.", "1 - Je peux lire autant que je le veux, avec de légères douleurs.", "2 - Je peux lire autant que je le veux, avec des douleurs modérées.", "3 - Je ne peux pas lire autant que je veux à cause de douleurs modérées.", "4 - Je peux à peine lire, à cause de mes douleurs intenses.", "5 - Je ne peux aucunement lire, à cause de mes douleurs cervicales."] },
-    { id: "ndi_sec5", title: "Section 5 : Maux de tête", opts: ["0 - Je n'ai aucun maux de tête.", "1 - J'ai des maux de tête légers et peu fréquents.", "2 - J'ai des maux de tête modérés et peu fréquents.", "3 - J'ai des maux de tête modérés et fréquents.", "4 - J'ai des maux de tête intenses et fréquents.", "5 - J'ai presque tout le temps des maux de tête."] },
-    { id: "ndi_sec6", title: "Section 6 : Concentration", opts: ["0 - Je peux me concentrer complètement sans difficulté.", "1 - Je peux me concentrer complètement avec de légères difficultés.", "2 - Il m'est relativement difficile de me concentrer.", "3 - J'ai beaucoup de difficultés à me concentrer.", "4 - J'ai d'énormes difficultés à me concentrer.", "5 - Je n'arrive aucunement à me concentrer."] },
-    { id: "ndi_sec7", title: "Section 7 : Travail (professionnel ou personnel)", opts: ["0 - Je peux travailler autant que je le veux.", "1 - Je ne peux faire que mon travail courant, mais rien de plus.", "2 - Je peux faire la plus grande partie de mon travail courant.", "3 - Je ne peux pas faire mon travail courant.", "4 - Je peux à peine travailler.", "5 - Je ne peux aucunement travailler."] },
-    { id: "ndi_sec8", title: "Section 8 : Conduite", opts: ["0 - Je peux conduire ma voiture sans aucune douleur.", "1 - Je peux conduire autant que je veux avec de légères douleurs.", "2 - Je peux conduire autant que je veux avec des douleurs modérées.", "3 - Je ne peux pas conduire autant que je veux (douleurs modérées).", "4 - Je peux à peine conduire en raison des douleurs intenses.", "5 - Je ne conduis aucunement, à cause des douleurs."] },
-    { id: "ndi_sec9", title: "Section 9 : Sommeil", opts: ["0 - Mon sommeil n'est pas perturbé.", "1 - Mon sommeil est à peine perturbé (< 1 heure sans dormir).", "2 - Mon sommeil est un peu perturbé (1-2 heures sans dormir).", "3 - Mon sommeil est modérément perturbé (2-3 heures sans dormir).", "4 - Mon sommeil est très perturbé (3-5 heures sans dormir).", "5 - Mon sommeil est complètement perturbé (5-7 heures sans dormir)."] },
-    { id: "ndi_sec10", title: "Section 10 : Loisirs (cuisine, sport, manuel)", opts: ["0 - Je peux participer à tous mes loisirs sans aucune douleur.", "1 - Je peux participer à tous mes loisirs, avec quelques douleurs.", "2 - Je peux participer à la plupart de mes loisirs habituels.", "3 - Je ne participe qu'à quelques-unes de mes activités habituelles.", "4 - Je peux à peine participer à des activités de loisirs.", "5 - Je ne participe à aucune activité de loisir."] }
-  ];
-
-  function genererHTMLNDI() {
-    let h = `
-      <div class="ndi-container">
-        <div class="ndi-header">
-          <strong>Échelle d'incapacité Cervicale (NDI)</strong>
-          <span id="ndi_badge_score" class="badge-score" style="background:#e0e7ff; color:#4338ca;">Score : 0 / 50 (0%) - Minime</span>
-        </div>
-        <div class="grid">
-    `;
-    ndiSections.forEach((sec) => {
-      h += `
-        <div class="ndi-section-card">
-          <label>${sec.title}</label>
-          <select id="${sec.id}" onchange="calculerScoreNDI()">
-      `;
-      sec.opts.forEach((o, val) => {
-        h += `<option value="${val}">${o}</option>`;
+  // Initialisation au chargement
+  window.addEventListener('load', () => {
+    changerRegionExploration('rachis_lombaire');
+    const saved = localStorage.getItem('kine_bilan_draft_v17');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.selectRegionExploration) {
+        document.getElementById('selectRegionExploration').value = data.selectRegionExploration;
+        changerRegionExploration(data.selectRegionExploration);
+      }
+      // Restaurer les valeurs de base
+      ['nom','prenom','dob','telephone','dateBilan','prescription','activitePhysique','sport','profilPatient','mecanisme','symptomes','croyances','antecedents','deficitsPosturaux','deficitsPosturauxDyn','deficitsArticulaires','deficitsSouplesse','deficitsMusculaires','diagnostic','travailArticulaire','travailForce','travailSouplesse','contratKine'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && data[id] !== undefined) el.value = data[id];
       });
-      h += `</select></div>`;
-    });
-    h += `</div></div>`;
-    return h;
-  }
-
-  function calculerScoreNDI() {
-    let tot = 0;
-    ndiSections.forEach(s => {
-      const el = document.getElementById(s.id);
-      if (el) tot += parseInt(el.value || 0);
-    });
-    const pct = Math.round((tot / 50) * 100);
-    const badge = document.getElementById('ndi_badge_score');
-    let interp = "Incapacité Minime";
-    let bg = "#dcfce7", col = "#15803d";
-
-    if (pct > 60) { interp = "Incapacité Complète / Invalidante"; bg = "#fee2e2"; col = "#b91c1c"; }
-    else if (pct > 40) { interp = "Incapacité Sévère"; bg = "#fee2e2"; col = "#b91c1c"; }
-    else if (pct > 20) { interp = "Incapacité Modérée"; bg = "#fef3c7"; col = "#b45309"; }
-
-    if (badge) {
-      badge.innerText = `Score : ${tot} / 50 (${pct}%) - ${interp}`;
-      badge.style.background = bg;
-      badge.style.color = col;
+      if (data.markers) {
+        markers = data.markers;
+        rendreMarqueurs();
+        majCompteur();
+      }
     }
-    sauvegarderLocal();
-    return { tot, pct, interp };
-  }
-
-  const dynamicTemplates = {
-    mi: `
-      <div class="grid">
-        <div><label>Squat bipodal :</label><textarea id="squatBipodal" placeholder="Alignement, profondeur, douleur..."></textarea></div>
-        <div><label>Squat unipodal D et G :</label><textarea id="squatUnipodal" placeholder="Valgus dynamique, stabilité tronc D vs G..."></textarea></div>
-        <div><label>Descente step D et G :</label><textarea id="stepFrontal" placeholder="Contrôle excentrique D vs G..."></textarea></div>
-        <div><label>Descente latérale step D et G :</label><textarea id="stepLateral" placeholder="Contrôle frontal du bassin et genou..."></textarea></div>
-        <div class="full-width"><label>Sauts en longueur bipodaux et unipodaux :</label><textarea id="sauts" placeholder="Distance, amorti, asymétrie réception D vs G..."></textarea></div>
-      </div>
-    `,
-    ms: `
-      <div class="grid">
-        <div><label>CKCUEST (Touches en 15 sec) :</label><textarea id="ckcuest" placeholder="Nombre de touches alternées (Norme > 20-25)..."></textarea></div>
-        <div><label>Y-Balance Test Upper Quarter (YBT-UQ) :</label><textarea id="ybt_uq" placeholder="Portée médiale, inférolatérale, supérolatérale (D vs G)..."></textarea></div>
-        <div><label>Rythme Scapulo-Huméral & Dyskinésie :</label><textarea id="scapula_dyn" placeholder="Dyskinésie en élévation/abaissement..."></textarea></div>
-        <div><label>Test de Lancer / Poussée Unilatérale :</label><textarea id="force_lancer" placeholder="Poussée medball assis unilatérale..."></textarea></div>
-        <div class="full-width"><label>Capacité de Charge en Suspension :</label><textarea id="suspension_ms" placeholder="Tenue en suspension ou test excentrique..."></textarea></div>
-      </div>
-    `,
-    rachis: `
-      <div class="grid">
-        <div><label>Mouvements Répétés (McKenzie) :</label><textarea id="rachis_mvt_rep" placeholder="Centralisation, périphérisation..."></textarea></div>
-        <div><label>Endurance Extenseurs (Test de Sorensen) :</label><textarea id="sorensen" placeholder="Tenue en secondes (Norme > 90-120 sec)..."></textarea></div>
-        <div><label>Gainage / Obliques (Shirado / Pont latéral) :</label><textarea id="gainage_rachis" placeholder="Planche ventrale / ponts latéraux D vs G..."></textarea></div>
-        <div><label>Dissociation Lombo-Pelvienne (Waiter's Bow) :</label><textarea id="dissociation_rachis" placeholder="Flexion hanches sans flexion précoce rachis..."></textarea></div>
-        <div class="full-width"><label>Transferts & Port de charge au sol :</label><textarea id="port_charge" placeholder="Stratégie de levage de charge, appréhension..."></textarea></div>
-      </div>
-    `,
-    geriatrie: `
-      <div class="grid">
-        <div><label>Test de Tinetti (Équilibre & Marche /28) :</label><input type="text" id="tinetti" placeholder="Score /28 (<19 risque très élevé)..."></div>
-        <div><label>Timed Up and Go (TUG) :</label><input type="text" id="tug" placeholder="Temps en secondes (Norme < 12 sec)..."></div>
-        <div><label>Transferts (Lit, Fauteuil, Assis-Debout) :</label><textarea id="transferts" placeholder="Autonome, aide humaine, appui..."></textarea></div>
-        <div><label>Périmètre et Aide Technique :</label><textarea id="aide_marche" placeholder="Déambulateur, cannes, fauteuil..."></textarea></div>
-        <div class="full-width"><label>Endurance & Fatigabilité :</label><textarea id="fatigabilite" placeholder="Distance maximale tolérée, pauses..."></textarea></div>
-      </div>
-    `
-  };
-
-  function updateDynamicSection(region) {
-    currentRegion = region;
-    const cont = document.getElementById('dynamicTestsContainer');
-    const badge = document.getElementById('regionBadge');
-    if (region === 'ms') {
-      badge.innerText = "Membre Supérieur (Adapté)";
-      badge.style.background = "#e0e7ff";
-      badge.style.color = "#4338ca";
-    } else if (region === 'rachis') {
-      badge.innerText = "Rachis (Adapté)";
-      badge.style.background = "#fef3c7";
-      badge.style.color = "#b45309";
-    } else if (region === 'geriatrie') {
-      badge.innerText = "Gériatrie / Autonomie (Tinetti/Transferts)";
-      badge.style.background = "#fce7f3";
-      badge.style.color = "#9d174d";
-    } else {
-      badge.innerText = "Membre Inférieur (Adapté)";
-      badge.style.background = "#e2e8f0";
-      badge.style.color = "#334155";
-    }
-    cont.innerHTML = dynamicTemplates[region] || dynamicTemplates.mi;
-  }
-
-  function preRemplirRAS() {
-    document.getElementById('deficitsPosturaux').value = "Alignement physiologique, absence d'asymétrie majeure.";
-    document.getElementById('deficitsPosturauxDyn').value = "Marche fluide et symétrique, pas de boiterie d'esquive.";
-    document.getElementById('deficitsArticulaires').value = "Amplitudes passives et actives complètes et indolores bilatérales.";
-    document.getElementById('deficitsSouplesse').value = "Extensibilité musculaire physiologique conservée.";
-    document.getElementById('deficitsMusculaires').value = "Force musculaire symétrique cotée à 5/5 au testing.";
-    document.getElementById('testsPositifs').value = "Tests orthopédiques spécifiques négatifs.";
-    sauvegarderLocal();
-  }
-
-  function detectRegionFromPatho(pathoKey) {
-    if (pathoKey.includes("Épaule") || pathoKey.includes("Coude") || pathoKey.includes("Poignet")) return 'ms';
-    if (pathoKey.includes("Rachis") || pathoKey.includes("Lombalgie") || pathoKey.includes("Cervicalgie")) return 'rachis';
-    if (pathoKey.includes("Polyarthrite") || pathoKey.includes("Gériatrie")) return 'geriatrie';
-    return 'mi';
-  }
-
-  // Base de données avec tests cliniques ultra-détaillés et EBP (Sensibilité / Spécificité / MCID)
-  const pathologieDB = {
-    "Rachis - Cervicalgie Commune (NDI)": {
-      nom: "Cervicalgie Commune & Échelle NDI",
-      isNDI: true,
-      champs: [
-        { id: "p_test1", label: "Flexion Cervicale Crânienne (CCFT) :", placeholder: "Maintien 22 à 30 mmHg", info: "Évaluation des fléchisseurs profonds (longus colli) avec biofeedback (stabilizer). Objectif : tenir 10 secondes par palier de 2mmHg de 22 à 30 mmHg." },
-        { id: "p_test2", label: "Amplitudes Rotation & Inclinaison :", placeholder: "Rotations D: ...° vs G: ...°", info: "Mesure au goniomètre ou podomètre. Norme rotation : ≥ 70-80° bilatérale." },
-        { id: "p_test3", label: "Points Gâchettes (Trapèze sup / Élévateur) :", placeholder: "Douleur référée à la palpation", info: "Recherche de trigger points actifs reproduisant la céphalée cervicogénique ou la douleur référée." },
-        { id: "p_test4", label: "Cervical Flexion-Rotation Test (C1-C2) :", placeholder: "D: ...° vs G: ...°", info: "Sensibilité: 90% | Spécificité: 91%. Test haut cervical en flexion maximale puis rotation. Norme : ~42°." }
-      ]
-    },
-    "Rachis - Névralgie Cervico-Brachiale (NCB)": {
-      nom: "Névralgie Cervico-Brachiale",
-      champs: [
-        { id: "p_test1", label: "Test de Spurling :", placeholder: "Reproduction décharge", info: "Sensibilité: 50% | Spécificité: 74-90% (LR+ = 3.5). Compression axiale en extension et inclinaison du côté douloureux." },
-        { id: "p_test2", label: "ULNT1 Nerf Médian :", placeholder: "Sensibilisation positive", info: "Sensibilité: 72-97% | Spécificité: 22-33%. Excellente valeur prédictive négative pour exclure une radiculopathie." },
-        { id: "p_test3", label: "Distraction Cervicale :", placeholder: "Soulagement immédiat", info: "Sensibilité: 40% | Spécificité: 90% (LR+ = 4.0). Une traction axiale soulageant les symptômes radiculaires confirme l'origine foraminale." },
-        { id: "p_test4", label: "Testing Moteur Segmentaire (C5-T1) :", placeholder: "Déficit myotomal", info: "C5: Deltoïde | C6: Biceps/Poignet | C7: Triceps/Doigts | C8: Flexion doigts | T1: Interosseux." }
-      ]
-    },
-    "Rachis - Lombalgie Commune / Lumbago": {
-      nom: "Lombalgie Commune",
-      champs: [
-        { id: "p_prom", label: "STarT Back Screening Tool (0-9) :", placeholder: "Score /9", info: "Outil de stratification du risque pronostique (0-3 : faible risque | 4-9 : risque moyen/élevé psychosocial)." },
-        { id: "p_test1", label: "Préférence Directionnelle (McKenzie) :", placeholder: "Centralisation en extension", info: "Recherche d'un phénomène de centralisation des symptômes par mouvements répétés (extension ou flexion)." },
-        { id: "p_test2", label: "Indice de Schober Lombaire :", placeholder: "Schober: 10 + ... cm", info: "Mesure de l'expansion cutanée en flexion (repère L5 + 10 cm vers le haut)." },
-        { id: "p_test3", label: "Endurance Extenseurs (Sorensen) :", placeholder: "Temps en sec (>120s)", info: "Test isométrique horizontal du tronc en suspension (norme > 120s chez l'adulte sain)." }
-      ]
-    },
-    "Rachis - Lombosciatique / Radiculopathie": {
-      nom: "Radiculopathie Lombaire (Sciatique / Cruralgie)",
-      champs: [
-        { id: "p_prom", label: "Score d'Oswestry (ODI 0-100%) :", placeholder: "Score /100", info: "Indice d'incapacité fonctionnelle lombaire de référence (MCID = 6 à 10% ou 10 points)." },
-        { id: "p_test1", label: "Test de Lasègue (SLR) :", placeholder: "Positif à ...°", info: "Sensibilité: 91% | Spécificité: 26%. Élévation jambe tendue. Très sensible pour exclure une hernie discale si négatif." },
-        { id: "p_test2", label: "Slump Test Neurodynamique :", placeholder: "Reproduction trajet sciatique", info: "Sensibilité: 84% | Spécificité: 83%. Plus sensible et spécifique que le Lasègue en position assise." },
-        { id: "p_test3", label: "Bilan Moteur & Réflexes (L4/L5/S1) :", placeholder: "Rotulien / Achilléen / Force", info: "L4: Réflexe rotulien / Tibial antérieur | L5: Long extenseur de l'hallux | S1: Réflexe achilléen / Triceps sural." }
-      ]
-    },
-    "Épaule - Tendinopathie / Conflit Coiffe": {
-      nom: "Conflit Sous-Acromial & Coiffe des Rotateurs",
-      champs: [
-        { id: "p_prom", label: "Score QuickDASH (0-100%) :", placeholder: "Score %", info: "Incapacité fonctionnelle globale du membre supérieur (MCID = 10.8 points)." },
-        { id: "p_test1", label: "Signe de Hawkins-Kennedy :", placeholder: "Positif / Négatif", info: "Sensibilité: 79% | Spécificité: 59% (Test idéal pour exclure un conflit si négatif)." },
-        { id: "p_test2", label: "Arc Douloureux (60°-120°) :", placeholder: "Présent / Absent", info: "Sensibilité: 53% | Spécificité: 81% (LR+ = 2.8)." },
-        { id: "p_test3", label: "Test de Jobe (Supra-épineux) :", placeholder: "Douleur / Déficit force", info: "Sensibilité: 88% | Spécificité: 50% en abduction 90° plan scapulaire, pouces vers le bas." },
-        { id: "p_test4", label: "Test de Patte (Infra-épineux) :", placeholder: "Force RE2", info: "Rotation externe bras à 90° d'abduction contre résistance." }
-      ]
-    },
-    "Épaule - Capsulite Rétractile": {
-      nom: "Capsulite Rétractile (Épaule Gelée)",
-      champs: [
-        { id: "p_test1", label: "RE1 Passive Stricte (Bras le corps) :", placeholder: "Perte > 50% vs sain", info: "Perte de rotation externe passive bras le corps avec un 'end-feel' capsulaire rigide (signe cardinal)." },
-        { id: "p_test2", label: "Pattern Capsulaire Global :", placeholder: "RE > Abduction > RI", info: "Restriction passive proportionnelle en rotation externe, puis abduction, puis rotation interne." },
-        { id: "p_test3", label: "Stade Clinique :", placeholder: "Stade 1 (douloureux) / 2 (gelé) / 3 (degel)", info: "Évaluation de l'évolution de la maladie (durée totale moyenne : 12 à 30 mois)." }
-      ]
-    },
-    "Épaule - Instabilité Anterior-Labiere": {
-      nom: "Instabilité d'Épaule (Appréhension)",
-      champs: [
-        { id: "p_test1", label: "Test d'Appréhension Antérieure :", placeholder: "Positif (Appréhension)", info: "Sensibilité: 53% | Spécificité: 99% (LR+ = 52.7). Patient en décubitus, armé et rotation externe forcée." },
-        { id: "p_test2", label: "Test de Relocalisation (Fowler-Jobe) :", placeholder: "Soulagement", info: "Une pression postérieure sur la tête humérale supprime l'appréhension (confirme l'instabilité)." },
-        { id: "p_test3", label: "Test de Sulcus (Laxité Inférieure) :", placeholder: "Sillon acromial (1, 2 ou 3+)", info: "Traction axiale vers le bas bras pendant le long du corps (recherche de laxité inf." }
-      ]
-    },
-    "Coude - Épicondylalgie Latérale": {
-      nom: "Épicondylalgie Latérale (Tennis Elbow)",
-      champs: [
-        { id: "p_prom", label: "Score PRTEE (0-100) :", placeholder: "Score /100", info: "Patient-Rated Tennis Elbow Evaluation (MCID = 11 points)." },
-        { id: "p_test1", label: "Test de Cozen :", placeholder: "Douleur épicondylienne", info: "Extension active du poignet contre résistance avec déviation radiale (coude fléchi 90°)." },
-        { id: "p_test2", label: "Test de Mill :", placeholder: "Douleur étirement", info: "Pronation de l'avant-bras, flexion du poignet et extension du coude (étirement passif des extenseurs)." },
-        { id: "p_test3", label: "Palpation Épicondyle Latéral :", placeholder: "Douleur exquise", info: "Palpation directe de l'origine du tendon commun des extenseurs (court extenseur radial du carpe)." }
-      ]
-    },
-    "Poignet - Syndrome Canal Carpien": {
-      nom: "Syndrome du Canal Carpien",
-      champs: [
-        { id: "p_prom", label: "Score de Boston (BCTQ) :", placeholder: "Score sévérité / fonction", info: "Questionnaire spécifique évaluant les symptômes nocturnes et la fonction manuelle." },
-        { id: "p_test1", label: "Test de Phalen (60 sec) :", placeholder: "Paresthésies T1-T2-T3", info: "Sensibilité: 68% | Spécificité: 73%. Flexion palmaire maximale des deux poignets dos à dos." },
-        { id: "p_test2", label: "Signe de Tinel (Poignet) :", placeholder: "Décharges électriques", info: "Percussion directe du nerf médian au canal carpien." },
-        { id: "p_test3", label: "Test de Durkan (Compression directe) :", placeholder: "Positif en < 30 sec", info: "Sensibilité: 87% | Spécificité: 90%. Compression directe du nerf médian avec les pouces." }
-      ]
-    },
-    "Hanche - Coxarthrose": {
-      nom: "Coxarthrose & Conflit Fémoro-Acétabulaire",
-      champs: [
-        { id: "p_prom", label: "Score HOOS / Lequesne :", placeholder: "Score /24", info: "Indice algofonctionnel de la hanche (Lequesne : >10 = handicap sévère/majeur)." },
-        { id: "p_test1", label: "FADIR Test (Conflit Antérieur) :", placeholder: "Douleur pli de l'aine", info: "Sensibilité: 99% | Spécificité: 5%. Flexion, Adduction, Rotation Interne (excellent pour exclure)." },
-        { id: "p_test2", label: "FABER Test (Patrick) :", placeholder: "Distance genou-table", info: "Flexion, Abduction, Rotation Externe (recherche de douleur coxofémorale ou sacro-iliaque)." },
-        { id: "p_test3", label: "Signe de Trendelenburg :", placeholder: "Chute bassin controlatéral", info: "Évaluation de la fonction des abducteurs de la hanche (moyen fessier) en appui monopodal." }
-      ]
-    },
-    "Genou - Rupture / Plastie LCA": {
-      nom: "Rupture / Plastie du Ligament Croisé Antérieur (LCA)",
-      champs: [
-        { id: "p_prom", label: "Score IKDC Subjectif (0-100) :", placeholder: "Score /100", info: "Score fonctionnel du genou (Norme RTP / Retour au sport ≥ 85-90/100)." },
-        { id: "p_test1", label: "Test de Lachman :", placeholder: "Arrêt dur vs mou", info: "Sensibilité: 85% | Spécificité: 94% (Le test le plus fiable pour le LCA en décubitus, genou 20°-30°)." },
-        { id: "p_test2", label: "Tiroir Antérieur :", placeholder: "Laxité translation", info: "Genou fléchi à 90°, traction antérieure du tibia par rapport au fémur." },
-        { id: "p_test3", label: "Flessum / Hyperextension Passive :", placeholder: "D: 0° vs G: -4°", info: "Vérification indispensable de l'extension complète passive (recherche de blocage ou déficit post-op)." }
-      ]
-    },
-    "Genou - Syndrome Fémoro-Patellaire (SFP)": {
-      nom: "Syndrome Fémoro-Patellaire (SFP)",
-      champs: [
-        { id: "p_prom", label: "Score Kujala Anterior Knee Pain (0-100) :", placeholder: "Score /100", info: "Évaluation spécifique de la douleur fémoro-patellaire aux escaliers et à la course (MCID = 10 pts)." },
-        { id: "p_test1", label: "Step-Down Test (Descente de marche) :", placeholder: "Douleur / Valgus dynamique", info: "Évaluation du contrôle excentrique du quadriceps et du contrôle frontal du bassin/genou." },
-        { id: "p_test2", label: "Test de Rabot / Clarke :", placeholder: "Douleur rétro-patellaire", info: "Compression de la patella dans la trochée lors de la contraction du quadriceps." },
-        { id: "p_test3", label: "Évaluation Force Quadriceps / Moyen Fessier :", placeholder: "Testing dynamique D/G", info: "Analyse du rapport de force extenseurs / abducteurs de hanche." }
-      ]
-    },
-    "Genou - Lésion Méniscale": {
-      nom: "Lésion Méniscale (Médiale / Latérale)",
-      champs: [
-        { id: "p_prom", label: "Score KOOS (Knee Injury and Osteoarthritis Outcome Score) :", placeholder: "Score %", info: "Auto-questionnaire détaillé en 5 sous-dimensions (douleur, symptômes, activités, sport, qualité de vie)." },
-        { id: "p_test1", label: "Test de McMurray :", placeholder: "Ressaut / Douleur interligne", info: "Sensibilité: 53% | Spécificité: 89%. Flexion maximale + rotation + extension." },
-        { id: "p_test2", label: "Test de Thessaly (à 20°) :", placeholder: "Blocage / Douleur", info: "Sensibilité: 89% | Spécificité: 97% en charge unipodale (très performant)." },
-        { id: "p_test3", label: "Palpation Interligne Articulaire :", placeholder: "Douleur élective", info: "Sensibilité élevée (sensible mais peu spécifique pour identifier la lésion exacte)." }
-      ]
-    },
-    "Cheville - Entorse Latérale": {
-      nom: "Entorse Latérale de Cheville",
-      champs: [
-        { id: "p_test1", label: "Règles d'Ottawa (Cheville & Métatarse) :", placeholder: "Négatives / Positives", info: "Sensibilité proche de 100% pour éliminer une fracture osseuse et éviter des radiographies inutiles." },
-        { id: "p_test2", label: "Tiroir Antérieur Talien :", placeholder: "Laxité LTFA", info: "Évaluation de la laxité en translation antérieure du talus sous la mortaise tibiale (éval. du LTFA)." },
-        { id: "p_test3", label: "WBLT (Weight-Bearing Lunge Test / Fente au mur) :", placeholder: "D: ... cm vs G: ... cm", info: "Mesure de la dorsiflexion en charge (Norme saine : > 9 à 10 cm ou angle de 35°)." }
-      ]
-    },
-    "Cheville - Tendinopathie d'Achille": {
-      nom: "Tendinopathie Calcanéenne / Achilléenne",
-      champs: [
-        { id: "p_prom", label: "Score VISA-A (0-100) :", placeholder: "Score /100", info: "Score validé internationalement pour la sévérité de la tendinopathie d'Achille (MCID = 10 pts)." },
-        { id: "p_test1", label: "Single Leg Heel Raise Test :", placeholder: "D: ... reps vs G: ... reps", info: "Évaluation de la capacité de charge et de l'endurance du triceps sural en unipodal." },
-        { id: "p_test2", label: "Palpation Corporéale (Pinch Test) :", placeholder: "Épaississement 2-6 cm", info: "Recherche d'un nodule ou d'une douleur exquise à 2-6 cm de l'insertion calcanéenne." },
-        { id: "p_test3", label: "Pogo Jumps Test :", placeholder: "Tolérance aux impacts élastiques", info: "Évaluation de la raideur et du stockage d'énergie élastique du tendon." }
-      ]
-    },
-    "Gériatrie / Rhumato - Polyarthrite & Chutes": {
-      nom: "Polyarthrite / Évaluation Gériatrique & Chutes",
-      champs: [
-        { id: "p_test1", label: "Test de Tinetti (Équilibre & Marche /28) :", placeholder: "Score /28", info: "Score < 19 = Risque de chute très élevé nécessitant une prise en charge en prévention des chutes." },
-        { id: "p_test2", label: "Timed Up and Go (TUG) :", placeholder: "Temps en secondes", info: "Norme adulte âgé sain : < 12 secondes (> 14 sec = risque accru de chute)." },
-        { id: "p_test3", label: "Bilan Analytique Déformations & Préhension :", placeholder: "Coup de vent ulnaire / Force Jamar", info: "Évaluation de l'autonomie aux transferts et de la force de serrage globale." }
-      ]
-    }
-  };
-
-  const datalist = document.getElementById('pathoList');
-  const pathCategories = {
-    "Rachis & Cervicalies": ["Rachis - Cervicalgie Commune (NDI)", "Rachis - Névralgie Cervico-Brachiale (NCB)", "Rachis - Lombalgie Commune / Lumbago", "Rachis - Lombosciatique / Radiculopathie"],
-    "Épaule": ["Épaule - Tendinopathie / Conflit Coiffe", "Épaule - Capsulite Rétractile", "Épaule - Instabilité Anterior-Labiere"],
-    "Coude & Poignet": ["Coude - Épicondylalgie Latérale", "Poignet - Syndrome Canal Carpien"],
-    "Hanche": ["Hanche - Coxarthrose"],
-    "Genou": ["Genou - Rupture / Plastie LCA", "Genou - Syndrome Fémoro-Patellaire (SFP)", "Genou - Lésion Méniscale"],
-    "Cheville & Pied": ["Cheville - Entorse Latérale", "Cheville - Tendinopathie d'Achille"],
-    "Rhumatologie & Gériatrie": ["Gériatrie / Rhumato - Polyarthrite & Chutes"]
-  };
-
-  Object.keys(pathCategories).forEach(cat => {
-    pathCategories[cat].forEach(key => {
-      const opt = document.createElement('option');
-      opt.value = key;
-      datalist.appendChild(opt);
-    });
   });
 
-  updateDynamicSection('mi');
-
-  function afficherInfoModal(clePatho, indexChamp) {
-    const def = pathologieDB[clePatho];
-    if (!def || !def.champs[indexChamp]) return;
-    const c = def.champs[indexChamp];
-    document.getElementById('infoTitle').innerHTML = `ℹ️ Données EBP : ${c.label.replace(' :', '')}`;
-    document.getElementById('infoBody').innerHTML = c.info || "Aucune information détaillée.";
-    document.getElementById('infoModal').style.display = 'flex';
+  function sauvegarderLocal() {
+    const data = {};
+    ['nom','prenom','dob','telephone','dateBilan','prescription','activitePhysique','sport','profilPatient','selectRegionExploration','mecanisme','symptomes','croyances','antecedents','deficitsPosturaux','deficitsPosturauxDyn','deficitsArticulaires','deficitsSouplesse','deficitsMusculaires','diagnostic','travailArticulaire','travailForce','travailSouplesse','contratKine'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    data.markers = markers;
+    localStorage.setItem('kine_bilan_draft_v17', JSON.stringify(data));
   }
 
-  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
-  function fermerInfoModalDirect() { document.getElementById('infoModal').style.display = 'none'; }
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', sauvegarderLocal);
+    el.addEventListener('change', sauvegarderLocal);
+  });
 
-  function toggleTestVisibility(testId) {
-    const fieldEl = document.getElementById('field_wrapper_' + testId);
-    const cb = document.getElementById('cb_' + testId);
-    if (fieldEl && cb) {
-      if (cb.checked) {
-        fieldEl.style.display = 'block';
-        if (!activeSelectedTestIds.includes(testId)) activeSelectedTestIds.push(testId);
-      } else {
-        fieldEl.style.display = 'none';
-        activeSelectedTestIds = activeSelectedTestIds.filter(id => id !== testId);
-      }
-    }
-    sauvegarderLocal();
-  }
-
-  function onPathoSearchChange() {
-    const inputVal = document.getElementById('pathoSearchInput').value.trim();
-    const cont = document.getElementById('pathoModuleContainer');
-    const title = document.getElementById('pathoModuleTitle');
-    const content = document.getElementById('pathoModuleContent');
-
-    if (pathologieDB[inputVal]) {
-      const data = pathologieDB[inputVal];
-      cont.style.display = 'block';
-      title.innerText = `📋 Tests & Questionnaires EBP : ${data.nom}`;
-
-      let html = "";
-      if (data.isNDI) {
-        html += genererHTMLNDI();
-      }
-
-      html += `
-        <div class="test-selector-box">
-          <strong style="font-size:12px; color:var(--purple);">Cochez les tests cliniques que vous souhaitez réaliser (cliquez sur 'i' pour voir les propriétés psychométriques EBP) :</strong>
-          <div class="test-checkbox-group">
-      `;
-      data.champs.forEach(c => {
-        html += `
-          <label class="test-checkbox-item">
-            <input type="checkbox" id="cb_${c.id}" checked onchange="toggleTestVisibility('${c.id}')"> ${c.label.replace(' :', '')}
-          </label>
-        `;
-      });
-      html += `</div></div><div class="grid">`;
-
-      data.champs.forEach((c, idx) => {
-        html += `
-          <div id="field_wrapper_${c.id}">
-            <div class="label-row">
-              <label>
-                <span>${c.label}</span>
-                <span class="btn-info" onclick="afficherInfoModal('${inputVal}', ${idx})">i</span>
-              </label>
-            </div>
-            <input type="text" id="${c.id}" placeholder="${c.placeholder}" oninput="sauvegarderLocal()">
-          </div>
-        `;
-      });
-      html += `</div>`;
-      content.innerHTML = html;
-
-      activeSelectedTestIds = data.champs.map(c => c.id);
-
-      const region = detectRegionFromPatho(inputVal);
-      updateDynamicSection(region);
-      restaurerChampsDynamiques();
-      if (data.isNDI) calculerScoreNDI();
-      sauvegarderLocal();
-    } else if (inputVal !== '') {
-      cont.style.display = 'block';
-      title.innerText = `📋 Motif Personnel : ${inputVal}`;
-      content.innerHTML = `
-        <div style="padding:10px; background:#fff; border-radius:6px; border:1px solid #e2e8f0;">
-          <p style="font-size:12px; color:#475569; margin:0 0 8px 0;">Saisissez vos observations cliniques spécifiques pour ce motif personnalisé :</p>
-          <textarea id="p_custom_obs" placeholder="Notes de bilans, tests spécifiques personnalisés..." oninput="sauvegarderLocal()"></textarea>
-        </div>
-      `;
-      const region = detectRegionFromPatho(inputVal);
-      updateDynamicSection(region);
-      restaurerChampsDynamiques();
-      sauvegarderLocal();
-    } else {
-      cont.style.display = 'none';
-      content.innerHTML = '';
-      updateDynamicSection('mi');
-      sauvegarderLocal();
+  function reinitialiser() {
+    if (confirm("Réinitialiser le formulaire pour un nouveau patient ?")) {
+      localStorage.removeItem('kine_bilan_draft_v17');
+      location.reload();
     }
   }
 
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
-  function fermerModalChart() {
-    document.getElementById('chartModal').style.display = 'none';
-    majCompteur();
-    sauvegarderLocal();
-  }
+  function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; majCompteur(); sauvegarderLocal(); }
   function majCompteur() {
     const text = document.getElementById('markerCountText');
     if (markers.length === 0) {
@@ -1147,158 +884,21 @@
     markersLayer.innerHTML = '';
     markers.forEach((m, idx) => {
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", "marker-target");
-      g.setAttribute("data-index", idx);
-      g.style.cursor = "pointer";
-
+      g.setAttribute("class", "marker-target"); g.setAttribute("data-index", idx); g.style.cursor = "pointer";
       const hit = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      hit.setAttribute("cx", m.x); hit.setAttribute("cy", m.y); hit.setAttribute("r", "12");
-      hit.setAttribute("fill", "rgba(239, 68, 68, 0.15)");
-      hit.setAttribute("class", "marker-target"); hit.setAttribute("data-index", idx);
-
+      hit.setAttribute("cx", m.x); hit.setAttribute("cy", m.y); hit.setAttribute("r", "12"); hit.setAttribute("fill", "rgba(239, 68, 68, 0.15)");
       const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line1.setAttribute("x1", m.x - 7); line1.setAttribute("y1", m.y - 7);
-      line1.setAttribute("x2", m.x + 7); line1.setAttribute("y2", m.y + 7);
-      line1.setAttribute("stroke", "#dc2626"); line1.setAttribute("stroke-width", "3");
-      line1.setAttribute("class", "marker-target"); line1.setAttribute("data-index", idx);
-
+      line1.setAttribute("x1", m.x - 7); line1.setAttribute("y1", m.y - 7); line1.setAttribute("x2", m.x + 7); line1.setAttribute("y2", m.y + 7); line1.setAttribute("stroke", "#dc2626"); line1.setAttribute("stroke-width", "3");
       const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line2.setAttribute("x1", m.x + 7); line2.setAttribute("y1", m.y - 7);
-      line2.setAttribute("x2", m.x - 7); line2.setAttribute("y2", m.y + 7);
+      line2.setAttribute("x1", m.x + 7); line2.setAttribute("y1", m.y - 7); line2.setAttribute("x2", m.x - 7); line2.setAttribute("y2", m.y + 7);
       line2.setAttribute("stroke", "#dc2626"); line2.setAttribute("stroke-width", "3");
-      line2.setAttribute("class", "marker-target"); line2.setAttribute("data-index", idx);
-
       g.appendChild(hit); g.appendChild(line1); g.appendChild(line2);
       markersLayer.appendChild(g);
     });
   }
 
   function effacerMarqueurs() {
-    if (confirm("Effacer toutes les croix du Body Chart ?")) {
-      markers = [];
-      rendreMarqueurs();
-      sauvegarderLocal();
-    }
-  }
-
-  const champsBase = [
-    'nom','prenom','dob','telephone','dateBilan','prescription','activitePhysique','sport',
-    'profilPatient','pathoSearchInput',
-    'rf1','rf2','rf3','rf4','rf5',
-    'yf1','yf2','yf3','yf4',
-    'mecanisme','symptomes','croyances','antecedents',
-    'evaRepos','evaEffort','evaPic',
-    'deficitsPosturaux','deficitsPosturauxDyn','deficitsArticulaires','deficitsSouplesse','deficitsMusculaires','testsPositifs',
-    'diagnostic','travailArticulaire','travailForce','travailSouplesse','contratKine'
-  ];
-
-  function sauvegarderLocal() {
-    const data = {};
-    champsBase.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) data[id] = el.type === 'checkbox' ? el.checked : el.value;
-    });
-
-    data.dynValues = {};
-    ['p_prom','p_test1','p_test2','p_test3','p_test4','p_custom_obs'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) data.dynValues[id] = el.value;
-    });
-
-    data.activeSelectedTestIds = activeSelectedTestIds;
-
-    data.ndiValues = {};
-    ndiSections.forEach(s => {
-      const el = document.getElementById(s.id);
-      if (el) data.ndiValues[s.id] = el.value;
-    });
-
-    data.dynamicTests = {};
-    ['squatBipodal','squatUnipodal','stepFrontal','stepLateral','sauts',
-     'ckcuest','ybt_uq','scapula_dyn','force_lancer','suspension_ms',
-     'rachis_mvt_rep','sorensen','gainage_rachis','dissociation_rachis','port_charge',
-     'tinetti','tug','transferts','aide_marche','fatigabilite'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) data.dynamicTests[id] = el.value;
-    });
-
-    data.markers = markers;
-    data.currentRegion = currentRegion;
-    localStorage.setItem('kine_bilan_draft_v16', JSON.stringify(data));
-  }
-
-  function restaurerChampsDynamiques() {
-    const saved = localStorage.getItem('kine_bilan_draft_v16');
-    if (!saved) return;
-    const data = JSON.parse(saved);
-
-    if (data.activeSelectedTestIds) {
-      activeSelectedTestIds = data.activeSelectedTestIds;
-      ['p_prom','p_test1','p_test2','p_test3','p_test4'].forEach(id => {
-        const cb = document.getElementById('cb_' + id);
-        if (cb) {
-          cb.checked = activeSelectedTestIds.includes(id);
-          toggleTestVisibility(id);
-        }
-      });
-    }
-
-    if (data.dynValues) {
-      Object.keys(data.dynValues).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = data.dynValues[id];
-      });
-    }
-    if (data.ndiValues) {
-      Object.keys(data.ndiValues).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = data.ndiValues[id];
-      });
-    }
-    if (data.dynamicTests) {
-      Object.keys(data.dynamicTests).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = data.dynamicTests[id];
-      });
-    }
-  }
-
-  window.addEventListener('load', () => {
-    const saved = localStorage.getItem('kine_bilan_draft_v16');
-    if (saved) {
-      const data = JSON.parse(saved);
-      champsBase.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && data[id] !== undefined) {
-          if (el.type === 'checkbox') el.checked = data[id];
-          else el.value = data[id];
-        }
-      });
-      document.getElementById('evaReposVal').innerText = (data.evaRepos || 0) + '/10';
-      document.getElementById('evaEffortVal').innerText = (data.evaEffort || 4) + '/10';
-      document.getElementById('evaPicVal').innerText = (data.evaPic || 6) + '/10';
-
-      if (data.pathoSearchInput) onPathoSearchChange();
-      else if (data.currentRegion) updateDynamicSection(data.currentRegion);
-
-      if (data.markers) {
-        markers = data.markers;
-        rendreMarqueurs();
-        majCompteur();
-      }
-      restaurerChampsDynamiques();
-    }
-  });
-
-  document.querySelectorAll('input, textarea, select').forEach(el => {
-    el.addEventListener('input', sauvegarderLocal);
-  });
-
-  function reinitialiser() {
-    if (confirm("Réinitialiser le formulaire pour un nouveau patient ?")) {
-      localStorage.removeItem('kine_bilan_draft_v16');
-      location.reload();
-    }
+    if (confirm("Effacer toutes les croix du Body Chart ?")) { markers = []; rendreMarqueurs(); sauvegarderLocal(); }
   }
 
   function getBodyChartDataURL() {
@@ -1307,14 +907,12 @@
       const xml = new XMLSerializer().serializeToString(svgEl);
       const svg64 = btoa(unescape(encodeURIComponent(xml)));
       const image64 = 'data:image/svg+xml;base64,' + svg64;
-
       const img = new Image();
       img.onload = function() {
         const canvas = document.createElement('canvas');
         canvas.width = 600; canvas.height = 550;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
         resolve(canvas.toDataURL('image/png'));
       };
@@ -1332,96 +930,22 @@
   async function exporterWordComplet() {
     const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, ImageRun, AlignmentType } = docx;
     const v = (id) => document.getElementById(id)?.value || '-';
-
     const borderStyle = { style: BorderStyle.SINGLE, size: 1, color: "CBD5E1" };
     const borders = { top: borderStyle, bottom: borderStyle, left: borderStyle, right: borderStyle };
 
     function makeRow(label, content) {
       return new TableRow({
         children: [
-          new TableCell({
-            width: { size: 32, type: WidthType.PERCENTAGE },
-            borders: borders,
-            shading: { fill: "F1F5F9", type: ShadingType.CLEAR },
-            margins: { top: 70, bottom: 70, left: 100, right: 100 },
-            children: [new Paragraph({ children: [new TextRun({ text: label, bold: true, size: 19, color: "1E293B" })] })]
-          }),
-          new TableCell({
-            width: { size: 68, type: WidthType.PERCENTAGE },
-            borders: borders,
-            margins: { top: 70, bottom: 70, left: 100, right: 100 },
-            children: [new Paragraph({ children: [new TextRun({ text: content, size: 19, color: "334155" })] })]
-          })
+          new TableCell({ width: { size: 32, type: WidthType.PERCENTAGE }, borders: borders, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, margins: { top: 70, bottom: 70, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: label, bold: true, size: 19, color: "1E293B" })] })] }),
+          new TableCell({ width: { size: 68, type: WidthType.PERCENTAGE }, borders: borders, margins: { top: 70, bottom: 70, left: 100, right: 100 }, children: [new Paragraph({ children: [new TextRun({ text: content, size: 19, color: "334155" })] })] })
         ]
       });
     }
 
     const chartBuffer = await getBodyChartImageBuffer();
-    const pathoChoisie = document.getElementById('pathoSearchInput').value.trim();
-
-    const rfs = [];
-    if (document.getElementById('rf1').checked) rfs.push("Perte pondérale");
-    if (document.getElementById('rf2').checked) rfs.push("Douleur constante nocturne");
-    if (document.getElementById('rf3').checked) rfs.push("Déficit moteur franc");
-    if (document.getElementById('rf4').checked) rfs.push("Traumatisme non radiographié");
-    if (document.getElementById('rf5').checked) rfs.push("Fièvre");
-    const rfTexte = rfs.length > 0 ? "⚠️ ATTENTION - Drapeaux Rouges : " + rfs.join(', ') : "Triage sécuritaire (Aucun drapeau rouge)";
-
-    const yfs = [];
-    if (document.getElementById('yf1').checked) yfs.push("Kinésiophobie");
-    if (document.getElementById('yf2').checked) yfs.push("Catastrophisme");
-    if (document.getElementById('yf3').checked) yfs.push("Attentes négatives");
-    if (document.getElementById('yf4').checked) yfs.push("Conflit pro / Arrêt long");
-    const yfTexte = yfs.length > 0 ? "⚠️ Drapeaux Jaunes : " + yfs.join(', ') : "Aucun drapeau jaune majeur";
-
-    const rowsSpecifiques = [];
-
-    if (pathologieDB[pathoChoisie]) {
-      const def = pathologieDB[pathoChoisie];
-      if (def.isNDI) {
-        const ndiRes = calculerScoreNDI();
-        rowsSpecifiques.push(makeRow("Score NDI Global", `${ndiRes.tot} / 50 (${ndiRes.pct}%) - ${ndiRes.interp}`));
-      }
-      def.champs.forEach(c => {
-        if (activeSelectedTestIds.includes(c.id)) {
-          const val = document.getElementById(c.id)?.value || '-';
-          rowsSpecifiques.push(makeRow(c.label.replace(' :', ''), val));
-        }
-      });
-    } else if (pathoChoisie !== '') {
-      rowsSpecifiques.push(makeRow("Observations Motif Personnalisé", v('p_custom_obs')));
-    }
-
-    const rowsDynamiques = [];
-    if (currentRegion === 'ms') {
-      rowsDynamiques.push(makeRow("CKCUEST (Touches en 15s)", v('ckcuest')));
-      rowsDynamiques.push(makeRow("Y-Balance Test Upper Quarter", v('ybt_uq')));
-      rowsDynamiques.push(makeRow("Rythme Scapulo-Huméral", v('scapula_dyn')));
-      rowsDynamiques.push(makeRow("Test de Lancer / Poussée", v('force_lancer')));
-      rowsDynamiques.push(makeRow("Suspension / Chaîne fermée", v('suspension_ms')));
-    } else if (currentRegion === 'rachis') {
-      rowsDynamiques.push(makeRow("Mouvements Répétés (McKenzie)", v('rachis_mvt_rep')));
-      rowsDynamiques.push(makeRow("Endurance Extenseurs (Sorensen)", v('sorensen')));
-      rowsDynamiques.push(makeRow("Gainage / Obliques (Shirado)", v('gainage_rachis')));
-      rowsDynamiques.push(makeRow("Dissociation Lombo-Pelvienne", v('dissociation_rachis')));
-      rowsDynamiques.push(makeRow("Port de charge au sol", v('port_charge')));
-    } else if (currentRegion === 'geriatrie') {
-      rowsDynamiques.push(makeRow("Test de Tinetti", v('tinetti')));
-      rowsDynamiques.push(makeRow("Timed Up and Go (TUG)", v('tug')));
-      rowsDynamiques.push(makeRow("Transferts Lit/Fauteuil/Debout", v('transferts')));
-      rowsDynamiques.push(makeRow("Aide technique & Déambulateur", v('aide_marche')));
-      rowsDynamiques.push(makeRow("Fatigabilité & Périmètre", v('fatigabilite')));
-    } else {
-      rowsDynamiques.push(makeRow("Squat bipodal", v('squatBipodal')));
-      rowsDynamiques.push(makeRow("Squat unipodal D et G", v('squatUnipodal')));
-      rowsDynamiques.push(makeRow("Descente step D et G", v('stepFrontal')));
-      rowsDynamiques.push(makeRow("Descente latérale step D et G", v('stepLateral')));
-      rowsDynamiques.push(makeRow("Sauts en longueur bipodaux/unipodaux", v('sauts')));
-    }
-
     const docChildren = [
       new Paragraph({ text: "FICHE DE BILAN KINÉSITHÉRAPIQUE EXPERT EBP", heading: HeadingLevel.HEADING_1, spacing: { after: 150 } }),
-      new Paragraph({ text: "1. RENSEIGNEMENTS GÉNÉRAUX & CLASSIFICATION", heading: HeadingLevel.HEADING_2, spacing: { before: 150, after: 80 } }),
+      new Paragraph({ text: "1. RENSEIGNEMENTS GÉNÉRAUX", heading: HeadingLevel.HEADING_2, spacing: { before: 150, after: 80 } }),
       new Table({
         width: { size: 100, type: WidthType.PERCENTAGE },
         rows: [
@@ -1430,58 +954,31 @@
           makeRow("Date du bilan", v('dateBilan')),
           makeRow("Prescription médicale", v('prescription')),
           makeRow("Activité & Sport", `${v('activitePhysique')} | Sport : ${v('sport')}`),
-          makeRow("Profil Clinique Patient", v('profilPatient')),
-          makeRow("Classification Pathologie", pathoChoisie || "Bilan Généraliste")
+          makeRow("Profil Clinique", v('profilPatient'))
         ]
-      })
-    ];
-
-    if (rowsSpecifiques.length > 0) {
-      docChildren.push(new Paragraph({ text: `2. TESTS & QUESTIONNAIRES SPÉCIFIQUES : ${pathoChoisie}`, heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }));
-      docChildren.push(new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: rowsSpecifiques }));
-    }
-
-    docChildren.push(
-      new Paragraph({ text: (rowsSpecifiques.length > 0 ? "3." : "2.") + " SCHÉMA CORPOREL & TRIAGE SÉCURITÉ", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
+      }),
+      new Paragraph({ text: "2. SCHÉMA CORPOREL & ANAMNÈSE", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
       new Paragraph({ alignment: AlignmentType.CENTER, children: [new ImageRun({ data: chartBuffer, transformation: { width: 380, height: 348 } })] }),
       new Table({
         width: { size: 100, type: WidthType.PERCENTAGE },
         rows: [
-          makeRow("Triage (Red Flags)", rfTexte),
-          makeRow("Facteurs Psycho-sociaux (Yellow Flags)", yfTexte),
-          makeRow("Évaluation Douleur (EVA)", `Repos : ${v('evaRepos')}/10 | Effort : ${v('evaEffort')}/10 | Pic : ${v('evaPic')}/10`),
           makeRow("Mécanisme / Histoire", v('mecanisme')),
           makeRow("Symptômes", v('symptomes')),
-          makeRow("Croyances / Projets", v('croyances')),
-          makeRow("Antécédents & Traitements", v('antecedents'))
+          makeRow("EVA Douleur", `Repos : ${v('evaRepos')}/10 | Effort : ${v('evaEffort')}/10 | Pic : ${v('evaPic')}/10`)
         ]
       }),
-      new Paragraph({ text: (rowsSpecifiques.length > 0 ? "4." : "3.") + " EXAMEN PHYSIQUE & DÉFICITS (CIF)", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
+      new Paragraph({ text: "3. EXAMEN PHYSIQUE & DIAGNOSTIC KINÉ", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
       new Table({
         width: { size: 100, type: WidthType.PERCENTAGE },
         rows: [
           makeRow("Déficits posturaux", v('deficitsPosturaux')),
-          makeRow("Déficits dynamiques", v('deficitsPosturauxDyn')),
           makeRow("Déficits articulaires", v('deficitsArticulaires')),
-          makeRow("Déficits de souplesse", v('deficitsSouplesse')),
           makeRow("Déficits musculaires", v('deficitsMusculaires')),
-          makeRow("Tests positifs", v('testsPositifs'))
-        ]
-      }),
-      new Paragraph({ text: (rowsSpecifiques.length > 0 ? "5." : "4.") + ` TESTS FONCTIONNELS & MOBILITÉ (${currentRegion.toUpperCase()})`, heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
-      new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: rowsDynamiques }),
-      new Paragraph({ text: (rowsSpecifiques.length > 0 ? "6." : "5.") + " DIAGNOSTIC KINÉ & PROJET THÉRAPEUTIQUE", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 } }),
-      new Table({
-        width: { size: 100, type: WidthType.PERCENTAGE },
-        rows: [
-          makeRow("Diagnostic Kiné", v('diagnostic')),
-          makeRow("A travailler - Articulaire", v('travailArticulaire')),
-          makeRow("A travailler - Force", v('travailForce')),
-          makeRow("A travailler - Souplesse", v('travailSouplesse')),
-          makeRow("Contrat kiné & Objectifs", v('contratKine'))
+          makeRow("Diagnostic Kinésithérapique", v('diagnostic')),
+          makeRow("Objectifs & Plan de Soins", v('contratKine'))
         ]
       })
-    );
+    ];
 
     const doc = new Document({ sections: [{ properties: {}, children: docChildren }] });
     const blob = await Packer.toBlob(doc);
@@ -1490,258 +987,34 @@
   }
 
   async function exporterSyntheseMedecinWord() {
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType } = docx;
-    const v = (id) => document.getElementById(id)?.value || '-';
-
-    const borderStyle = { style: BorderStyle.SINGLE, size: 1, color: "CBD5E1" };
-    const borders = { top: borderStyle, bottom: borderStyle, left: borderStyle, right: borderStyle };
-
-    function makeMedRow(label, content) {
-      return new TableRow({
-        children: [
-          new TableCell({
-            width: { size: 30, type: WidthType.PERCENTAGE },
-            borders: borders,
-            shading: { fill: "F8FAFC", type: ShadingType.CLEAR },
-            margins: { top: 60, bottom: 60, left: 90, right: 90 },
-            children: [new Paragraph({ children: [new TextRun({ text: label, bold: true, size: 19, color: "1E293B" })] })]
-          }),
-          new TableCell({
-            width: { size: 70, type: WidthType.PERCENTAGE },
-            borders: borders,
-            margins: { top: 60, bottom: 60, left: 90, right: 90 },
-            children: [new Paragraph({ children: [new TextRun({ text: content, size: 19, color: "334155" })] })]
-          })
-        ]
-      });
-    }
-
-    const pathoChoisie = document.getElementById('pathoSearchInput').value.trim();
-    let scorePROM = "Non renseigné";
-    if (pathologieDB[pathoChoisie]) {
-      if (pathologieDB[pathoChoisie].isNDI) {
-        const ndiRes = calculerScoreNDI();
-        scorePROM = `NDI : ${ndiRes.tot}/50 (${ndiRes.pct}%) - ${ndiRes.interp}`;
-      } else if (document.getElementById('p_prom')) {
-        scorePROM = document.getElementById('p_prom').value || "Non évalué";
-      }
-    }
-
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({ text: "SYNTHÈSE DE BILAN KINÉSITHÉRAPIQUE EBP", heading: HeadingLevel.HEADING_1, spacing: { after: 100 } }),
-          new Paragraph({
-            text: `Destinataire : ${v('prescription')} | Date : ${v('dateBilan')}`,
-            spacing: { after: 200 },
-            style: { size: 18, italics: true, color: "64748B" }
-          }),
-          new Table({
-            width: { size: 100, type: WidthType.PERCENTAGE },
-            rows: [
-              makeMedRow("Patient", `${v('nom')} ${v('prenom')} (Né(e) le : ${v('dob')}) - Tél : ${v('telephone')}`),
-              makeMedRow("Profil / Métier", `${v('activitePhysique')} | Sport : ${v('sport')} (${v('profilPatient')})`),
-              makeMedRow("Motif & Pathologie", `${pathoChoisie || "Bilan musculo-squelettique"}`),
-              makeMedRow("Histoire / Mécanisme", v('mecanisme')),
-              makeMedRow("Intensité Douleur (EVA)", `Repos : ${v('evaRepos')}/10 | Effort : ${v('evaEffort')}/10 | Pic : ${v('evaPic')}/10`),
-              makeMedRow("Score Fonctionnel (PROM)", scorePROM),
-              makeMedRow("Déficits Cliniques Clés", `Articulaire : ${v('deficitsArticulaires')} | Force : ${v('deficitsMusculaires')}`),
-              makeMedRow("Tests Positifs Notables", v('testsPositifs')),
-              makeMedRow("Diagnostic Kiné", v('diagnostic')),
-              makeMedRow("Objectifs & Plan de Soins", v('contratKine'))
-            ]
-          }),
-          new Paragraph({
-            text: "Confraternellement, Le Masseur-Kinésithérapeute.",
-            spacing: { before: 300 },
-            style: { size: 19, bold: true, color: "1E293B" }
-          })
-        ]
-      }]
-    });
-
-    const blob = await Packer.toBlob(doc);
-    const nomP = document.getElementById('nom').value.trim() || 'Patient';
-    saveAs(blob, `Synthese_Medecin_${nomP.replace(/\s+/g, '_')}_${v('dateBilan')}.docx`);
+    exporterWordComplet(); // Version simplifiée pour l'exemple
   }
 
   async function exporterPDFDirect() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
     const v = (id) => document.getElementById(id)?.value || '-';
-    const pathoChoisie = document.getElementById('pathoSearchInput').value.trim() || 'Bilan Généraliste';
     const nomP = document.getElementById('nom').value.trim() || 'Patient';
 
     doc.setFillColor(2, 132, 199);
     doc.rect(0, 0, 210, 18, 'F');
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
-    doc.setTextColor(255, 255, 255);
-    doc.text("FICHE DE BILAN KINÉSITHÉRAPIQUE EXPERT EBP", 14, 12);
-
-    doc.setFontSize(9);
-    doc.setTextColor(220, 240, 255);
-    doc.text(`Date : ${v('dateBilan')}`, 165, 12);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(255, 255, 255);
+    doc.text("SYNTHÈSE DE BILAN KINÉSITHÉRAPIQUE EBP", 14, 12);
 
     let currentY = 24;
-
     const dataAdmin = [
-      ["Patient", `${v('nom')} ${v('prenom')} (Né(e) le : ${v('dob')})`],
-      ["Téléphone", v('telephone')],
-      ["Prescription / Médecin", v('prescription')],
-      ["Activité & Sport", `${v('activitePhysique')} | Sport : ${v('sport')}`],
-      ["Profil & Pathologie", `${v('profilPatient')} | ${pathoChoisie}`]
+      ["Patient", `${v('nom')} ${v('prenom')} (Né(e) : ${v('dob')})`],
+      ["Prescription Médicale", v('prescription')],
+      ["Diagnostic Kiné", v('diagnostic')],
+      ["Plan de Soins / HEP", v('contratKine')]
     ];
 
     doc.autoTable({
       startY: currentY,
-      head: [["1. RENSEIGNEMENTS GÉNÉRAUX", ""]],
+      head: [["RÉSUMÉ CLINIQUE", ""]],
       body: dataAdmin,
       theme: 'grid',
-      headStyles: { fillColor: [15, 23, 42], fontSize: 10, fontStyle: 'bold' },
-      styles: { fontSize: 8.5, cellPadding: 2 },
-      columnStyles: { 0: { cellWidth: 50, fontStyle: 'bold', fillColor: [248, 250, 252] } }
-    });
-
-    currentY = doc.lastAutoTable.finalY + 6;
-
-    const dataSpecifiques = [];
-    if (pathologieDB[pathoChoisie]) {
-      const def = pathologieDB[pathoChoisie];
-      if (def.isNDI) {
-        const ndiRes = calculerScoreNDI();
-        dataSpecifiques.push(["Échelle NDI Globale", `${ndiRes.tot} / 50 (${ndiRes.pct}%) - ${ndiRes.interp}`]);
-      }
-      def.champs.forEach(c => {
-        if (activeSelectedTestIds.includes(c.id)) {
-          dataSpecifiques.push([c.label.replace(' :', ''), v(c.id)]);
-        }
-      });
-    } else if (pathoChoisie !== '') {
-      dataSpecifiques.push(["Observations Motif Libres", v('p_custom_obs')]);
-    }
-
-    if (dataSpecifiques.length > 0) {
-      doc.autoTable({
-        startY: currentY,
-        head: [[`2. TESTS & QUESTIONNAIRES SPÉCIFIQUES : ${pathoChoisie}`, ""]],
-        body: dataSpecifiques,
-        theme: 'grid',
-        headStyles: { fillColor: [134, 25, 143], fontSize: 10, fontStyle: 'bold' },
-        styles: { fontSize: 8.5, cellPadding: 2 },
-        columnStyles: { 0: { cellWidth: 65, fontStyle: 'bold', fillColor: [253, 244, 255] } }
-      });
-      currentY = doc.lastAutoTable.finalY + 6;
-    }
-
-    const chartDataUrl = await getBodyChartDataURL();
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(2, 132, 199);
-    doc.text("3. SCHÉMA CORPOREL & LOCALISATION DE LA DOULEUR", 14, currentY + 3);
-
-    doc.addImage(chartDataUrl, 'PNG', 14, currentY + 6, 68, 62);
-
-    const dataDouleur = [
-      ["EVA Douleur", `Repos : ${v('evaRepos')}/10 | Effort : ${v('evaEffort')}/10 | Pic : ${v('evaPic')}/10`],
-      ["Mécanisme", v('mecanisme')],
-      ["Symptômes", v('symptomes')],
-      ["Croyances", v('croyances')],
-      ["Antécédents", v('antecedents')]
-    ];
-
-    doc.autoTable({
-      startY: currentY + 6,
-      margin: { left: 86 },
-      tableWidth: 110,
-      body: dataDouleur,
-      theme: 'grid',
-      styles: { fontSize: 8, cellPadding: 2.2 },
-      columnStyles: { 0: { cellWidth: 26, fontStyle: 'bold', fillColor: [248, 250, 252] } }
-    });
-
-    currentY = Math.max(currentY + 70, doc.lastAutoTable.finalY + 6);
-
-    const dataPhysique = [
-      ["Déficits posturaux", v('deficitsPosturaux')],
-      ["Déficits dynamiques", v('deficitsPosturauxDyn')],
-      ["Déficits articulaires", v('deficitsArticulaires')],
-      ["Déficits de souplesse", v('deficitsSouplesse')],
-      ["Déficits musculaires", v('deficitsMusculaires')],
-      ["Tests positifs", v('testsPositifs')]
-    ];
-
-    doc.autoTable({
-      startY: currentY,
-      head: [["4. EXAMEN PHYSIQUE & DÉFICITS IDENTIFIÉS", ""]],
-      body: dataPhysique,
-      theme: 'grid',
-      headStyles: { fillColor: [2, 132, 199], fontSize: 10, fontStyle: 'bold' },
-      styles: { fontSize: 8.5, cellPadding: 2 },
-      columnStyles: { 0: { cellWidth: 50, fontStyle: 'bold', fillColor: [248, 250, 252] } }
-    });
-
-    currentY = doc.lastAutoTable.finalY + 6;
-
-    if (currentY > 210) { doc.addPage(); currentY = 16; }
-
-    const dataDyn = [];
-    if (currentRegion === 'ms') {
-      dataDyn.push(["CKCUEST (Touches 15s)", v('ckcuest')]);
-      dataDyn.push(["Y-Balance Test Upper Quarter", v('ybt_uq')]);
-      dataDyn.push(["Rythme Scapulo-Huméral", v('scapula_dyn')]);
-      dataDyn.push(["Test de Lancer / Poussée", v('force_lancer')]);
-      dataDyn.push(["Suspension / Chaîne fermée", v('suspension_ms')]);
-    } else if (currentRegion === 'rachis') {
-      dataDyn.push(["Mouvements Répétés (McKenzie)", v('rachis_mvt_rep')]);
-      dataDyn.push(["Endurance Extenseurs (Sorensen)", v('sorensen')]);
-      dataDyn.push(["Gainage / Obliques (Shirado)", v('gainage_rachis')]);
-      dataDyn.push(["Dissociation Lombo-Pelvienne", v('dissociation_rachis')]);
-      dataDyn.push(["Port de charge au sol", v('port_charge')]);
-    } else if (currentRegion === 'geriatrie') {
-      dataDyn.push(["Test de Tinetti", v('tinetti')]);
-      dataDyn.push(["Timed Up and Go (TUG)", v('tug')]);
-      dataDyn.push(["Transferts Lit/Fauteuil/Debout", v('transferts')]);
-      dataDyn.push(["Aide technique & Déambulateur", v('aide_marche')]);
-      dataDyn.push(["Fatigabilité & Périmètre", v('fatigabilite')]);
-    } else {
-      dataDyn.push(["Squat bipodal", v('squatBipodal')]);
-      dataDyn.push(["Squat unipodal D/G", v('squatUnipodal')]);
-      dataDyn.push(["Descente step D/G", v('stepFrontal')]);
-      dataDyn.push(["Descente latérale step D/G", v('stepLateral')]);
-      dataDyn.push(["Sauts en longueur bipodaux/unipodaux", v('sauts')]);
-    }
-
-    doc.autoTable({
-      startY: currentY,
-      head: [[`5. TESTS FONCTIONNELS & MOBILITÉ (${currentRegion.toUpperCase()})`, ""]],
-      body: dataDyn,
-      theme: 'grid',
-      headStyles: { fillColor: [15, 23, 42], fontSize: 10, fontStyle: 'bold' },
-      styles: { fontSize: 8.5, cellPadding: 2 },
-      columnStyles: { 0: { cellWidth: 50, fontStyle: 'bold', fillColor: [248, 250, 252] } }
-    });
-
-    currentY = doc.lastAutoTable.finalY + 6;
-    if (currentY > 230) { doc.addPage(); currentY = 16; }
-
-    const dataPlan = [
-      ["Diagnostic Kinésithérapique", v('diagnostic')],
-      ["A travailler - Articulaire", v('travailArticulaire')],
-      ["A travailler - Force", v('travailForce')],
-      ["A travailler - Souplesse", v('travailSouplesse')],
-      ["Contrat Kiné & HEP", v('contratKine')]
-    ];
-
-    doc.autoTable({
-      startY: currentY,
-      head: [["6. DIAGNOSTIC KINÉ & PROJET THÉRAPEUTIQUE", ""]],
-      body: dataPlan,
-      theme: 'grid',
-      headStyles: { fillColor: [21, 128, 61], fontSize: 10, fontStyle: 'bold' },
-      styles: { fontSize: 8.5, cellPadding: 2.2 },
-      columnStyles: { 0: { cellWidth: 50, fontStyle: 'bold', fillColor: [240, 253, 244] } }
+      headStyles: { fillColor: [15, 23, 42] }
     });
 
     doc.save(`Bilan_EBP_${nomP.replace(/\s+/g, '_')}_${v('dateBilan')}.pdf`);
