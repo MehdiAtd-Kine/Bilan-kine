@@ -1,8 +1,8 @@
-cat << 'EOF' > bilan_kine.html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bilan Kinésithérapeute Expert - Multi-Exports & EBP</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -333,6 +333,27 @@ cat << 'EOF' > bilan_kine.html
     .btn-reset { background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
     .btn-close-modal { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     .btn-clear-markers { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-right: 10px; }
+
+    /* Adaptabilité Téléphone / Tablette */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px 10px;
+      }
+      .grid, .grid-3 {
+        grid-template-columns: 1fr !important;
+      }
+      .export-bar {
+        grid-template-columns: 1fr !important;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      .modal-content {
+        width: 95%;
+        height: 95vh;
+        padding: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1630,7 +1651,7 @@ cat << 'EOF' > bilan_kine.html
       dataDyn.push(["Squat bipodal", v('squatBipodal')]);
       dataDyn.push(["Squat unipodal D/G", v('squatUnipodal')]);
       dataDyn.push(["Descente step D/G", v('stepFrontal')]);
-      dataDyn.push(["Descente latérale step D/G", v('stepLateral')]);
+      dataDyn.push(["Descente latérale D/G", v('stepLateral')]);
       dataDyn.push(["Sauts en longueur bipodaux/unipodaux", v('sauts')]);
     }
 
@@ -1671,4 +1692,3 @@ cat << 'EOF' > bilan_kine.html
 
 </body>
 </html>
-EOF
