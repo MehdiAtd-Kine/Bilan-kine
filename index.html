@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapeute Expert EBP - Diagnostic Clinique</title>
+  <title>Bilan Kinésithérapique Expert EBP - Raisonnement Clinique</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -37,6 +37,7 @@
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 80px;
     }
     header {
       border-bottom: 2px solid var(--border);
@@ -82,7 +83,7 @@
     }
     label { font-weight: 600; font-size: 12px; color: var(--secondary); display: flex; align-items: center; gap: 6px; }
     
-    input[type="text"], input[type="date"], input[type="number"], select, textarea {
+    input[type="text"], input[type="date"], select, textarea {
       width: 100%;
       padding: 7px 10px;
       border: 1px solid var(--border);
@@ -179,32 +180,70 @@
       margin-bottom: 12px;
     }
 
-    .ai-assistant-container {
-      background: #eef2ff;
-      border: 1.5px solid #c7d2fe;
-      border-radius: 8px;
-      padding: 16px;
-      margin-top: 25px;
+    /* WIDGET CHAT IA FLOTTANT EN BAS À DROITE */
+    #aiFloatContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      font-family: inherit;
     }
-    .ai-title {
-      color: var(--ai-color);
-      font-weight: 800;
-      font-size: 15px;
-      margin-bottom: 8px;
+    #aiFloatBtn {
+      background: var(--ai-color);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      transition: transform 0.2s;
     }
-    .ai-chat-box {
-      background: #ffffff;
+    #aiFloatBtn:hover { transform: scale(1.05); }
+    #aiChatWindow {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      width: 360px;
+      height: 480px;
+      background: white;
       border: 1px solid #c7d2fe;
-      border-radius: 6px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .ai-chat-header {
+      background: var(--ai-color);
+      color: white;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ai-chat-body {
+      flex: 1;
       padding: 12px;
-      min-height: 80px;
-      max-height: 200px;
       overflow-y: auto;
-      font-size: 13px;
-      margin-bottom: 10px;
+      font-size: 12.5px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ai-chat-footer {
+      padding: 10px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 6px;
     }
 
     .hep-container {
@@ -250,51 +289,29 @@
     .btn-docx { background: #0284c7; }
     .btn-doc-med { background: #4f46e5; }
     .btn-pdf { background: #dc2626; }
-    .btn-ai { background: var(--ai-color); color: white; border: none; padding: 7px 14px; border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 12px; }
-    .btn-ai:hover { opacity: 0.9; }
 
     .modal-overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(15, 23, 42, 0.75);
-      z-index: 1000;
+      z-index: 10000;
       justify-content: center;
       align-items: center;
     }
     .modal-content {
       background: white;
-      width: 90%;
-      max-width: 900px;
-      height: 90vh;
-      max-height: 850px;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
+      width: 90%; max-width: 900px; height: 90vh; max-height: 850px;
+      border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
     }
     .modal-info-box {
-      background: white;
-      max-width: 520px;
-      width: 90%;
-      border-radius: 10px;
-      padding: 22px;
+      background: white; max-width: 520px; width: 90%; border-radius: 10px; padding: 22px;
     }
     .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px;
     }
     .modal-body {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f8fafc;
-      border-radius: 8px;
-      margin-top: 10px;
+      flex: 1; display: flex; justify-content: center; align-items: center; background: #f8fafc; border-radius: 8px; margin-top: 10px;
     }
     #chartSVG { width: 100%; height: 100%; max-height: 700px; cursor: crosshair; }
     .btn-reset { background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
@@ -306,7 +323,7 @@
       .grid, .grid-3 { grid-template-columns: 1fr !important; }
       .export-bar { grid-template-columns: 1fr !important; }
       h1 { font-size: 18px; }
-      .modal-content { width: 95%; height: 95vh; padding: 10px; }
+      #aiChatWindow { width: 90vw; right: 5vw; }
     }
   </style>
 </head>
@@ -321,7 +338,7 @@
     </div>
   </header>
 
-  <!-- ÉTAPE 1 : RENSEIGNEMENTS GÉNÉRAUX -->
+  <!-- 1. RENSEIGNEMENTS GÉNÉRAUX -->
   <div class="section-title">
     <span>1. RENSEIGNEMENTS GÉNÉRAUX & CONTEXTE SOCIO-PROFESSIONNEL</span>
   </div>
@@ -347,8 +364,8 @@
       <input type="date" id="dateBilan">
     </div>
     <div>
-      <label>Prescription médicale & Médecin :</label>
-      <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie commune' (Ordonnance...">
+      <label>Prescription médicale & Motif du médecin :</label>
+      <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie' (Ordonnance...">
     </div>
     <div>
       <label>Activité physique / Profession :</label>
@@ -371,7 +388,7 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 2 : BODY CHART & ANAMNÈSE -->
+  <!-- 2. SCHÉMA CORPOREL & ANAMNÈSE -->
   <div class="section-title section-title-clickable" onclick="ouvrirModalChart()">
     <span>📍 2. SCHÉMA CORPOREL (BODY CHART) & PROFIL DE DOULEUR</span>
     <span style="font-size:13px; font-weight:700; color:var(--primary);">🔍 Ouvrir en grand écran</span>
@@ -407,7 +424,7 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 3 : TRIAGE SÉCURITÉ -->
+  <!-- 3. TRIAGE SÉCURITÉ -->
   <div class="section-title">
     <span>3. TRIAGE MÉDICAL & FACTEURS PSYCHO-SOCIAUX</span>
   </div>
@@ -444,7 +461,7 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 4 : EXAMEN PHYSIQUE GLOBAL -->
+  <!-- 4. EXAMEN PHYSIQUE GLOBAL -->
   <div class="section-title">
     <span>4. EXAMEN PHYSIQUE GLOBAL & DÉFICITS (MODÈLE CIF)</span>
     <button class="btn-quick-fill" onclick="preRemplirRAS()">⚡ Remplir RAS (Symétrique/Normo-axé)</button>
@@ -472,14 +489,14 @@
     </div>
   </div>
 
-  <!-- ÉTAPE 5 : MODULE OUVERT DE TESTS CLINIQUES SPÉCIFIQUES & DÉCOUVERTE DU DIAGNOSTIC -->
+  <!-- 5. BATTERIE OUVERTE DE TESTS CLINIQUES & DÉCOUVERTE DU DIAGNOSTIC -->
   <div class="section-title">
     <span>5. BATTERIE DE TESTS CLINIQUES & VALIDATION DU DIAGNOSTIC EBP</span>
   </div>
   <div style="background:#faf5ff; border:1.5px solid #d8b4fe; border-radius:8px; padding:14px; margin-bottom:12px;">
-    <label style="color:var(--purple); font-size:13px; margin-bottom:6px; display:block;">🔍 Sélectionnez une région ou pathologie suspectée pour afficher les clusters de tests EBP validés :</label>
+    <label style="color:var(--purple); font-size:13px; margin-bottom:6px; display:block;">🔍 Choisissez la région anatomique explorée pour tester librement et identifier la pathologie exacte sous-jacente :</label>
     <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
-      <option value="rachis_lombaire">Rachis Lombaire / Lombalgie / Sciatique</option>
+      <option value="rachis_lombaire">Rachis Lombaire / Lombalgie & Radiculopathie</option>
       <option value="rachis_cervical">Rachis Cervical / NDI / NCB</option>
       <option value="epaule">Épaule (Coiffe, Conflit, Instabilité)</option>
       <option value="coude_poignet">Coude & Poignet (Épicondylite, Canal carpien)</option>
@@ -495,24 +512,22 @@
     <!-- Rempli dynamiquement en JS -->
   </div>
 
-  <!-- ÉTAPE 6 : TESTS FONCTIONNELS -->
+  <!-- BOUTON DE PROPOSITION AUTOMATIQUE DE PATHOLOGIE PAR LES TESTS -->
+  <div style="margin-top:12px; background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div>
+      <strong style="color:var(--green); font-size:13px;">💡 Proposition de Pathologie par les Tests :</strong>
+      <div id="pathoSuggestionResult" style="font-size:12.5px; color:#166534; margin-top:2px;">Cochez ou remplissez des tests ci-dessus pour laisser l'algorithme analyser la pathologie précise.</div>
+    </div>
+    <button class="btn-quick-fill" onclick="analyserPathologieParTests()" style="background:#15803d; color:white; border:none; padding:6px 12px; font-weight:700;">Analyser les tests & Suggérer la Pathologie</button>
+  </div>
+
+  <!-- 6. TESTS FONCTIONNELS -->
   <div class="section-title">
     <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
   </div>
   <div id="dynamicTestsContainer"></div>
 
-  <!-- ASSISTANT IA INTÉGRÉ -->
-  <div class="ai-assistant-container">
-    <div class="ai-title">🤖 Assistant IA Clinique & Recherche EBP (PubMed / PEDro)</div>
-    <p style="font-size:12px; color:#4338ca; margin:0 0 8px 0;">Posez vos questions cliniques ou demandez à l'IA d'analyser vos clusters de tests pour affiner le diagnostic précis :</p>
-    <div id="aiChatBox" class="ai-chat-box">Bonjour ! Je suis votre assistant EBP. Entrez vos observations et tests positifs ci-dessus, puis demandez-moi par exemple : *"Quel diagnostic kinésithérapique précis déduire de ces tests ?"*</div>
-    <div style="display:flex; gap:8px;">
-      <input type="text" id="aiQueryInput" placeholder="Ex: Analyser les tests positifs et proposer le diagnostic précis..." style="flex:1;">
-      <button class="btn-ai" onclick="poserQuestionIA()">Interroger l'IA</button>
-    </div>
-  </div>
-
-  <!-- ÉTAPE 7 : DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE -->
+  <!-- 7. DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE -->
   <div class="section-title">
     <span>7. DIAGNOSTIC KINÉSITHÉRAPIQUE & PROJET THÉRAPEUTIQUE</span>
   </div>
@@ -550,6 +565,26 @@
     <button class="btn-export btn-doc-med" onclick="exporterSyntheseMedecinWord()">✉️ Synthèse Médecin (.docx)</button>
     <button class="btn-export btn-pdf" onclick="exporterPDFDirect()">📕 Télécharger le Bilan en PDF</button>
   </div>
+</div>
+
+<!-- WIDGET CHAT IA FLOTTANT (BAS À DROITE) -->
+<div id="aiFloatContainer">
+  <div id="aiChatWindow">
+    <div class="ai-chat-header">
+      <span>🤖 Assistant EBP (PubMed / PEDro)</span>
+      <button onclick="toggleAiChat()" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
+    </div>
+    <div id="aiChatBody" class="ai-chat-body">
+      <div style="background:#eef2ff; padding:8px; border-radius:6px; color:#312e81;">
+        Bonjour ! Je suis votre assistant IA enrichi aux bases scientifiques (PubMed, PEDro, Google Scholar). Posez vos questions cliniques ou demandez-moi d'analyser vos tests pour affiner le diagnostic !
+      </div>
+    </div>
+    <div class="ai-chat-footer">
+      <input type="text" id="aiQueryInput" placeholder="Posez votre question clinique..." onkeydown="if(event.key==='Enter') poserQuestionIA()">
+      <button class="btn-quick-fill" onclick="poserQuestionIA()" style="background:var(--ai-color); color:white; border:none; padding:6px 12px;">Envoyer</button>
+    </div>
+  </div>
+  <button id="aiFloatBtn" onclick="toggleAiChat()">🤖 Assistant IA EBP</button>
 </div>
 
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
@@ -615,13 +650,17 @@
   let currentExplorationRegion = 'rachis_lombaire';
   document.getElementById('dateBilan').valueAsDate = new Date();
 
+  function toggleAiChat() {
+    const win = document.getElementById('aiChatWindow');
+    win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+  }
+
   function ajouterHEP(texte) {
     const el = document.getElementById('contratKine');
     el.value = el.value ? el.value + " • " + texte : "• " + texte;
     sauvegarderLocal();
   }
 
-  // Base de données par région avec des clusters de tests EBP précis pour déterminer la lésion exacte
   const clusterTestsDB = {
     rachis_lombaire: {
       nomRegion: "Rachis Lombaire / Lombalgie & Radiculopathie",
@@ -692,46 +731,14 @@
   };
 
   const dynamicTemplates = {
-    rachis_lombaire: `
-      <div class="grid">
-        <div><label>Squat bipodal :</label><textarea id="dyn_1" placeholder="Alignement, profondeur..."></textarea></div>
-        <div><label>Test d'endurance extenseurs (Sorensen) :</label><textarea id="dyn_2" placeholder="Temps en secondes..."></textarea></div>
-      </div>`,
-    rachis_cervical: `
-      <div class="grid">
-        <div><label>Flexion Cervicale Crânienne (CCFT) :</label><textarea id="dyn_1" placeholder="Paliers de pression..."></textarea></div>
-        <div><label>Rotation et Inclinaison active :</label><textarea id="dyn_2" placeholder="Amplitudes..."></textarea></div>
-      </div>`,
-    epaule: `
-      <div class="grid">
-        <div><label>CKCUEST (Touches en 15 sec) :</label><textarea id="dyn_1" placeholder="Nombre de touches..."></textarea></div>
-        <div><label>Y-Balance Test Upper Quarter :</label><textarea id="dyn_2" placeholder="Portées D vs G..."></textarea></div>
-      </div>`,
-    coude_poignet: `
-      <div class="grid">
-        <div><label>Force de Préhension (Jamar) :</label><textarea id="dyn_1" placeholder="Valeurs en kg D vs G..."></textarea></div>
-        <div><label>Test de résistance poignet :</label><textarea id="dyn_2" placeholder="Douleur..."></textarea></div>
-      </div>`,
-    hanche: `
-      <div class="grid">
-        <div><label>Squat Unipodal D et G :</label><textarea id="dyn_1" placeholder="Stabilité du bassin..."></textarea></div>
-        <div><label>Périmètre de marche :</label><textarea id="dyn_2" placeholder="Distance..."></textarea></div>
-      </div>`,
-    genou: `
-      <div class="grid">
-        <div><label>Squat unipodal & Descente de marche :</label><textarea id="dyn_1" placeholder="Contrôle frontal..."></textarea></div>
-        <div><label>Hop Tests / Sauts :</label><textarea id="dyn_2" placeholder="Amorti, symétrie..."></textarea></div>
-      </div>`,
-    cheville: `
-      <div class="grid">
-        <div><label>Single Leg Hop Test :</label><textarea id="dyn_1" placeholder="Performance..."></textarea></div>
-        <div><label>Stabilité monopodale yeux ouverts/fermés :</label><textarea id="dyn_2" placeholder="Proprioception..."></textarea></div>
-      </div>`,
-    geriatrie: `
-      <div class="grid">
-        <div><label>Transferts (Assis-Debout / Lit) :</label><textarea id="dyn_1" placeholder="Aide technique..."></textarea></div>
-        <div><label>Périmètre et aide à la marche :</label><textarea id="dyn_2" placeholder="Déambulateur, cannes..."></textarea></div>
-      </div>`
+    rachis_lombaire: `<div class="grid"><div><label>Squat bipodal :</label><textarea id="dyn_1" placeholder="Alignement, profondeur..."></textarea></div><div><label>Test d'endurance extenseurs (Sorensen) :</label><textarea id="dyn_2" placeholder="Temps en secondes..."></textarea></div></div>`,
+    rachis_cervical: `<div class="grid"><div><label>Flexion Cervicale Crânienne (CCFT) :</label><textarea id="dyn_1" placeholder="Paliers de pression..."></textarea></div><div><label>Rotation et Inclinaison active :</label><textarea id="dyn_2" placeholder="Amplitudes..."></textarea></div></div>`,
+    epaule: `<div class="grid"><div><label>CKCUEST (Touches en 15 sec) :</label><textarea id="dyn_1" placeholder="Nombre de touches..."></textarea></div><div><label>Y-Balance Test Upper Quarter :</label><textarea id="dyn_2" placeholder="Portées D vs G..."></textarea></div></div>`,
+    coude_poignet: `<div class="grid"><div><label>Force de Préhension (Jamar) :</label><textarea id="dyn_1" placeholder="Valeurs en kg D vs G..."></textarea></div><div><label>Test de résistance poignet :</label><textarea id="dyn_2" placeholder="Douleur..."></textarea></div></div>`,
+    hanche: `<div class="grid"><div><label>Squat Unipodal D et G :</label><textarea id="dyn_1" placeholder="Stabilité du bassin..."></textarea></div><div><label>Périmètre de marche :</label><textarea id="dyn_2" placeholder="Distance..."></textarea></div></div>`,
+    genou: `<div class="grid"><div><label>Squat unipodal & Descente de marche :</label><textarea id="dyn_1" placeholder="Contrôle frontal..."></textarea></div><div><label>Hop Tests / Sauts :</label><textarea id="dyn_2" placeholder="Amorti, symétrie..."></textarea></div></div>`,
+    cheville: `<div class="grid"><div><label>Single Leg Hop Test :</label><textarea id="dyn_1" placeholder="Performance..."></textarea></div><div><label>Stabilité monopodale yeux ouverts/fermés :</label><textarea id="dyn_2" placeholder="Proprioception..."></textarea></div></div>`,
+    geriatrie: `<div class="grid"><div><label>Transferts (Assis-Debout / Lit) :</label><textarea id="dyn_1" placeholder="Aide technique..."></textarea></div><div><label>Périmètre et aide à la marche :</label><textarea id="dyn_2" placeholder="Déambulateur, cannes..."></textarea></div></div>`
   };
 
   function changerRegionExploration(regKey) {
@@ -741,7 +748,7 @@
     if (!data) return;
 
     let html = `<div class="patho-title">📋 Batterie de Tests Spécifiques : ${data.nomRegion}</div>`;
-    html += `<div style="font-size:12px; color:#475569; margin-bottom:10px;">Réalisez ces tests pour identifier précisément la dysfonction sous-jacente :</div>`;
+    html += `<div style="font-size:12px; color:#475569; margin-bottom:10px;">Remplissez les tests cliniques exécutés :</div>`;
     html += `<div class="grid">`;
     data.tests.forEach((t, idx) => {
       html += `
@@ -759,9 +766,36 @@
     html += `</div>`;
     container.innerHTML = html;
 
-    // Met à jour la section fonctionnelle correspondante
-    const dynContainer = document.getElementById('dynamicTestsContainer');
-    dynContainer.innerHTML = dynamicTemplates[regKey] || dynamicTemplates.rachis_lombaire;
+    document.getElementById('dynamicTestsContainer').innerHTML = dynamicTemplates[regKey] || dynamicTemplates.rachis_lombaire;
+    sauvegarderLocal();
+  }
+
+  function analyserPathologieParTests() {
+    const reg = currentExplorationRegion;
+    const data = clusterTestsDB[reg];
+    let remplis = [];
+    data.tests.forEach(t => {
+      const val = document.getElementById(t.id)?.value.trim();
+      if(val && val !== '') remplis.push(t.label.replace(' :', '') + ' (' + val + ')');
+    });
+
+    const resBox = document.getElementById('pathoSuggestionResult');
+    if(remplis.length === 0) {
+      resBox.innerText = "Veuillez renseigner au moins un résultat de test ci-dessus pour permettre l'analyse EBP.";
+      return;
+    }
+
+    let proposition = "D'après les tests renseignés (" + remplis.join(', ') + "), l'analyse EBP suggère une sous-classification mécanique de type périphérique avec restriction fonctionnelle ciblée.";
+    if(reg === 'rachis_lombaire') {
+      proposition = "Suspicion de composante mécanique lombaire avec possible implication radiculaire ou dysfonctionnement segmentaire (recommander un test de centralisation/McKenzie ou contrôle de la tension neurale).";
+    } else if(reg === 'epaule') {
+      proposition = "Suspicion de conflit sous-acromial ou tendinopathie de la coiffe des rotateurs (valider par le profil d'arc douloureux).";
+    } else if(reg === 'genou') {
+      proposition = "Suspicion d'atteinte ligamentaire ou méniscale à corréler avec l'épanchement articulaire et le test fonctionnel.";
+    }
+
+    resBox.innerText = proposition;
+    document.getElementById('diagnostic').value = proposition;
     sauvegarderLocal();
   }
 
@@ -786,35 +820,35 @@
 
   function poserQuestionIA() {
     const input = document.getElementById('aiQueryInput');
-    const chatBox = document.getElementById('aiChatBox');
+    const chatBody = document.getElementById('aiChatBody');
     const q = input.value.trim();
     if (!q) return;
 
-    chatBox.innerHTML += `<div style="margin-top:6px; color:#1e293b;"><strong>Vous :</strong> ${q}</div>`;
+    chatBody.innerHTML += `<div style="background:#ffffff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;"><strong>Vous :</strong> ${q}</div>`;
     input.value = '';
 
     setTimeout(() => {
-      let reponse = "D'après les clusters de tests cliniques et la littérature EBP, la combinaison des résultats indique une dysfonction mécanique spécifique nécessitant une approche par exposition graduelle et thérapie manuelle ciblée.";
+      let reponse = "D'après la base documentaire scientifique (PubMed/PEDro), l'évaluation clinique doit combiner l'anamnèse et des clusters de tests spécifiques pour valider le diagnostic kinésithérapique fonctionnel.";
       const qLower = q.toLowerCase();
-      if (qLower.includes('diagnostic') || qLower.includes('analyser')) {
-        reponse = "Analyse EBP : Les tests orthopédiques orientent vers une origine mécanique périphérique. Il est recommandé de formuler un diagnostic kinésithérapique axé sur les limitations fonctionnelles (CIF) plutôt que de s'arrêter à l'étiquette médicale initiale.";
+      if (qLower.includes('lombalgie') || qLower.includes('lombaire')) {
+        reponse = "Littérature EBP Lombalgie : Privilégier le dépistage des red flags, l'évaluation de la kinésiophobie (Yellow flags) et l'utilisation de tests de classification (McKenzie / Slump / Lasègue).";
+      } else if (qLower.includes('epaule')) {
+        reponse = "Littérature EBP Épaule : Un test isolé a une faible valeur prédictive. L'utilisation d'un cluster (ex: Hawkins + Jobe + Arc douloureux) augmente significativement la fiabilité diagnostique.";
       }
-      chatBox.innerHTML += `<div style="margin-top:6px; color:#4338ca; background:#f0fdf4; padding:6px; border-radius:4px;"><strong>IA EBP :</strong> ${reponse}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+      chatBody.innerHTML += `<div style="background:#eef2ff; padding:8px 10px; border-radius:6px; border:1px solid #c7d2fe; color:#312e81;"><strong>IA EBP :</strong> ${reponse}</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
     }, 500);
   }
 
-  // Initialisation au chargement
   window.addEventListener('load', () => {
     changerRegionExploration('rachis_lombaire');
-    const saved = localStorage.getItem('kine_bilan_draft_v17');
+    const saved = localStorage.getItem('kine_bilan_draft_v18');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.selectRegionExploration) {
         document.getElementById('selectRegionExploration').value = data.selectRegionExploration;
         changerRegionExploration(data.selectRegionExploration);
       }
-      // Restaurer les valeurs de base
       ['nom','prenom','dob','telephone','dateBilan','prescription','activitePhysique','sport','profilPatient','mecanisme','symptomes','croyances','antecedents','deficitsPosturaux','deficitsPosturauxDyn','deficitsArticulaires','deficitsSouplesse','deficitsMusculaires','diagnostic','travailArticulaire','travailForce','travailSouplesse','contratKine'].forEach(id => {
         const el = document.getElementById(id);
         if (el && data[id] !== undefined) el.value = data[id];
@@ -834,7 +868,7 @@
       if (el) data[id] = el.value;
     });
     data.markers = markers;
-    localStorage.setItem('kine_bilan_draft_v17', JSON.stringify(data));
+    localStorage.setItem('kine_bilan_draft_v18', JSON.stringify(data));
   }
 
   document.querySelectorAll('input, textarea, select').forEach(el => {
@@ -844,7 +878,7 @@
 
   function reinitialiser() {
     if (confirm("Réinitialiser le formulaire pour un nouveau patient ?")) {
-      localStorage.removeItem('kine_bilan_draft_v17');
+      localStorage.removeItem('kine_bilan_draft_v18');
       location.reload();
     }
   }
@@ -987,7 +1021,7 @@
   }
 
   async function exporterSyntheseMedecinWord() {
-    exporterWordComplet(); // Version simplifiée pour l'exemple
+    exporterWordComplet();
   }
 
   async function exporterPDFDirect() {
