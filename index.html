@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapique Expert EBP - Raisonnement Clinique</title>
+  <title>Bilan Kinésithérapique Expert EBP - Photos & Tests Détaillés</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -83,7 +83,7 @@
     }
     label { font-weight: 600; font-size: 12px; color: var(--secondary); display: flex; align-items: center; gap: 6px; }
     
-    input[type="text"], input[type="date"], select, textarea {
+    input[type="text"], input[type="date"], select, textarea, input[type="file"] {
       width: 100%;
       padding: 7px 10px;
       border: 1px solid var(--border);
@@ -180,110 +180,78 @@
       margin-bottom: 12px;
     }
 
-    /* WIDGET CHAT IA FLOTTANT EN BAS À DROITE */
-    #aiFloatContainer {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      font-family: inherit;
-    }
-    #aiFloatBtn {
-      background: var(--ai-color);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 12px 20px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.2s;
-    }
-    #aiFloatBtn:hover { transform: scale(1.05); }
-    #aiChatWindow {
-      display: none;
-      position: absolute;
-      bottom: 60px;
-      right: 0;
-      width: 360px;
-      height: 480px;
-      background: white;
-      border: 1px solid #c7d2fe;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .ai-chat-header {
-      background: var(--ai-color);
-      color: white;
-      padding: 12px 16px;
-      font-weight: 700;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .ai-chat-body {
-      flex: 1;
-      padding: 12px;
-      overflow-y: auto;
-      font-size: 12.5px;
-      background: #f8fafc;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .ai-chat-footer {
-      padding: 10px;
-      background: white;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      gap: 6px;
-    }
-
-    .hep-container {
+    /* Styles pour la galerie de photos */
+    .photo-preview-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
+      gap: 10px;
+      margin-top: 10px;
     }
-    .hep-tag {
+    .photo-thumb-card {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
       background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      border-radius: 15px;
-      padding: 3px 10px;
-      font-size: 11px;
-      cursor: pointer;
-      user-select: none;
     }
-    .hep-tag:hover { background: #e2e8f0; }
-
-    .export-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 2px solid var(--border);
+    .photo-thumb-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .btn-export {
+    .photo-delete-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(239, 68, 68, 0.85);
+      color: white;
       border: none;
-      padding: 14px 15px;
-      font-size: 14px;
-      font-weight: 700;
-      border-radius: 8px;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      color: white;
-      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    /* WIDGET CHAT IA FLOTTANT */
+    #aiFloatContainer {
+      position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: inherit;
+    }
+    #aiFloatBtn {
+      background: var(--ai-color); color: white; border: none; border-radius: 30px; padding: 12px 20px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); display: flex; align-items: center; gap: 8px; transition: transform 0.2s;
+    }
+    #aiFloatBtn:hover { transform: scale(1.05); }
+    #aiChatWindow {
+      display: none; position: absolute; bottom: 60px; right: 0; width: 360px; height: 480px; background: white; border: 1px solid #c7d2fe; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden;
+    }
+    .ai-chat-header {
+      background: var(--ai-color); color: white; padding: 12px 16px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .ai-chat-body {
+      flex: 1; padding: 12px; overflow-y: auto; font-size: 12.5px; background: #f8fafc; display: flex; flex-direction: column; gap: 8px;
+    }
+    .ai-chat-footer {
+      padding: 10px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 6px;
+    }
+
+    .hep-container {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+    }
+    .hep-tag {
+      background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 15px; padding: 3px 10px; font-size: 11px; cursor: pointer; user-select: none;
+    }
+    .hep-tag:hover { background: #e2e8f0; }
+
+    .export-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--border);
+    }
+    .btn-export {
+      border: none; padding: 14px 15px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: transform 0.1s, opacity 0.2s;
     }
     .btn-export:hover { opacity: 0.92; transform: translateY(-1px); }
     .btn-docx { background: #0284c7; }
@@ -291,21 +259,13 @@
     .btn-pdf { background: #dc2626; }
 
     .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(15, 23, 42, 0.75);
-      z-index: 10000;
-      justify-content: center;
-      align-items: center;
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.75); z-index: 10000; justify-content: center; align-items: center;
     }
     .modal-content {
-      background: white;
-      width: 90%; max-width: 900px; height: 90vh; max-height: 850px;
-      border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
+      background: white; width: 90%; max-width: 900px; height: 90vh; max-height: 850px; border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
     }
     .modal-info-box {
-      background: white; max-width: 520px; width: 90%; border-radius: 10px; padding: 22px;
+      background: white; max-width: 560px; width: 90%; border-radius: 10px; padding: 22px;
     }
     .modal-header {
       display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px;
@@ -338,9 +298,9 @@
     </div>
   </header>
 
-  <!-- 1. RENSEIGNEMENTS GÉNÉRAUX -->
+  <!-- 1. RENSEIGNEMENTS GÉNÉRAUX & PHOTOS -->
   <div class="section-title">
-    <span>1. RENSEIGNEMENTS GÉNÉRAUX & CONTEXTE SOCIO-PROFESSIONNEL</span>
+    <span>1. RENSEIGNEMENTS GÉNÉRAUX & PIÈCES JOINTES (PHOTOS / IMAGERIE)</span>
   </div>
   <div class="grid">
     <div>
@@ -365,7 +325,7 @@
     </div>
     <div>
       <label>Prescription médicale & Motif du médecin :</label>
-      <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie' (Ordonnance...">
+      <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'...">
     </div>
     <div>
       <label>Activité physique / Profession :</label>
@@ -385,6 +345,13 @@
         <option value="Post-opératoire récent">Post-opératoire récent</option>
         <option value="Perte d'autonomie / Gériatrie / Déambulateur">Perte d'autonomie / Gériatrie / Déambulateur</option>
       </select>
+    </div>
+
+    <!-- AJOUT DE PHOTOS / IMAGERIE -->
+    <div class="full-width" style="background:#f1f5f9; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
+      <label style="color:#0f172a; margin-bottom:6px;">📷 Joindre des photos au dossier (Posture, radios, cicatrices...) :</label>
+      <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
+      <div id="photoPreviewContainer" class="photo-preview-grid"></div>
     </div>
   </div>
 
@@ -489,7 +456,7 @@
     </div>
   </div>
 
-  <!-- 5. BATTERIE OUVERTE DE TESTS CLINIQUES & DÉCOUVERTE DU DIAGNOSTIC -->
+  <!-- 5. BATTERIE OUVERTE DE TESTS CLINIQUES SPÉCIFIQUES -->
   <div class="section-title">
     <span>5. BATTERIE DE TESTS CLINIQUES & VALIDATION DU DIAGNOSTIC EBP</span>
   </div>
@@ -507,12 +474,9 @@
     </select>
   </div>
 
-  <!-- Conteneur dynamique des tests de la région choisie -->
-  <div id="testsExplorationContainer" class="test-box-ebp">
-    <!-- Rempli dynamiquement en JS -->
-  </div>
+  <div id="testsExplorationContainer" class="test-box-ebp"></div>
 
-  <!-- BOUTON DE PROPOSITION AUTOMATIQUE DE PATHOLOGIE PAR LES TESTS -->
+  <!-- BOUTON DE PROPOSITION AUTOMATIQUE DE PATHOLOGIE -->
   <div style="margin-top:12px; background:#f0fdf4; border:1px solid #bbf7d0; padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
     <div>
       <strong style="color:var(--green); font-size:13px;">💡 Proposition de Pathologie par les Tests :</strong>
@@ -521,9 +485,12 @@
     <button class="btn-quick-fill" onclick="analyserPathologieParTests()" style="background:#15803d; color:white; border:none; padding:6px 12px; font-weight:700;">Analyser les tests & Suggérer la Pathologie</button>
   </div>
 
-  <!-- 6. TESTS FONCTIONNELS -->
+  <!-- 6. TESTS FONCTIONNELS (AVEC BOUTON I D'INFORMATION) -->
   <div class="section-title">
-    <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
+      <span class="btn-info" onclick="afficherInfoTestsFonctionnels()">i</span>
+    </div>
   </div>
   <div id="dynamicTestsContainer"></div>
 
@@ -567,7 +534,7 @@
   </div>
 </div>
 
-<!-- WIDGET CHAT IA FLOTTANT (BAS À DROITE) -->
+<!-- WIDGET CHAT IA FLOTTANT -->
 <div id="aiFloatContainer">
   <div id="aiChatWindow">
     <div class="ai-chat-header">
@@ -647,6 +614,7 @@
 
 <script>
   let markers = [];
+  let patientPhotos = [];
   let currentExplorationRegion = 'rachis_lombaire';
   document.getElementById('dateBilan').valueAsDate = new Date();
 
@@ -661,71 +629,107 @@
     sauvegarderLocal();
   }
 
+  // Gestion des photos jointes
+  function gererAjoutPhotos(event) {
+    const files = event.target.files;
+    if (!files) return;
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        patientPhotos.push(e.target.result);
+        rendrePhotos();
+        sauvegarderLocal();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function supprimerPhoto(index) {
+    patientPhotos.splice(index, 1);
+    rendrePhotos();
+    sauvegarderLocal();
+  }
+
+  function rendrePhotos() {
+    const container = document.getElementById('photoPreviewContainer');
+    container.innerHTML = '';
+    patientPhotos.forEach((src, idx) => {
+      const card = document.createElement('div');
+      card.className = 'photo-thumb-card';
+      card.innerHTML = `
+        <img src="${src}" alt="Photo patient">
+        <button class="photo-delete-btn" onclick="supprimerPhoto(${idx})">✕</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Base de données des tests cliniques enrichie avec des propriétés EBP très détaillées
   const clusterTestsDB = {
     rachis_lombaire: {
       nomRegion: "Rachis Lombaire / Lombalgie & Radiculopathie",
       tests: [
-        { id: "lum_1", label: "Test de Lasègue (SLR) :", placeholder: "Positif à ...° (reproduction sciatique)", info: "Sensibilité: 91% | Spécificité: 26%. Très sensible pour exclure une hernie discale si négatif." },
-        { id: "lum_2", label: "Slump Test Neurodynamique :", placeholder: "Reproduction trajet / Limitation", info: "Sensibilité: 84% | Spécificité: 83%. Plus sensible que le Lasègue en position assise." },
-        { id: "lum_3", label: "Préférence Directionnelle (McKenzie) :", placeholder: "Centralisation en Extension / Flexion", info: "Phénomène de centralisation oriente la thérapie mécanique spécifique (McKenzie)." },
-        { id: "lum_4", label: "STarT Back Screening Tool / ODI :", placeholder: "Score /9 ou /100", info: "Évaluation du pronostic psychosocial et de l'incapacité fonctionnelle." }
+        { id: "lum_1", label: "Test de Lasègue (SLR) :", placeholder: "Positif à ...° (reproduction sciatique)", info: "<strong>Propriétés EBP :</strong> Sensibilité ~91% | Spécificité ~26% (LR- = 0.35).<br><strong>Protocole :</strong> Patient en décubitus dorsal, élévation passive de la jambe genou étendu. Un test négatif permet d'exclure efficacement une hernie discale lombaire volumineuse." },
+        { id: "lum_2", label: "Slump Test Neurodynamique :", placeholder: "Reproduction trajet / Limitation en°", info: "<strong>Propriétés EBP :</strong> Sensibilité ~84% | Spécificité ~83% (LR+ = 4.9).<br><strong>Protocole :</strong> Assis, enroulement thoraco-lombaire, flexion cervicale, extension du genou et dorsiflexion. Plus sensible que le Lasègue." },
+        { id: "lum_3", label: "Préférence Directionnelle (McKenzie) :", placeholder: "Centralisation en Extension / Flexion", info: "<strong>Propriétés EBP :</strong> Indice de fiabilité inter-observateur élevé dans la classification MDT.<br><strong>Protocole :</strong> Mouvements répétés en charge ou décharge cherchant à abolir ou centraliser la douleur référée." },
+        { id: "lum_4", label: "STarT Back Screening Tool / ODI :", placeholder: "Score /9 ou /100", info: "<strong>Propriétés EBP :</strong> Outil de triage validé internationalement (MCID ODI = 6 à 10 points). Sépare les patients en risque faible, moyen ou élevé de chronicité." }
       ]
     },
     rachis_cervical: {
       nomRegion: "Rachis Cervical & Névralgie Cervico-Brachiale",
       tests: [
-        { id: "cer_1", label: "Test de Spurling :", placeholder: "Positif / Négatif", info: "Sensibilité: 50% | Spécificité: 74-90%. Compression axiale en extension/inclinaison." },
-        { id: "cer_2", label: "Distraction Cervicale :", placeholder: "Soulagement des symptômes", info: "Sensibilité: 40% | Spécificité: 90%. Soulage la douleur radiculaire foraminale." },
-        { id: "cer_3", label: "ULNT1 Nerf Médian :", placeholder: "Positif (reproduction / asymétrie)", info: "Sensibilité: 72-97% | Spécificité: 22-33%. Exclut une atteinte radiculaire si négatif." },
-        { id: "cer_4", label: "Cervical Flexion-Rotation Test (C1-C2) :", placeholder: "Amplitude D vs G", info: "Sensibilité: 90% | Spécificité: 91% pour la céphalée cervicogénique." }
+        { id: "cer_1", label: "Test de Spurling :", placeholder: "Positif (reproduction douleur bras) / Négatif", info: "<strong>Propriétés EBP :</strong> Sensibilité ~50% | Spécificité ~74-90% (LR+ = 3.5).<br><strong>Protocole :</strong> Extension, inclinaison latérale du cou du côté symptomatique et compression axiale modérée (~7kg)." },
+        { id: "cer_2", label: "Distraction Cervicale :", placeholder: "Soulagement des symptômes", info: "<strong>Propriétés EBP :</strong> Sensibilité ~40% | Spécificité ~90% (LR+ = 4.0).<br><strong>Protocole :</strong> Traction axiale en décubitus. Un soulagement confirme une origine foraminale ou mécanique cervicale." },
+        { id: "cer_3", label: "ULNT1 Nerf Médian :", placeholder: "Positif (reproduction / asymétrie)", info: "<strong>Propriétés EBP :</strong> Sensibilité ~72-97% | Spécificité ~22-33%.<br><strong>Protocole :</strong> Séquence de mise en tension neurodynamique du membre supérieur ciblant le nerf médian." },
+        { id: "cer_4", label: "Cervical Flexion-Rotation Test (C1-C2) :", placeholder: "Amplitude D vs G (norme ~42°)", info: "<strong>Propriétés EBP :</strong> Sensibilité ~90% | Spécificité ~91% pour la céphalée cervicogénique.<br><strong>Protocole :</strong> Flexion cervicale maximale puis rotation gauche/droite." }
       ]
     },
     epaule: {
       nomRegion: "Épaule (Coiffe, Conflit, Instabilité)",
       tests: [
-        { id: "sho_1", label: "Signe de Hawkins-Kennedy :", placeholder: "Positif / Négatif", info: "Sensibilité: 79% | Spécificité: 59% (Conflit sous-acromial)." },
-        { id: "sho_2", label: "Test de Jobe (Supra-épineux) :", placeholder: "Douleur / Déficit force", info: "Sensibilité: 88% | Spécificité: 50%." },
-        { id: "sho_3", label: "Test d'Appréhension Antérieure :", placeholder: "Appréhension / Stabilité", info: "Sensibilité: 53% | Spécificité: 99% pour l'instabilité." },
-        { id: "sho_4", label: "Rotation Externe Passive (RE1) :", placeholder: "Perte d'amplitude", info: "Recherche d'une restriction capsulaire (capsulite rétractile si perte > 50%)." }
+        { id: "sho_1", label: "Signe de Hawkins-Kennedy :", placeholder: "Positif / Négatif", info: "<strong>Propriétés EBP :</strong> Sensibilité ~79% | Spécificité ~59% (LR+ = 1.9).<br><strong>Protocole :</strong> Flexion 90°, coude fléchi 90°, rotation interne forcée. Excellent test pour exclure un conflit si négatif." },
+        { id: "sho_2", label: "Test de Jobe (Supra-épineux) :", placeholder: "Douleur / Déficit force", info: "<strong>Propriétés EBP :</strong> Sensibilité ~88% | Spécificité ~50%.<br><strong>Protocole :</strong> Abduction 90° dans le plan scapulaire, pouces vers le sol, résistance vers le bas." },
+        { id: "sho_3", label: "Test d'Appréhension Antérieure :", placeholder: "Appréhension / Stabilité", info: "<strong>Propriétés EBP :</strong> Sensibilité ~53% | Spécificité ~99% (LR+ = 52.7).<br><strong>Protocole :</strong> Décubitus, abduction 90°, rotation externe passive." },
+        { id: "sho_4", label: "Rotation Externe Passive (RE1) :", placeholder: "Perte d'amplitude vs sain", info: "<strong>Propriétés EBP :</strong> Signe cardinaux de la capsulite rétractile si restriction passive > 50% avec un end-feel capsulaire rigide." }
       ]
     },
     coude_poignet: {
       nomRegion: "Coude & Poignet (Épicondylite, Canal Carpien)",
       tests: [
-        { id: "cp_1", label: "Test de Cozen (Coude) :", placeholder: "Douleur épicondyle", info: "Extension active du poignet contrariée (Tennis Elbow)." },
-        { id: "cp_2", label: "Test de Phalen (Poignet 60s) :", placeholder: "Paresthésies médianes", info: "Sensibilité: 68% | Spécificité: 73% (Canal carpien)." },
-        { id: "cp_3", label: "Test de Durkan (Compression directe) :", placeholder: "Positif en < 30 sec", info: "Sensibilité: 87% | Spécificité: 90% (Le plus sensible pour le canal carpien)." }
+        { id: "cp_1", label: "Test de Cozen (Coude) :", placeholder: "Douleur épicondyle", info: "<strong>Propriétés EBP :</strong> Extension active du poignet contre résistance avec déviation radiale, coude fléchi à 90° (reproduit la douleur tendineuse)." },
+        { id: "cp_2", label: "Test de Phalen (Poignet 60s) :", placeholder: "Paresthésies médianes", info: "<strong>Propriétés EBP :</strong> Sensibilité ~68% | Spécificité ~73%. Flexion palmaire maximale des poignets dos à dos pendant 1 minute." },
+        { id: "cp_3", label: "Test de Durkan (Compression directe) :", placeholder: "Positif en < 30 sec", info: "<strong>Propriétés EBP :</strong> Sensibilité ~87% | Spécificité ~90%. Compression directe des pouces sur le canal carpien (plus sensible que Phalen)." }
       ]
     },
     hanche: {
       nomRegion: "Hanche (Coxarthrose & Conflit)",
       tests: [
-        { id: "hip_1", label: "FADIR Test (Conflit antérieur) :", placeholder: "Douleur pli de l'aine", info: "Sensibilité: 99% | Spécificité: 5% (Excellent pour exclure une pathologie de hanche)." },
-        { id: "hip_2", label: "FABER Test (Patrick) :", placeholder: "Distance genou-sol / Douleur", info: "Flexion, Abduction, Rotation Externe." },
-        { id: "hip_3", label: "Signe de Trendelenburg :", placeholder: "Chute du bassin controlatéral", info: "Évaluation de l'insuffisance des abducteurs (moyen fessier)." }
+        { id: "hip_1", label: "FADIR Test (Conflit antérieur) :", placeholder: "Douleur pli de l'aine", info: "<strong>Propriétés EBP :</strong> Sensibilité ~99% | Spécificité ~5%. Flexion 90°, Adduction et Rotation Interne (très sensible pour exclure)." },
+        { id: "hip_2", label: "FABER Test (Patrick) :", placeholder: "Distance genou-sol / Douleur", info: "<strong>Propriétés EBP :</strong> Flexion, Abduction, Rotation Externe. Orienta vers une pathologie coxofémorale ou sacro-iliaque." },
+        { id: "hip_3", label: "Signe de Trendelenburg :", placeholder: "Chute du bassin controlatéral", info: "<strong>Propriétés EBP :</strong> Évaluation de l'insuffisance des abducteurs de la hanche en appui monopodal." }
       ]
     },
     genou: {
       nomRegion: "Genou (LCA, Ménisque, Fémoro-patellaire)",
       tests: [
-        { id: "kne_1", label: "Test de Lachman (LCA) :", placeholder: "Arrêt dur vs mou", info: "Sensibilité: 85% | Spécificité: 94% (Référence pour rupture LCA)." },
-        { id: "kne_2", label: "Test de Thessaly (20° en charge) :", placeholder: "Douleur / Ressaut interligne", info: "Sensibilité: 89% | Spécificité: 97% pour lésion méniscale." },
-        { id: "kne_3", label: "Step-Down Test (Fémoro-patellaire) :", placeholder: "Douleur / Valgus dynamique", info: "Évaluation du contrôle excentrique et de la douleur rotulienne." }
+        { id: "kne_1", label: "Test de Lachman (LCA) :", placeholder: "Arrêt dur vs mou", info: "<strong>Propriétés EBP :</strong> Sensibilité ~85% | Spécificité ~94% (Le test de référence pour la rupture du ligament croisé antérieur)." },
+        { id: "kne_2", label: "Test de Thessaly (20° en charge) :", placeholder: "Douleur / Ressaut interligne", info: "<strong>Propriétés EBP :</strong> Sensibilité ~89% | Spécificité ~97% pour la lésion méniscale en appui unipodal." },
+        { id: "kne_3", label: "Step-Down Test (Fémoro-patellaire) :", placeholder: "Douleur / Valgus dynamique", info: "<strong>Propriétés EBP :</strong> Évaluation clinique du contrôle excentrique du quadriceps et de la cinétique frontale." }
       ]
     },
     cheville: {
       nomRegion: "Cheville & Pied (Entorse & Achille)",
       tests: [
-        { id: "ank_1", label: "Règles d'Ottawa (Cheville/Pied) :", placeholder: "Négatives / Positives", info: "Sensibilité proche de 100% pour éliminer une fracture osseuse." },
-        { id: "ank_2", label: "Weight-Bearing Lunge Test (WBLT) :", placeholder: "D: ... cm vs G: ... cm", info: "Fente au mur pour la dorsiflexion (Norme > 9-10 cm)." },
-        { id: "ank_3", label: "Single Leg Heel Raise Test :", placeholder: "Répétitions indolores", info: "Évaluation de la capacité de charge du tendon d'Achille." }
+        { id: "ank_1", label: "Règles d'Ottawa (Cheville/Pied) :", placeholder: "Négatives / Positives", info: "<strong>Propriétés EBP :</strong> Sensibilité proche de 100% pour éliminer une fracture osseuse et éviter des radios superflues." },
+        { id: "ank_2", label: "Weight-Bearing Lunge Test (WBLT) :", placeholder: "D: ... cm vs G: ... cm", info: "<strong>Propriétés EBP :</strong> Mesure de la dorsiflexion en charge (Norme saine : > 9-10 cm ou angle de 35°)." },
+        { id: "ank_3", label: "Single Leg Heel Raise Test :", placeholder: "Répétitions indolores", info: "<strong>Propriétés EBP :</strong> Évaluation de la capacité de charge et de la tolérance élastique du tendon d'Achille." }
       ]
     },
     geriatrie: {
       nomRegion: "Gériatrie / Équilibre & Chutes",
       tests: [
-        { id: "ger_1", label: "Test de Tinetti (/28) :", placeholder: "Score /28", info: "Score < 19 = Risque de chute très élevé." },
-        { id: "ger_2", label: "Timed Up and Go (TUG) :", placeholder: "Temps en secondes", info: "Norme adulte âgé sain < 12 sec." }
+        { id: "ger_1", label: "Test de Tinetti (/28) :", placeholder: "Score /28", info: "<strong>Propriétés EBP :</strong> Score < 19 indique un risque de chute très élevé nécessitant une prise en charge ciblée." },
+        { id: "ger_2", label: "Timed Up and Go (TUG) :", placeholder: "Temps en secondes", info: "<strong>Propriétés EBP :</strong> Norme adulte âgé sain < 12 sec (> 14 sec = risque accru de chute)." }
       ]
     }
   };
@@ -768,6 +772,12 @@
 
     document.getElementById('dynamicTestsContainer').innerHTML = dynamicTemplates[regKey] || dynamicTemplates.rachis_lombaire;
     sauvegarderLocal();
+  }
+
+  function afficherInfoTestsFonctionnels() {
+    document.getElementById('infoTitle').innerHTML = `ℹ️ EBP : Tests Fonctionnels & Mise en Charge`;
+    document.getElementById('infoBody').innerHTML = "<strong>Objectif EBP :</strong> Les tests fonctionnels en chaîne fermée évaluent la tolérance mécanique réelle aux contraintes de la vie quotidienne ou sportive. Ils permettent d'objectiver les stratégies d'évitement, les déficits de contrôle neuromusculaire et la symétrie inter-limbique (LSI) avant le retour au sport ou à l'autonomie.";
+    document.getElementById('infoModal').style.display = 'flex';
   }
 
   function analyserPathologieParTests() {
@@ -842,7 +852,7 @@
 
   window.addEventListener('load', () => {
     changerRegionExploration('rachis_lombaire');
-    const saved = localStorage.getItem('kine_bilan_draft_v18');
+    const saved = localStorage.getItem('kine_bilan_draft_v19');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.selectRegionExploration) {
@@ -858,6 +868,10 @@
         rendreMarqueurs();
         majCompteur();
       }
+      if (data.patientPhotos) {
+        patientPhotos = data.patientPhotos;
+        rendrePhotos();
+      }
     }
   });
 
@@ -868,17 +882,20 @@
       if (el) data[id] = el.value;
     });
     data.markers = markers;
-    localStorage.setItem('kine_bilan_draft_v18', JSON.stringify(data));
+    data.patientPhotos = patientPhotos;
+    localStorage.setItem('kine_bilan_draft_v19', JSON.stringify(data));
   }
 
   document.querySelectorAll('input, textarea, select').forEach(el => {
-    el.addEventListener('input', sauvegarderLocal);
-    el.addEventListener('change', sauvegarderLocal);
+    if(el.type !== 'file') {
+      el.addEventListener('input', sauvegarderLocal);
+      el.addEventListener('change', sauvegarderLocal);
+    }
   });
 
   function reinitialiser() {
     if (confirm("Réinitialiser le formulaire pour un nouveau patient ?")) {
-      localStorage.removeItem('kine_bilan_draft_v18');
+      localStorage.removeItem('kine_bilan_draft_v19');
       location.reload();
     }
   }
