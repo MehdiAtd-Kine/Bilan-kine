@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapique Expert EBP - Photos & Tests Détaillés</title>
+  <title>Bilan Kinésithérapique Expert EBP - Guide Clinique Intégral</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -108,6 +108,7 @@
       cursor: pointer;
       border: 1px solid #c7d2fe;
       user-select: none;
+      flex-shrink: 0;
     }
     .btn-info:hover { background: #4338ca; color: white; }
 
@@ -145,14 +146,6 @@
       border: 1px dashed var(--border);
       margin-top: 10px;
     }
-    .badge-region {
-      font-size: 11px;
-      background: #e2e8f0;
-      color: #334155;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 700;
-    }
     .btn-quick-fill {
       background: #f1f5f9;
       color: #0369a1;
@@ -180,7 +173,6 @@
       margin-bottom: 12px;
     }
 
-    /* Styles pour la galerie de photos */
     .photo-preview-grid {
       display: flex;
       flex-wrap: wrap;
@@ -196,26 +188,12 @@
       overflow: hidden;
       background: #f1f5f9;
     }
-    .photo-thumb-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .photo-thumb-card img { width: 100%; height: 100%; object-fit: cover; }
     .photo-delete-btn {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      background: rgba(239, 68, 68, 0.85);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 2px; right: 2px;
+      background: rgba(239, 68, 68, 0.85); color: white;
+      border: none; border-radius: 50%; width: 20px; height: 20px;
+      font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
 
     /* WIDGET CHAT IA FLOTTANT */
@@ -265,7 +243,7 @@
       background: white; width: 90%; max-width: 900px; height: 90vh; max-height: 850px; border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
     }
     .modal-info-box {
-      background: white; max-width: 560px; width: 90%; border-radius: 10px; padding: 22px;
+      background: white; max-width: 600px; width: 90%; border-radius: 10px; padding: 22px; max-height: 85vh; overflow-y: auto;
     }
     .modal-header {
       display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px;
@@ -304,39 +282,39 @@
   </div>
   <div class="grid">
     <div>
-      <label>Nom :</label>
+      <div class="label-row"><label>Nom :</label><span class="btn-info" onclick="afficherAideChamp('nom')">i</span></div>
       <input type="text" id="nom" placeholder="Nom du patient">
     </div>
     <div>
-      <label>Prénom :</label>
+      <div class="label-row"><label>Prénom :</label><span class="btn-info" onclick="afficherAideChamp('prenom')">i</span></div>
       <input type="text" id="prenom" placeholder="Prénom">
     </div>
     <div>
-      <label>Date de naissance (D.D.N.) :</label>
+      <div class="label-row"><label>Date de naissance (D.D.N.) :</label><span class="btn-info" onclick="afficherAideChamp('dob')">i</span></div>
       <input type="date" id="dob">
     </div>
     <div>
-      <label>Téléphone :</label>
+      <div class="label-row"><label>Téléphone :</label><span class="btn-info" onclick="afficherAideChamp('telephone')">i</span></div>
       <input type="text" id="telephone" placeholder="06 ...">
     </div>
     <div>
-      <label>Date du bilan :</label>
+      <div class="label-row"><label>Date du bilan :</label><span class="btn-info" onclick="afficherAideChamp('dateBilan')">i</span></div>
       <input type="date" id="dateBilan">
     </div>
     <div>
-      <label>Prescription médicale & Motif du médecin :</label>
+      <div class="label-row"><label>Prescription médicale & Motif du médecin :</label><span class="btn-info" onclick="afficherAideChamp('prescription')">i</span></div>
       <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'...">
     </div>
     <div>
-      <label>Activité physique / Profession :</label>
+      <div class="label-row"><label>Activité physique / Profession :</label><span class="btn-info" onclick="afficherAideChamp('activitePhysique')">i</span></div>
       <input type="text" id="activitePhysique" placeholder="Cadre sédentaire, manutentionnaire...">
     </div>
     <div>
-      <label>Sport / Loisirs :</label>
+      <div class="label-row"><label>Sport / Loisirs :</label><span class="btn-info" onclick="afficherAideChamp('sport')">i</span></div>
       <input type="text" id="sport" placeholder="Discipline, fréquence...">
     </div>
     <div class="full-width" style="background:#e0f2fe; padding:10px; border-radius:6px;">
-      <label style="color:#0369a1;">👤 Profil & Autonomie :</label>
+      <div class="label-row"><label style="color:#0369a1;">👤 Profil & Autonomie :</label><span class="btn-info" onclick="afficherAideChamp('profilPatient')">i</span></div>
       <select id="profilPatient">
         <option value="Sportif Compétiteur (Pivots/Impacts)">Sportif Compétiteur (Pivots / Impacts)</option>
         <option value="Sportif Loisir / Récréatif">Sportif Loisir / Récréatif</option>
@@ -347,9 +325,8 @@
       </select>
     </div>
 
-    <!-- AJOUT DE PHOTOS / IMAGERIE -->
     <div class="full-width" style="background:#f1f5f9; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
-      <label style="color:#0f172a; margin-bottom:6px;">📷 Joindre des photos au dossier (Posture, radios, cicatrices...) :</label>
+      <div class="label-row"><label style="color:#0f172a;">📷 Joindre des photos au dossier (Posture, radios, cicatrices...) :</label><span class="btn-info" onclick="afficherAideChamp('photos')">i</span></div>
       <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
       <div id="photoPreviewContainer" class="photo-preview-grid"></div>
     </div>
@@ -367,26 +344,35 @@
 
   <div class="grid" style="margin-top:12px;">
     <div class="full-width">
-      <label>Mécanisme lésionnel & Histoire de la maladie :</label>
+      <div class="label-row"><label>Mécanisme lésionnel & Histoire de la maladie :</label><span class="btn-info" onclick="afficherAideChamp('mecanisme')">i</span></div>
       <textarea id="mecanisme" placeholder="Circonstances d'apparition, progressif vs brutal, facteurs aggravants..."></textarea>
     </div>
     <div class="full-width">
-      <label>Symptômes & Comportement de la douleur :</label>
+      <div class="label-row"><label>Symptômes & Comportement de la douleur :</label><span class="btn-info" onclick="afficherAideChamp('symptomes')">i</span></div>
       <textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal, douleur mécanique vs inflammatoire..."></textarea>
     </div>
   </div>
 
   <div class="grid-3" style="margin-top:12px;">
     <div class="eva-box">
-      <div class="eva-header"><label style="margin:0;">Douleur au Repos (EVA) :</label><span id="evaReposVal" style="font-weight:700;color:var(--primary);">0/10</span></div>
+      <div class="eva-header">
+        <div style="display:flex; align-items:center; gap:6px;"><label style="margin:0;">Douleur au Repos (EVA) :</label><span class="btn-info" onclick="afficherAideChamp('eva')">i</span></div>
+        <span id="evaReposVal" style="font-weight:700;color:var(--primary);">0/10</span>
+      </div>
       <input type="range" id="evaRepos" min="0" max="10" value="0" oninput="document.getElementById('evaReposVal').innerText = this.value + '/10'">
     </div>
     <div class="eva-box">
-      <div class="eva-header"><label style="margin:0;">Douleur à l'Effort (EVA) :</label><span id="evaEffortVal" style="font-weight:700;color:var(--primary);">4/10</span></div>
+      <div class="eva-header">
+        <label style="margin:0;">Douleur à l'Effort (EVA) :</label>
+        <span id="evaEffortVal" style="font-weight:700;color:var(--primary);">4/10</span>
+      </div>
       <input type="range" id="evaEffort" min="0" max="10" value="4" oninput="document.getElementById('evaEffortVal').innerText = this.value + '/10'">
     </div>
     <div class="eva-box">
-      <div class="eva-header"><label style="margin:0;">Douleur Pic Maximal (EVA) :</label><span id="evaPicVal" style="font-weight:700;color:var(--danger);">6/10</span></div>
+      <div class="eva-header">
+        <label style="margin:0;">Douleur Pic Maximal (EVA) :</label>
+        <span id="evaPicVal" style="font-weight:700;color:var(--danger);">6/10</span>
+      </div>
       <input type="range" id="evaPic" min="0" max="10" value="6" oninput="document.getElementById('evaPicVal').innerText = this.value + '/10'">
     </div>
   </div>
@@ -397,7 +383,7 @@
   </div>
 
   <div class="alert-box">
-    <strong style="color: #9f1239; font-size:13px;">⚠️ Drapeaux Rouges / Triage Sécurité (Red Flags - Exclusion) :</strong>
+    <div class="label-row"><strong style="color: #9f1239; font-size:13px;">⚠️ Drapeaux Rouges / Triage Sécurité (Red Flags - Exclusion) :</strong><span class="btn-info" onclick="afficherAideChamp('redFlags')">i</span></div>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
       <label><input type="checkbox" id="rf1"> Perte pondérale inexpliquée</label>
       <label><input type="checkbox" id="rf2"> Douleur constante nocturne non mécanique</label>
@@ -408,7 +394,7 @@
   </div>
 
   <div class="alert-box-yellow">
-    <strong style="color: #854d0e; font-size:13px;">⚠️ Drapeaux Jaunes / Facteurs Psychosociaux (Yellow Flags) :</strong>
+    <div class="label-row"><strong style="color: #854d0e; font-size:13px;">⚠️ Drapeaux Jaunes / Facteurs Psychosociaux (Yellow Flags) :</strong><span class="btn-info" onclick="afficherAideChamp('yellowFlags')">i</span></div>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:12px;">
       <label><input type="checkbox" id="yf1"> Kinésiophobie / Peur du mouvement</label>
       <label><input type="checkbox" id="yf2"> Catastrophisme face à la douleur</label>
@@ -419,11 +405,11 @@
 
   <div class="grid">
     <div>
-      <label>Croyances & Attentes patient :</label>
+      <div class="label-row"><label>Croyances & Attentes patient :</label><span class="btn-info" onclick="afficherAideChamp('croyances')">i</span></div>
       <textarea id="croyances" placeholder="Peur de la lésion, attentes vis-à-vis de la rééducation..."></textarea>
     </div>
     <div>
-      <label>Antécédents & Traitements :</label>
+      <div class="label-row"><label>Antécédents & Traitements :</label><span class="btn-info" onclick="afficherAideChamp('antecedents')">i</span></div>
       <textarea id="antecedents" placeholder="Chirurgies antérieures, comorbidités, traitements en cours..."></textarea>
     </div>
   </div>
@@ -435,23 +421,23 @@
   </div>
   <div class="grid">
     <div>
-      <label>Déficits posturaux & Statique :</label>
+      <div class="label-row"><label>Déficits posturaux & Statique :</label><span class="btn-info" onclick="afficherAideChamp('deficitsPosturaux')">i</span></div>
       <textarea id="deficitsPosturaux" placeholder="Alignement, asymétries observées..."></textarea>
     </div>
     <div>
-      <label>Déficits dynamiques & Marche :</label>
+      <div class="label-row"><label>Déficits dynamiques & Marche :</label><span class="btn-info" onclick="afficherAideChamp('deficitsDyn')">i</span></div>
       <textarea id="deficitsPosturauxDyn" placeholder="Marche, boiterie, stratégies d'évitement..."></textarea>
     </div>
     <div>
-      <label>Déficits articulaires (Goniométrie) :</label>
+      <div class="label-row"><label>Déficits articulaires (Goniométrie) :</label><span class="btn-info" onclick="afficherAideChamp('deficitsArt')">i</span></div>
       <textarea id="deficitsArticulaires" placeholder="Amplitudes passives et actives..."></textarea>
     </div>
     <div>
-      <label>Déficits trophiques & Souplesse :</label>
+      <div class="label-row"><label>Déficits trophiques & Souplesse :</label><span class="btn-info" onclick="afficherAideChamp('deficitsTroph')">i</span></div>
       <textarea id="deficitsSouplesse" placeholder="Œdèmes, rétractions musculaires..."></textarea>
     </div>
     <div class="full-width">
-      <label>Déficits musculaires & Testing analytique :</label>
+      <div class="label-row"><label>Déficits musculaires & Testing analytique :</label><span class="btn-info" onclick="afficherAideChamp('deficitsMusc')">i</span></div>
       <textarea id="deficitsMusculaires" placeholder="Cotation de force (0 à 5/5)..."></textarea>
     </div>
   </div>
@@ -461,7 +447,7 @@
     <span>5. BATTERIE DE TESTS CLINIQUES & VALIDATION DU DIAGNOSTIC EBP</span>
   </div>
   <div style="background:#faf5ff; border:1.5px solid #d8b4fe; border-radius:8px; padding:14px; margin-bottom:12px;">
-    <label style="color:var(--purple); font-size:13px; margin-bottom:6px; display:block;">🔍 Choisissez la région anatomique explorée pour tester librement et identifier la pathologie exacte sous-jacente :</label>
+    <div class="label-row"><label style="color:var(--purple); font-size:13px; margin-bottom:6px; display:block;">🔍 Choisissez la région anatomique explorée pour tester librement et identifier la pathologie exacte sous-jacente :</label><span class="btn-info" onclick="afficherAideChamp('testsSpecifiques')">i</span></div>
     <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
       <option value="rachis_lombaire">Rachis Lombaire / Lombalgie & Radiculopathie</option>
       <option value="rachis_cervical">Rachis Cervical / NDI / NCB</option>
@@ -485,12 +471,9 @@
     <button class="btn-quick-fill" onclick="analyserPathologieParTests()" style="background:#15803d; color:white; border:none; padding:6px 12px; font-weight:700;">Analyser les tests & Suggérer la Pathologie</button>
   </div>
 
-  <!-- 6. TESTS FONCTIONNELS (AVEC BOUTON I D'INFORMATION) -->
+  <!-- 6. TESTS FONCTIONNELS -->
   <div class="section-title">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
-      <span class="btn-info" onclick="afficherInfoTestsFonctionnels()">i</span>
-    </div>
+    <span>6. TESTS FONCTIONNELS & MISE EN CHARGE</span>
   </div>
   <div id="dynamicTestsContainer"></div>
 
@@ -500,23 +483,23 @@
   </div>
   <div class="grid">
     <div class="full-width">
-      <label>Diagnostic Kinésithérapique Précis (Déficiences & Restrictions validées par les tests) :</label>
+      <div class="label-row"><label>Diagnostic Kinésithérapique Précis (Déficiences & Restrictions validées par les tests) :</label><span class="btn-info" onclick="afficherAideChamp('diagnostic')">i</span></div>
       <input type="text" id="diagnostic" placeholder="Ex: Lombalgie chronique avec préférence directionnelle en extension et composante kynésiophobique...">
     </div>
     <div>
-      <label>A travailler - Articulaire & Trophique :</label>
+      <div class="label-row"><label>A travailler - Articulaire & Trophique :</label><span class="btn-info" onclick="afficherAideChamp('travailArt')">i</span></div>
       <textarea id="travailArticulaire" placeholder="Gains d'amplitude prioritaires..."></textarea>
     </div>
     <div>
-      <label>A travailler - Force & Contrôle moteur :</label>
+      <div class="label-row"><label>A travailler - Force & Contrôle moteur :</label><span class="btn-info" onclick="afficherAideChamp('travailForce')">i</span></div>
       <textarea id="travailForce" placeholder="Renforcement spécifique, contrôle lombo-pelvien..."></textarea>
     </div>
     <div>
-      <label>A travailler - Souplesse & Posture :</label>
+      <div class="label-row"><label>A travailler - Souplesse & Posture :</label><span class="btn-info" onclick="afficherAideChamp('travailSoupl')">i</span></div>
       <textarea id="travailSouplesse" placeholder="Étirements, autonomisation..."></textarea>
     </div>
     <div>
-      <label>Contrat Kiné & HEP (Home Exercise Program) :</label>
+      <div class="label-row"><label>Contrat Kiné & HEP (Home Exercise Program) :</label><span class="btn-info" onclick="afficherAideChamp('contratKine')">i</span></div>
       <textarea id="contratKine" placeholder="Objectifs partagés, auto-exercices..."></textarea>
       <div class="hep-container">
         <span class="hep-tag" onclick="ajouterHEP('Exercices de préférence directionnelle (McKenzie)')">+ McKenzie</span>
@@ -554,16 +537,18 @@
   <button id="aiFloatBtn" onclick="toggleAiChat()">🤖 Assistant IA EBP</button>
 </div>
 
+<!-- MODALE D'INFORMATION GÉNÉRALE -->
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
   <div class="modal-info-box">
     <div class="modal-header">
-      <h3 id="infoTitle" style="margin:0; font-size:16px; color:#4338ca;">Propriétés EBP du Test</h3>
+      <h3 id="infoTitle" style="margin:0; font-size:16px; color:#4338ca;">Guide Clinique EBP</h3>
       <button onclick="fermerInfoModalDirect()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
     </div>
     <div style="margin-top:14px; font-size:13px; line-height:1.6;" id="infoBody"></div>
   </div>
 </div>
 
+<!-- MODALE BODY CHART -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
@@ -629,42 +614,46 @@
     sauvegarderLocal();
   }
 
-  // Gestion des photos jointes
-  function gererAjoutPhotos(event) {
-    const files = event.target.files;
-    if (!files) return;
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        patientPhotos.push(e.target.result);
-        rendrePhotos();
-        sauvegarderLocal();
-      };
-      reader.readAsDataURL(file);
-    });
+  // Base de données des guides pour les champs administratifs et anamnestiques
+  const guidesChamps = {
+    nom: "<strong>Identité :</strong> Renseigner l'état civil complet pour le dossier et les correspondances médicales.",
+    prenom: "<strong>Prénom :</strong> Utilisé pour l'en-gête des rapports et synthèses destinées au médecin traitant.",
+    dob: "<strong>Date de Naissance :</strong> Permet de calculer l'âge, indicateur pronostique clé dans la gestion des charges tissulaires et des pathologies dégénératives.",
+    telephone: "<strong>Contact :</strong> Numéro de téléphone pour la gestion des rendez-vous et le suivi post-séance.",
+    dateBilan: "<strong>Date :</strong> Date de réalisation de l'évaluation initiale (sert de référence chronologique pour le ré-évaluation).",
+    prescription: "<strong>Prescription Médicale :</strong> Noter le diagnostic d'étiquette posé par le médecin (ex: lombalgie, entorse, tendinopathie) et le nom du prescripteur.",
+    activitePhysique: "<strong>Profession / Activité :</strong> Analyser les contraintes biomécaniques subies au quotidien (postures tenues, manutention, sédentarité).",
+    sport: "<strong>Pratique Sportive :</strong> Noter la discipline, le volume horaire, le type de surface et les gestes techniques à haut risque pour la structure lésée.",
+    profilPatient: "<strong>Profil Clinique :</strong> Permet de classifier le patient (compétiteur vs sédentaire) pour adapter les objectifs de retour à la charge (Tension Tolerance).",
+    photos: "<strong>Pièces Jointes :</strong> Importer des photographies cliniques (posture de profil/dos), des clichés d'imagerie (IRM, radios) ou l'état d'une cicatrice post-opératoire.",
+    mecanisme: "<strong>Anamnèse / Mécanisme :</strong> Recueillir le mode de survenue (brutal post-traumatique vs insidieux), l'évolution dans le temps et les facteurs déclenchants.",
+    symptomes: "<strong>Comportement des Symptômes :</strong> Évaluer l'irritabilité (temps avant l'apparition de la douleur et temps de récupération), la chronologie (dérouillage matinal) et le caractère mécanique vs inflammatoire.",
+    eva: "<strong>Échelle Visuelle Analogique (EVA) :</strong> Quantification de l'intensité douloureuse sur 10 (0 = indu, 10 = pire douleur imaginable) au repos, à l'effort et au pic maximal.",
+    redFlags: "<strong>Triage de Sécurité (Red Flags) :</strong> Recherche active de signes d'alerte médicale nécessitant une réorientation immédiate (pathologie tumorale, infectieuse, neurologique grave ou fracture).",
+    yellowFlags: "<strong>Facteurs Psychosociaux (Yellow Flags) :</strong> Dépistage des barrières à la récupération (kinésiophobie, catastrophisme, croyances erronées, stress professionnel).",
+    croyances: "<strong>Attentes & Représentations :</strong> Identifier ce que le patient redoute le plus et ses objectifs de rééducation pour aligner le contrat thérapeutique.",
+    antecedents: "<strong>Antécédents Médicaux :</strong> Recenser les chirurgies passées, comorbidités métaboliques, traitements médicamenteux (AINS, anticoagulants) et bilans d'imagerie antérieurs.",
+    deficitsPosturaux: "<strong>Examen Statique :</strong> Observer l'alignement global, les asymétries de plan frontal/sagittal, les adaptations compensatoires et les attitudes antalgiques.",
+    deficitsDyn: "<strong>Examen Dynamique Global :</strong> Analyser la marche (fluidité, phases d'appui, boiterie d'esquive) et les transferts de poids fondamentaux.",
+    deficitsArt: "<strong>Amplitudes Articulaires :</strong> Tester les amplitudes passives et actives (goniométrie) pour identifier un capsular pattern ou une restriction spécifique.",
+    deficitsTroph: "<strong>Trophisme & Tissus :</strong> Palpation cutanée et sous-cutanée, recherche d'œdèmes, de tuméfactions, de zones de fibrose ou de modifications de texture.",
+    deficitsMusc: "<strong>Testing Analytique (MRC 0-5) :</strong> Évaluation de la force musculaire brute par groupe ou par muscle cible selon l'échelle Medical Research Council.",
+    testsSpecifiques: "<strong>Batterie de Tests Cliniques :</strong> Sélectionner les clusters de tests spécifiques validés par la littérature EBP (PubMed/PEDro) pour confirmer ou infirmer vos hypothèses mécaniques.",
+    diagnostic: "<strong>Diagnostic Kinésithérapique :</strong> Synthèse clinique identifiant les déficiences (impairments) et les limitations d'activités (CIF) validées par les tests, au-delà de l'étiquette médicale initiale.",
+    travailArt: "<strong>Objectifs Articulaires :</strong> Planifier les techniques de thérapie manuelle, mobilisations passives ou auto-mobilisations pour restaurer l'amplitude cible.",
+    travailForce: "<strong>Objectifs Neuromusculaires :</strong> Structurer le renforcement analytique ou fonctionnel, le contrôle moteur et la gestion de la raideur active.",
+    travailSoupl: "<strong>Objectifs Tissulaires :</strong> Assouplissement, étirements, gestion de la charge mécanique et éducation thérapeutique pour l'autonomie.",
+    contratKine: "<strong>Contrat Thérapeutique & HEP :</strong> Définir les objectifs partagés avec le patient et formaliser le programme d'exercices à domicile (Home Exercise Program) fondé sur les preuves."
+  };
+
+  function afficherAideChamp(cle) {
+    const texte = guidesChamps[cle] || "Information clinique non disponible pour ce champ.";
+    document.getElementById('infoTitle').innerHTML = `ℹ️ Guide Clinique : ${cle.toUpperCase()}`;
+    document.getElementById('infoBody').innerHTML = texte;
+    document.getElementById('infoModal').style.display = 'flex';
   }
 
-  function supprimerPhoto(index) {
-    patientPhotos.splice(index, 1);
-    rendrePhotos();
-    sauvegarderLocal();
-  }
-
-  function rendrePhotos() {
-    const container = document.getElementById('photoPreviewContainer');
-    container.innerHTML = '';
-    patientPhotos.forEach((src, idx) => {
-      const card = document.createElement('div');
-      card.className = 'photo-thumb-card';
-      card.innerHTML = `
-        <img src="${src}" alt="Photo patient">
-        <button class="photo-delete-btn" onclick="supprimerPhoto(${idx})">✕</button>
-      `;
-      container.appendChild(card);
-    });
-  }
-
-  // Base de données des tests cliniques enrichie avec des propriétés EBP très détaillées
+  // Base de données des tests spécifiques par région
   const clusterTestsDB = {
     rachis_lombaire: {
       nomRegion: "Rachis Lombaire / Lombalgie & Radiculopathie",
@@ -734,15 +723,40 @@
     }
   };
 
-  const dynamicTemplates = {
-    rachis_lombaire: `<div class="grid"><div><label>Squat bipodal :</label><textarea id="dyn_1" placeholder="Alignement, profondeur..."></textarea></div><div><label>Test d'endurance extenseurs (Sorensen) :</label><textarea id="dyn_2" placeholder="Temps en secondes..."></textarea></div></div>`,
-    rachis_cervical: `<div class="grid"><div><label>Flexion Cervicale Crânienne (CCFT) :</label><textarea id="dyn_1" placeholder="Paliers de pression..."></textarea></div><div><label>Rotation et Inclinaison active :</label><textarea id="dyn_2" placeholder="Amplitudes..."></textarea></div></div>`,
-    epaule: `<div class="grid"><div><label>CKCUEST (Touches en 15 sec) :</label><textarea id="dyn_1" placeholder="Nombre de touches..."></textarea></div><div><label>Y-Balance Test Upper Quarter :</label><textarea id="dyn_2" placeholder="Portées D vs G..."></textarea></div></div>`,
-    coude_poignet: `<div class="grid"><div><label>Force de Préhension (Jamar) :</label><textarea id="dyn_1" placeholder="Valeurs en kg D vs G..."></textarea></div><div><label>Test de résistance poignet :</label><textarea id="dyn_2" placeholder="Douleur..."></textarea></div></div>`,
-    hanche: `<div class="grid"><div><label>Squat Unipodal D et G :</label><textarea id="dyn_1" placeholder="Stabilité du bassin..."></textarea></div><div><label>Périmètre de marche :</label><textarea id="dyn_2" placeholder="Distance..."></textarea></div></div>`,
-    genou: `<div class="grid"><div><label>Squat unipodal & Descente de marche :</label><textarea id="dyn_1" placeholder="Contrôle frontal..."></textarea></div><div><label>Hop Tests / Sauts :</label><textarea id="dyn_2" placeholder="Amorti, symétrie..."></textarea></div></div>`,
-    cheville: `<div class="grid"><div><label>Single Leg Hop Test :</label><textarea id="dyn_1" placeholder="Performance..."></textarea></div><div><label>Stabilité monopodale yeux ouverts/fermés :</label><textarea id="dyn_2" placeholder="Proprioception..."></textarea></div></div>`,
-    geriatrie: `<div class="grid"><div><label>Transferts (Assis-Debout / Lit) :</label><textarea id="dyn_1" placeholder="Aide technique..."></textarea></div><div><label>Périmètre et aide à la marche :</label><textarea id="dyn_2" placeholder="Déambulateur, cannes..."></textarea></div></div>`
+  // Base de données des tests fonctionnels avec guides détaillés pour chaque test
+  const functionalTestsDB = {
+    rachis_lombaire: [
+      { id: "dyn_1", label: "Squat bipodal :", placeholder: "Alignement, profondeur...", info: "<strong>Protocole d'exécution :</strong> Demander au patient de réaliser une flexion profonde des genoux et des hanches pieds écartés de la largeur des épaules.<br><strong>Ce qu'il faut observer :</strong> Profondeur, contrôle lombo-pelvien (recherche d'une flexion lombaire passive 'butt wink'), déviation latérale ou asymétrie de charge." },
+      { id: "dyn_2", label: "Test d'endurance extenseurs (Sorensen) :", placeholder: "Temps en secondes...", info: "<strong>Protocole d'exécution :</strong> Patient en décubitus ventral, le buste dans le vide au niveau des EIAS, maintenu par des sangles aux chevilles et au bassin. Le patient doit tenir l'horizontale le plus longtemps possible.<br><strong>Ce qu'il faut observer :</strong> Temps de maintien (norme adulte sain > 90-120 sec) et apparition de tremblements ou de compensation." }
+    ],
+    rachis_cervical: [
+      { id: "dyn_1", label: "Flexion Cervicale Crânienne (CCFT) :", placeholder: "Paliers de pression...", info: "<strong>Protocole d'exécution :</strong> Patient en décubitus dorsal, capteur de pression sous le cou gonflé à 20 mmHg. Le patient doit réaliser un 'oui' discret pour atteindre des paliers progressifs (22, 24, 26, 28, 30 mmHg) sans contracter les sterno-cléido-mastoïdiens.<br><strong>Ce qu'il faut observer :</strong> Capacité à recruter les fléchisseurs profonds (long du cou) et endurance." },
+      { id: "dyn_2", label: "Rotation et Inclinaison active :", placeholder: "Amplitudes...", info: "<strong>Protocole d'exécution :</strong> Mesure des amplitudes actives en position assise redressée.<br><strong>Ce qu'il faut observer :</strong> Fluidité du mouvement, apparition de douleurs radiradiculaires ou blocages articulaires unilatéraux." }
+    ],
+    epaule: [
+      { id: "dyn_1", label: "CKCUEST (Touches en 15 sec) :", placeholder: "Nombre de touches...", info: "<strong>Protocole d'exécution :</strong> Closed Kinetic Chain Upper Extremity Stability Test. Position de pompes, mains écartées de 90 cm, toucher alternativement la main opposée pendant 15 secondes.<br><strong>Ce qu'il faut observer :</strong> Stabilité scapulo-thoracique en chaîne fermée, nombre total de répétitions et contrôle neuromusculaire." },
+      { id: "dyn_2", label: "Y-Balance Test Upper Quarter :", placeholder: "Portées D vs G...", info: "<strong>Protocole d'exécution :</strong> En appui sur un bras en position de pompe, pousser un bloc dans 3 directions (superéro-interne, inféro-interne, externe).<br><strong>Ce qu'il faut observer :</strong> Symétrie inter-limbique (LSI) et stabilité globale de l'ceinture scapulaire." }
+    ],
+    coude_poignet: [
+      { id: "dyn_1", label: "Force de Préhension (Jamar) :", placeholder: "Valeurs en kg D vs G...", info: "<strong>Protocole d'exécution :</strong> Patient assis, coude fléchi à 90°, bras le long du corps, serrer le dynamomètre Jamar au maximum sur 3 essais.<br><strong>Ce qu'il faut observer :</strong> Comparaison côté atteint vs sain (déficit > 10-15% significatif) et pic de force." },
+      { id: "dyn_2", label: "Test de résistance poignet :", placeholder: "Douleur...", info: "<strong>Protocole d'exécution :</strong> Évaluation de la tolérance à la mise en charge en extension/flexion contrariée du poignet.<br><strong>Ce qu'il faut observer :</strong> Apparition de la douleur sur les épicondyliens ou épitrochléens." }
+    ],
+    hanche: [
+      { id: "dyn_1", label: "Squat Unipodal D et G :", placeholder: "Stabilité du bassin...", info: "<strong>Protocole d'exécution :</strong> Descente sur une seule jambe à 60° de flexion de genou.<br><strong>Ce qu'il faut observer :</strong> Signe de Trendelenburg (chute du bassin controlatéral), valgus dynamique du genou, contrôle du tronc." },
+      { id: "dyn_2", label: "Périmètre de marche :", placeholder: "Distance...", info: "<strong>Protocole d'exécution :</strong> Évaluation de la distance maximale de marche indolore et de la cinématique du pas.<br><strong>Ce qu'il faut observer :</strong> Boiterie d'esquive, raccourcissement du temps d'appui unipodal." }
+    ],
+    genou: [
+      { id: "dyn_1", label: "Squat unipodal & Descente de marche :", placeholder: "Contrôle frontal...", info: "<strong>Protocole d'exécution :</strong> Descente contrôlée d'une marche de 20 cm ou squat unipodal.<br><strong>Ce qu'il faut observer :</strong> Alignement hanche-genou-cheville (recherche de valgus dynamique prononcé), tremblements, appréhension." },
+      { id: "dyn_2", label: "Hop Tests / Sauts :", placeholder: "Amorti, symétrie...", info: "<strong>Protocole d'exécution :</strong> Batterie de sauts en longueur sans élan ou sauts unilatéraux (Single Leg Hop Test).<br><strong>Ce qu'il faut observer :</strong> Indice de symétrie de membre (LSI > 90% requis pour le retour au sport), qualité de l'amorti." }
+    ],
+    cheville: [
+      { id: "dyn_1", label: "Single Leg Hop Test :", placeholder: "Performance...", info: "<strong>Protocole d'exécution :</strong> Saut en longueur sur un seul membre, mesure de la distance parcourue.<br><strong>Ce qu'il faut observer :</strong> Stabilité à la réception, contrôle de l'inversion de cheville, comparaison bilatérale." },
+      { id: "dyn_2", label: "Stabilité monopodale yeux ouverts/fermés :", placeholder: "Proprioception...", info: "<strong>Protocole d'exécution :</strong> Maintien de l'équilibre sur une jambe, bras croisés.<br><strong>Ce qu'il faut observer :</strong> Nombre de pertes d'équilibre, oscillations posturales (stratégie de cheville vs hanche)." }
+    ],
+    geriatrie: [
+      { id: "dyn_1", label: "Transferts (Assis-Debout / Lit) :", placeholder: "Aide technique...", info: "<strong>Protocole d'exécution :</strong> Observer le patient se lever d'une chaise standard sans utiliser les mains si possible.<br><strong>Ce qu'il faut observer :</strong> Utilisation des compensations, vitesse d'exécution, stabilité post-transfert." },
+      { id: "dyn_2", label: "Périmètre et aide à la marche :", placeholder: "Déambulateur, cannes...", info: "<strong>Protocole d'exécution :</strong> Test de marche sur 6 minutes ou évaluation de l'autonomie de déplacement.<br><strong>Ce qu'il faut observer :</strong> Risque de chute, fluidité du pas, nécessité d'une aide technique." }
+    ]
   };
 
   function changerRegionExploration(regKey) {
@@ -770,14 +784,78 @@
     html += `</div>`;
     container.innerHTML = html;
 
-    document.getElementById('dynamicTestsContainer').innerHTML = dynamicTemplates[regKey] || dynamicTemplates.rachis_lombaire;
+    // Mise à jour des tests fonctionnels avec boutons i intégrés
+    const dynContainer = document.getElementById('dynamicTestsContainer');
+    const funcs = functionalTestsDB[regKey] || [];
+    let funcHtml = `<div class="grid">`;
+    funcs.forEach((f, idx) => {
+      funcHtml += `
+        <div>
+          <div class="label-row">
+            <label>
+              <span>${f.label}</span>
+              <span class="btn-info" onclick="afficherInfoFonctionnel('${regKey}', ${idx})">i</span>
+            </label>
+          </div>
+          <textarea id="${f.id}" placeholder="${f.placeholder}" oninput="sauvegarderLocal()"></textarea>
+        </div>
+      `;
+    });
+    funcHtml += `</div>`;
+    dynContainer.innerHTML = funcHtml;
+
     sauvegarderLocal();
   }
 
-  function afficherInfoTestsFonctionnels() {
-    document.getElementById('infoTitle').innerHTML = `ℹ️ EBP : Tests Fonctionnels & Mise en Charge`;
-    document.getElementById('infoBody').innerHTML = "<strong>Objectif EBP :</strong> Les tests fonctionnels en chaîne fermée évaluent la tolérance mécanique réelle aux contraintes de la vie quotidienne ou sportive. Ils permettent d'objectiver les stratégies d'évitement, les déficits de contrôle neuromusculaire et la symétrie inter-limbique (LSI) avant le retour au sport ou à l'autonomie.";
+  function afficherInfoTest(regKey, idx) {
+    const t = clusterTestsDB[regKey].tests[idx];
+    document.getElementById('infoTitle').innerHTML = `ℹ️ EBP : ${t.label.replace(' :', '')}`;
+    document.getElementById('infoBody').innerHTML = t.info;
     document.getElementById('infoModal').style.display = 'flex';
+  }
+
+  function afficherInfoFonctionnel(regKey, idx) {
+    const f = functionalTestsDB[regKey][idx];
+    document.getElementById('infoTitle').innerHTML = `ℹ️ Test Fonctionnel : ${f.label.replace(' :', '')}`;
+    document.getElementById('infoBody').innerHTML = f.info;
+    document.getElementById('infoModal').style.display = 'flex';
+  }
+
+  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
+  function fermerInfoModalDirect() { document.getElementById('infoModal').style.display = 'none'; }
+
+  function gererAjoutPhotos(event) {
+    const files = event.target.files;
+    if (!files) return;
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        patientPhotos.push(e.target.result);
+        rendrePhotos();
+        sauvegarderLocal();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function supprimerPhoto(index) {
+    patientPhotos.splice(index, 1);
+    rendrePhotos();
+    sauvegarderLocal();
+  }
+
+  function rendrePhotos() {
+    const container = document.getElementById('photoPreviewContainer');
+    container.innerHTML = '';
+    patientPhotos.forEach((src, idx) => {
+      const card = document.createElement('div');
+      card.className = 'photo-thumb-card';
+      card.innerHTML = `
+        <img src="${src}" alt="Photo patient">
+        <button class="photo-delete-btn" onclick="supprimerPhoto(${idx})">✕</button>
+      `;
+      container.appendChild(card);
+    });
   }
 
   function analyserPathologieParTests() {
@@ -808,16 +886,6 @@
     document.getElementById('diagnostic').value = proposition;
     sauvegarderLocal();
   }
-
-  function afficherInfoTest(regKey, idx) {
-    const t = clusterTestsDB[regKey].tests[idx];
-    document.getElementById('infoTitle').innerHTML = `ℹ️ EBP : ${t.label.replace(' :', '')}`;
-    document.getElementById('infoBody').innerHTML = t.info;
-    document.getElementById('infoModal').style.display = 'flex';
-  }
-
-  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
-  function fermerInfoModalDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
   function preRemplirRAS() {
     document.getElementById('deficitsPosturaux').value = "Alignement physiologique, absence d'asymétrie majeure.";
@@ -852,7 +920,7 @@
 
   window.addEventListener('load', () => {
     changerRegionExploration('rachis_lombaire');
-    const saved = localStorage.getItem('kine_bilan_draft_v19');
+    const saved = localStorage.getItem('kine_bilan_draft_v20');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.selectRegionExploration) {
@@ -883,7 +951,7 @@
     });
     data.markers = markers;
     data.patientPhotos = patientPhotos;
-    localStorage.setItem('kine_bilan_draft_v19', JSON.stringify(data));
+    localStorage.setItem('kine_bilan_draft_v20', JSON.stringify(data));
   }
 
   document.querySelectorAll('input, textarea, select').forEach(el => {
@@ -895,7 +963,7 @@
 
   function reinitialiser() {
     if (confirm("Réinitialiser le formulaire pour un nouveau patient ?")) {
-      localStorage.removeItem('kine_bilan_draft_v19');
+      localStorage.removeItem('kine_bilan_draft_v20');
       location.reload();
     }
   }
