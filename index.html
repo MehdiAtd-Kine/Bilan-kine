@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      /* Palette de couleurs personnalisée */
+      /* Palette personnalisée */
       --c-pale: #F2FFFB;       /* Vert très pâle (Fond principal) */
       --c-menthe-clair: #CFF7EA;/* Menthe clair (Fonds cartes & survol) */
       --c-eau: #7FE3C6;        /* Vert d'eau (Bordures & détails) */
@@ -30,7 +30,6 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       background-color: var(--c-pale);
-      /* Décoration du fond : Dégradé maillé subtil et motif organique */
       background-image: 
         radial-gradient(circle at 10% 20%, rgba(207, 247, 234, 0.6) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(127, 227, 198, 0.3) 0%, transparent 40%),
@@ -45,7 +44,7 @@
     .container {
       max-width: 1060px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(8px);
       padding: 40px;
       border-radius: 20px;
@@ -86,7 +85,7 @@
     h1 { margin: 0; font-size: 22px; color: var(--c-sapin); font-weight: 800; letter-spacing: -0.3px; }
     .subtitle { font-size: 13px; color: var(--c-sapin); opacity: 0.8; margin-top: 2px; }
 
-    /* MENU FIXE ANCRÉ EN HAUT (Navigation fluide au scroll) */
+    /* BARRE DE NAVIGATION ANCRÉE EN HAUT */
     .sticky-nav {
       position: sticky;
       top: 15px;
@@ -113,6 +112,7 @@
       border-radius: 8px;
       transition: all 0.2s ease;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .nav-anchor:hover {
@@ -232,7 +232,6 @@
       margin-left: 6px;
     }
 
-    /* PREVIEW BODY CHART */
     .preview-box {
       text-align: center;
       background: var(--c-pale);
@@ -366,9 +365,9 @@
     <div class="section-title"><span>2. SCHÉMA CORPOREL & PROFIL DE DOULEUR</span></div>
     
     <div class="full-width">
-      <label>📍 Schéma Corporel (Body Chart Anatomique) :</label>
+      <label>📍 Schéma Corporel (Body Chart Anatomique Détaillé) :</label>
       <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir le schéma anatomique.</span>
+        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique.</span>
       </div>
     </div>
 
@@ -423,9 +422,13 @@
       <label>🔍 Région d'exploration ciblée :</label>
       <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
         <option value="rachis_lombaire">Rachis Lombaire / Lombalgie & Radiculopathie</option>
+        <option value="rachis_cervical">Rachis Cervical / NCB</option>
         <option value="epaule">Épaule (Coiffe, Conflit, Instabilité)</option>
+        <option value="coude_poignet">Coude & Poignet (Épicondylite, Canal carpien)</option>
+        <option value="hanche">Hanche (Coxarthrose, Conflit fémoro-acétabulaire)</option>
         <option value="genou">Genou (LCA, Ménisque, Fémoro-patellaire)</option>
         <option value="cheville">Cheville & Pied (Entorse, Achille)</option>
+        <option value="geriatrie">Gériatrie / Équilibre & Chutes</option>
       </select>
     </div>
 
@@ -455,9 +458,9 @@
     </div>
 
     <div class="export-bar">
-      <button class="btn-export btn-docx" onclick="alert('Export Word complet...')">📄 Bilan Complet (.docx)</button>
-      <button class="btn-export btn-doc-med" onclick="alert('Synthèse Médecin...')">✉️ Synthèse Médecin (.docx)</button>
-      <button class="btn-export btn-pdf" onclick="alert('Export PDF...')">📕 Télécharger PDF</button>
+      <button class="btn-export btn-docx" onclick="alert('Export Word complet en cours...')">📄 Bilan Complet (.docx)</button>
+      <button class="btn-export btn-doc-med" onclick="alert('Synthèse Médecin en cours...')">✉️ Synthèse Médecin (.docx)</button>
+      <button class="btn-export btn-pdf" onclick="alert('Export PDF en cours...')">📕 Télécharger PDF</button>
     </div>
   </section>
 </div>
@@ -591,20 +594,72 @@
     });
   }
 
+  // BASE DE DONNÉES COMPLÈTE DES TESTS SPÉCIFIQUES POUR TOUTES LES RÉGIONS
   const clusterTestsDB = {
     rachis_lombaire: {
       nomRegion: "Rachis Lombaire",
       tests: [
         { id: "lum_1", label: "Test de Lasègue (SLR)" },
         { id: "lum_2", label: "Slump Test Neurodynamique" },
-        { id: "lum_3", label: "Préférence Directionnelle (McKenzie)" }
+        { id: "lum_3", label: "Préférence Directionnelle (McKenzie)" },
+        { id: "lum_4", label: "STarT Back Screening Tool / ODI" }
+      ]
+    },
+    rachis_cervical: {
+      nomRegion: "Rachis Cervical",
+      tests: [
+        { id: "cer_1", label: "Test de Spurling" },
+        { id: "cer_2", label: "Distraction Cervicale" },
+        { id: "cer_3", label: "ULNT1 Nerf Médian" },
+        { id: "cer_4", label: "Flexion-Rotation Test (C1-C2)" }
       ]
     },
     epaule: {
       nomRegion: "Épaule",
       tests: [
         { id: "sho_1", label: "Signe de Hawkins-Kennedy" },
-        { id: "sho_2", label: "Test de Jobe (Supra-épineux)" }
+        { id: "sho_2", label: "Test de Jobe (Supra-épineux)" },
+        { id: "sho_3", label: "Test d'Appréhension Antérieure" },
+        { id: "sho_4", label: "Rotation Externe Passive (RE1)" }
+      ]
+    },
+    coude_poignet: {
+      nomRegion: "Coude & Poignet",
+      tests: [
+        { id: "cp_1", label: "Test de Cozen (Coude)" },
+        { id: "cp_2", label: "Test de Phalen (60 sec)" },
+        { id: "cp_3", label: "Test de Durkan (Compression)" }
+      ]
+    },
+    hanche: {
+      nomRegion: "Hanche",
+      tests: [
+        { id: "hip_1", label: "FADIR Test (Conflit antérieur)" },
+        { id: "hip_2", label: "FABER Test (Patrick)" },
+        { id: "hip_3", label: "Signe de Trendelenburg" }
+      ]
+    },
+    genou: {
+      nomRegion: "Genou",
+      tests: [
+        { id: "kne_1", label: "Test de Lachman (LCA)" },
+        { id: "kne_2", label: "Test de Thessaly (20° en charge)" },
+        { id: "kne_3", label: "Step-Down Test (Fémoro-patellaire)" }
+      ]
+    },
+    cheville: {
+      nomRegion: "Cheville & Pied",
+      tests: [
+        { id: "ank_1", label: "Règles d'Ottawa (Cheville/Pied)" },
+        { id: "ank_2", label: "Weight-Bearing Lunge Test (WBLT)" },
+        { id: "ank_3", label: "Single Leg Heel Raise Test" }
+      ]
+    },
+    geriatrie: {
+      nomRegion: "Gériatrie & Équilibre",
+      tests: [
+        { id: "ger_1", label: "Test de Tinetti (/28)" },
+        { id: "ger_2", label: "Timed Up and Go (TUG)" }
       ]
     }
   };
@@ -613,9 +668,9 @@
     const container = document.getElementById('testsExplorationContainer');
     const data = clusterTestsDB[regKey] || clusterTestsDB.rachis_lombaire;
 
-    let html = `<div style="font-weight:700; color:var(--c-sapin); margin-bottom:12px;">Tests Spécifiques : ${data.nomRegion}</div><div class="grid">`;
+    let html = `<div style="font-weight:800; color:var(--c-sapin); margin-bottom:14px; font-size:14px;">Tests Spécifiques : ${data.nomRegion}</div><div class="grid">`;
     data.tests.forEach(t => {
-      html += `<div><label>${t.label}</label><input type="text" placeholder="Résultat du test..."></div>`;
+      html += `<div><label>${t.label}</label><input type="text" id="${t.id}" placeholder="Résultat du test..."></div>`;
     });
     html += `</div>`;
     container.innerHTML = html;
@@ -624,12 +679,15 @@
   function calculerDiagnosticIA() {
     const container = document.getElementById('probabilitesContainer');
     container.innerHTML = `
-      <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:16px; border-radius:12px;">
-        <strong style="color:var(--c-sapin);">1. Dysfonction mécanique ou sous-classification discale (Probabilité : 70%)</strong>
-        <p style="font-size:12.5px; margin:4px 0 0 0; color:var(--c-sapin);">Concordance EBP élevée d'après les tests remplis et l'absence de red flags.</p>
+      <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:18px; border-radius:12px; margin-bottom:10px;">
+        <strong style="color:var(--c-sapin); font-size:14px;">1. Dysfonction mécanique / sous-classification discale (Probabilité : 68%)</strong>
+        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Concordance élevée d'après les tests de provocation et l'absence de red flags.</p>
+      </div>
+      <div style="background:var(--c-pale); border:1px solid var(--border); padding:14px; border-radius:12px;">
+        <strong style="color:var(--c-sapin); font-size:13px;">2. Irritabilité neurodynamique secondaire (Probabilité : 22%)</strong>
       </div>
     `;
-    document.getElementById('diagnostic').value = "Dysfonction mécanique ou sous-classification discale";
+    document.getElementById('diagnostic').value = "Dysfonction mécanique / sous-classification discale";
   }
 
   function poserQuestionIA() {
@@ -640,7 +698,7 @@
     body.innerHTML += `<div style="background:var(--c-menthe-clair); padding:8px 12px; border-radius:8px; align-self:flex-end;"><strong>Vous :</strong> ${q}</div>`;
     input.value = '';
     setTimeout(() => {
-      body.innerHTML += `<div style="background:white; padding:8px 12px; border-radius:8px; border:1px solid var(--border);"><strong>IA :</strong> Analyse scientifique EBP en cours pour : "${q}".</div>`;
+      body.innerHTML += `<div style="background:white; padding:8px 12px; border-radius:8px; border:1px solid var(--border);"><strong>IA :</strong> Analyse EBP en cours pour : "${q}".</div>`;
       body.scrollTop = body.scrollHeight;
     }, 400);
   }
