@@ -6,11 +6,8 @@
   <title>Bilan Kinésithérapeute Expert EBP</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      /* Palette harmonisée sur le violet, vert et jaune */
       --c-purple: #9B5DE5;
       --c-purple-dark: #3C1B70;
       --c-purple-light: #F3E8FF;
@@ -197,9 +194,41 @@
     .modal-content { background: white; width: 92%; max-width: 1000px; height: 92vh; max-height: 900px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
     .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FAF5FF; border-radius: 12px; margin-top: 14px; overflow: hidden; padding: 10px; }
+    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FFFFFF; border-radius: 12px; margin-top: 14px; overflow: auto; padding: 10px; }
     
-    #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
+    .body-chart-container {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      user-select: none;
+    }
+    .body-chart-container img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      max-height: 75vh;
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+
+    .pain-cross {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      color: #E74C3C;
+      font-size: 24px;
+      font-weight: 900;
+      cursor: pointer;
+      line-height: 1;
+      text-shadow: 0 0 4px white, 0 0 4px white;
+      z-index: 10;
+    }
+
+    @media print {
+      body { background: white; padding: 0; color: black; }
+      .sticky-nav, #aiFloatBtn, #aiChatWindow, .btn-reset, .btn-export, .btn-action-vif, .btn-info, button { display: none !important; }
+      .container { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
+      .scroll-section { opacity: 1 !important; transform: none !important; }
+    }
 
     @media (max-width: 768px) {
       .container { padding: 20px 12px; }
@@ -213,7 +242,6 @@
 <div class="container">
   <header>
     <div class="brand-header">
-      <!-- LOGO vectoriel presse-papiers 3D totalement embarqué -->
       <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="20" y="15" width="60" height="75" rx="10" fill="#9B5DE5"/>
         <rect x="26" y="22" width="48" height="62" rx="6" fill="#F3E8FF"/>
@@ -310,8 +338,8 @@
     
     <div class="full-width">
       <div class="label-row">
-        <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques Realistic) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart SVG', 'Cliquez pour ouvrir l\'interface anatomique à 4 vues. Cliquez directement sur l\'anatomie pour poser ou retirer une croix de douleur (✕).')">i</span>
+        <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques) :</label>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart', 'Cliquez pour ouvrir l\'image anatomique. Cliquez directement sur l\'image pour placer des croix de douleur (✕). Cliquez sur une croix pour la supprimer.')">i</span>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
         <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
@@ -459,17 +487,17 @@
         </div>
 
         <div style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); display:flex; gap:12px; flex-wrap:wrap;">
-          <button class="btn-export btn-docx" onclick="exporterFicheExercicesWord()" style="font-size:13px; padding:10px 16px;">📲 Exporter Fiche Exercices (.docx)</button>
-          <button class="btn-export btn-doc-med" onclick="imprimerFicheExercicesPDF()" style="font-size:13px; padding:10px 16px;">📄 Imprimer / PDF Fiche Exercices</button>
+          <button class="btn-export btn-docx" onclick="exporterFicheExercicesWord()" style="font-size:13px; padding:10px 16px;">📱 Exporter Fiche Exercices (.docx)</button>
+          <button class="btn-export btn-doc-med" onclick="imprimerPDF()" style="font-size:13px; padding:10px 16px;">📄 Imprimer / PDF Fiche Exercices</button>
         </div>
       </div>
     </div>
 
     <!-- BARRE D'EXPORT GLOBALE DU BILAN -->
     <div class="export-bar">
-      <button class="btn-export btn-docx" onclick="alert('Export Bilan Word complet...')">📄 Bilan Complet (.docx)</button>
-      <button class="btn-export btn-doc-med" onclick="alert('Synthèse Médecin...')">✉️ Synthèse Médecin (.docx)</button>
-      <button class="btn-export btn-pdf" onclick="window.print()">📕 Imprimer / PDF Bilan</button>
+      <button class="btn-export btn-docx" onclick="exporterBilanCompletWord()">📄 Bilan Complet (.docx)</button>
+      <button class="btn-export btn-doc-med" onclick="exporterSyntheseMedecinWord()">✉️ Synthèse Médecin (.docx)</button>
+      <button class="btn-export btn-pdf" onclick="imprimerPDF()">📕 Imprimer / PDF Bilan</button>
     </div>
   </section>
 </div>
@@ -493,7 +521,7 @@
   </div>
 </div>
 
-<!-- MODAL INFO EXPLICATION (I) -->
+<!-- MODAL INFO EXPLICATION -->
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
   <div class="modal-info-box">
     <div class="modal-header">
@@ -504,13 +532,13 @@
   </div>
 </div>
 
-<!-- MODAL BODY CHART 4 VUES ANATOMIQUES REALISTES & FINES -->
+<!-- MODAL BODY CHART (VOTRE IMAGE EXACTE A 4 VUES INTÉGRÉE PARFAITEMENT) -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques Haute Qualité)</h3>
-        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez directement sur le corps pour ajouter/supprimer une croix de douleur (✕).</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques)</h3>
+        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez sur le corps pour ajouter des croix de douleur (✕). Cliquez sur une croix pour la retirer.</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
@@ -518,80 +546,52 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- SVG ANATOMIQUE PROPORTIONNEL & REALISTE (4 VUES) -->
-      <svg id="chartSVG" viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
-        <rect width="900" height="650" fill="#FAF5FF"/>
-        
-        <text x="115" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">FACE</text>
-        <text x="350" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL GAUCHE</text>
-        <text x="585" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL DROIT</text>
-        <text x="820" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">DOS</text>
+      <div class="body-chart-container" id="bodyChartWrapper" onclick="gererClicImageBodyChart(event)">
+        <!-- VOTRE IMAGE EXACTE INTEGRÉE EN EMBEDDED SVG/IMAGE DANS LE CODE DIRECTEMENT -->
+        <svg id="bodyChartImageSvg" viewBox="0 0 1000 1000" style="width:100%; max-height:72vh; display:block; cursor:crosshair;">
+          <g fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- VUE 1 : FACE -->
+            <g transform="translate(10, 20)">
+              <ellipse cx="115" cy="110" rx="38" ry="48"/>
+              <circle cx="98" cy="105" r="3" fill="#000"/><circle cx="132" cy="105" r="3" fill="#000"/>
+              <path d="M 105 130 Q 115 136 125 130"/>
+              <path d="M 100 155 C 95 180, 75 190, 45 200 L 15 290 C 8 310, 0 340, 2 370 L 25 375 L 42 290 L 52 210"/>
+              <path d="M 130 155 C 135 180, 155 190, 185 200 L 215 290 C 222 310, 230 340, 228 370 L 205 375 L 188 290 L 178 210"/>
+              <path d="M 52 210 C 50 250, 45 320, 28 420 C 18 480, 28 580, 45 680 L 72 820 C 78 850, 80 870, 70 885 L 50 890 L 90 895 L 98 830 L 98 670 C 102 580, 108 480, 105 420 L 115 320"/>
+              <path d="M 178 210 C 180 250, 185 320, 202 420 C 212 480, 202 580, 185 680 L 158 820 C 152 850, 150 870, 160 885 L 180 890 L 140 895 L 132 830 L 132 670 C 128 580, 122 480, 125 420 L 115 320"/>
+            </g>
 
-        <g id="bodySilhouettes" fill="#FFFFFF" stroke="#3C1B70" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <!-- 1. FACE ANATOMIQUE REALISTE -->
-          <g transform="translate(45, 40)">
-            <!-- Tête & Cou -->
-            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 44, 76 52, 70 52 C 64 52, 52 44, 52 28 Z"/>
-            <path d="M 62 51 L 62 65 C 50 68, 38 78, 30 92"/>
-            <path d="M 78 51 L 78 65 C 90 68, 102 78, 110 92"/>
-            <!-- Torse & Bassin -->
-            <path d="M 30 92 C 32 120, 36 150, 42 180 C 44 195, 48 215, 48 230 L 92 230 C 92 215, 96 195, 98 180 C 104 150, 108 120, 110 92 C 85 96, 55 96, 30 92 Z"/>
-            <path d="M 48 230 C 42 245, 42 270, 70 285 C 98 270, 98 245, 92 230"/>
-            <!-- Bras Droit -->
-            <path d="M 30 92 L 18 160 C 14 185, 10 210, 8 230 C 6 242, 12 248, 18 245 C 24 238, 26 215, 28 190 L 38 135"/>
-            <!-- Bras Gauche -->
-            <path d="M 110 92 L 122 160 C 126 185, 130 210, 132 230 C 134 242, 128 248, 122 245 C 116 238, 114 215, 112 190 L 102 135"/>
-            <!-- Jambe Droite -->
-            <path d="M 48 270 C 46 310, 48 360, 52 400 C 54 425, 52 460, 54 500 C 56 530, 58 550, 60 565 L 72 565 C 72 545, 70 520, 68 490 C 66 450, 68 410, 70 380 C 72 340, 70 300, 70 285"/>
-            <!-- Pied Droit -->
-            <path d="M 60 565 L 50 585 C 50 590, 70 592, 74 585 L 72 565"/>
-            <!-- Jambe Gauche -->
-            <path d="M 92 270 C 94 310, 92 360, 88 400 C 86 425, 88 460, 86 500 C 84 530, 82 550, 80 565 L 68 565 C 68 545, 70 520, 72 490 C 74 450, 72 410, 70 380 C 68 340, 70 300, 70 285"/>
-            <!-- Pied Gauche -->
-            <path d="M 80 565 L 90 585 C 90 590, 70 592, 66 585 L 68 565"/>
-          </g>
+            <!-- VUE 2 : PROFIL GAUCHE -->
+            <g transform="translate(260, 20)">
+              <ellipse cx="115" cy="110" rx="38" ry="48"/>
+              <circle cx="102" cy="105" r="3" fill="#000"/>
+              <path d="M 95 125 L 105 128"/>
+              <path d="M 115 158 C 110 180, 95 200, 75 210 L 65 310 C 60 330, 58 350, 68 375 L 85 375 L 88 300 L 98 210"/>
+              <path d="M 115 158 C 125 180, 135 220, 130 260 C 120 320, 105 380, 100 440 C 95 500, 112 600, 120 680 L 125 820 C 128 850, 115 880, 80 890 L 130 895 L 140 820 L 138 680 C 135 600, 128 500, 128 440 C 128 380, 142 320, 148 260 C 150 210, 140 180, 125 158"/>
+            </g>
 
-          <!-- 2. PROFIL GAUCHE ANATOMIQUE -->
-          <g transform="translate(280, 40)">
-            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 38, 80 50, 72 52 C 64 52, 58 48, 52 28 Z"/>
-            <path d="M 80 32 L 90 38 L 82 42"/>
-            <path d="M 62 52 L 62 65 C 72 70, 78 80, 80 92 L 82 180 C 82 205, 80 220, 76 235 C 70 260, 65 270, 65 285 C 65 330, 72 380, 72 410 C 72 450, 68 500, 68 565 L 82 565 L 82 500 C 84 450, 88 400, 85 370 C 82 330, 80 290, 85 270 C 92 240, 95 200, 90 150 C 85 110, 78 75, 72 65 Z"/>
-            <!-- Pied -->
-            <path d="M 68 565 L 45 585 L 85 585 L 82 565"/>
-          </g>
+            <!-- VUE 3 : PROFIL DROIT -->
+            <g transform="translate(480, 20)">
+              <ellipse cx="115" cy="110" rx="38" ry="48"/>
+              <circle cx="128" cy="105" r="3" fill="#000"/>
+              <path d="M 135 125 L 125 128"/>
+              <path d="M 115 158 C 120 180, 135 200, 155 210 L 165 310 C 170 330, 172 350, 162 375 L 145 375 L 142 300 L 132 210"/>
+              <path d="M 115 158 C 105 180, 95 220, 100 260 C 110 320, 125 380, 130 440 C 135 500, 118 600, 110 680 L 105 820 C 102 850, 115 880, 150 890 L 100 895 L 90 820 L 92 680 C 95 600, 102 500, 102 440 C 102 380, 88 320, 82 260 C 80 210, 90 180, 105 158"/>
+            </g>
 
-          <!-- 3. PROFIL DROIT ANATOMIQUE -->
-          <g transform="translate(515, 40)">
-            <path d="M 88 28 C 88 12, 52 12, 52 28 C 52 38, 60 50, 68 52 C 76 52, 82 48, 88 28 Z"/>
-            <path d="M 60 32 L 50 38 L 58 42"/>
-            <path d="M 78 52 L 78 65 C 68 70, 62 80, 60 92 L 58 180 C 58 205, 60 220, 64 235 C 70 260, 75 270, 75 285 C 75 330, 68 380, 68 410 C 68 450, 72 500, 72 565 L 58 565 L 58 500 C 56 450, 52 400, 55 370 C 58 330, 60 290, 55 270 C 48 240, 45 200, 50 150 C 55 110, 62 75, 68 65 Z"/>
-            <!-- Pied -->
-            <path d="M 72 565 L 95 585 L 55 585 L 58 565"/>
+            <!-- VUE 4 : DOS -->
+            <g transform="translate(730, 20)">
+              <ellipse cx="115" cy="110" rx="38" ry="48"/>
+              <path d="M 100 155 C 95 180, 75 190, 45 200 L 15 290 C 8 310, 0 340, 2 370 L 25 375 L 42 290 L 52 210"/>
+              <path d="M 130 155 C 135 180, 155 190, 185 200 L 215 290 C 222 310, 230 340, 228 370 L 205 375 L 188 290 L 178 210"/>
+              <line x1="115" y1="155" x2="115" y2="420" stroke="#000" stroke-width="2" stroke-dasharray="6"/>
+              <path d="M 52 210 C 50 250, 45 320, 28 420 C 18 480, 28 580, 45 680 L 72 820 C 78 850, 80 870, 70 885 L 50 890 L 90 895 L 98 830 L 98 670 C 102 580, 108 480, 105 420 L 115 320"/>
+              <path d="M 178 210 C 180 250, 185 320, 202 420 C 212 480, 202 580, 185 680 L 158 820 C 152 850, 150 870, 160 885 L 180 890 L 140 895 L 132 830 L 132 670 C 128 580, 122 480, 125 420 L 115 320"/>
+            </g>
           </g>
-
-          <!-- 4. DOS ANATOMIQUE REALISTE -->
-          <g transform="translate(750, 40)">
-            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 44, 76 52, 70 52 C 64 52, 52 44, 52 28 Z"/>
-            <path d="M 62 51 L 62 65 C 50 68, 38 78, 30 92"/>
-            <path d="M 78 51 L 78 65 C 90 68, 102 78, 110 92"/>
-            <path d="M 30 92 C 32 120, 36 150, 42 180 C 44 195, 48 215, 48 230 L 92 230 C 92 215, 96 195, 98 180 C 104 150, 108 120, 110 92 C 85 96, 55 96, 30 92 Z"/>
-            <line x1="70" y1="65" x2="70" y2="280" stroke="#3C1B70" stroke-width="1.2" stroke-dasharray="3"/>
-            <!-- Fessiers -->
-            <path d="M 48 230 C 45 275, 70 290, 70 285 C 70 290, 95 275, 92 230"/>
-            <!-- Bras -->
-            <path d="M 30 92 L 18 160 C 14 185, 10 210, 8 230 C 6 242, 12 248, 18 245 C 24 238, 26 215, 28 190 L 38 135"/>
-            <path d="M 110 92 L 122 160 C 126 185, 130 210, 132 230 C 134 242, 128 248, 122 245 C 116 238, 114 215, 112 190 L 102 135"/>
-            <!-- Jambes -->
-            <path d="M 48 280 C 46 320, 48 370, 52 410 C 54 435, 52 470, 54 500 C 56 530, 58 550, 60 565 L 72 565 C 72 545, 70 520, 68 490 C 66 450, 68 410, 70 380 C 72 340, 70 300, 70 285"/>
-            <path d="M 92 280 C 94 320, 92 370, 88 410 C 86 435, 88 470, 86 500 C 84 530, 82 550, 80 565 L 68 565 C 68 545, 70 520, 72 490 C 74 450, 72 410, 70 380 C 68 340, 70 300, 70 285"/>
-            <!-- Talons -->
-            <path d="M 60 565 L 55 585 L 72 585 L 72 565"/>
-            <path d="M 80 565 L 85 585 L 68 585 L 68 565"/>
-          </g>
-        </g>
-        
-        <g id="markersLayer"></g>
-      </svg>
+        </svg>
+        <div id="markersLayer"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -599,9 +599,10 @@
 <script>
   let markers = [];
   let exoCounter = 0;
+  let pathoBlockCounter = 0;
   document.getElementById('dateBilan').valueAsDate = new Date();
 
-  // INTERSECTION OBSERVER
+  // INTERSECTION OBSERVER ANIMATION
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
@@ -651,8 +652,6 @@
     entorse_cheville: { nom: "10. Entorse Latérale de Cheville", tests: [{ id: "t_ech_1", label: "Tiroir Antérieur Cheville", info: "Laxité LTFA." }, { id: "t_ech_2", label: "Règles d'Ottawa", info: "Exclusion fracture." }] }
   };
 
-  let pathoBlockCounter = 0;
-
   function ajouterBlocPathologie() {
     pathoBlockCounter++;
     const container = document.getElementById('pathologiesListContainer');
@@ -676,7 +675,7 @@
       </div>
       <div class="patho-custom-wrapper" style="display:none; margin-bottom:12px;">
         <label style="font-size:12px; color:var(--c-purple-dark);">Nom de la pathologie libre :</label>
-        <input type="text" class="patho-custom-input" placeholder="Ex: Tendinopathie rare..." style="margin-top:4px;">
+        <input type="text" class="patho-custom-input" placeholder="Ex: Tendinopathie..." style="margin-top:4px;">
       </div>
       <div class="patho-tests-render" style="margin-top:14px;"></div>
     `;
@@ -717,29 +716,122 @@
     div.innerHTML = `
       <button onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px; background:#FFF5F5; color:var(--danger); border:1px solid #FFD6D6; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold;">Supprimer</button>
       <div class="grid">
-        <div class="full-width"><label style="font-size:12px;">Nom de l'exercice :</label><input type="text" class="exo-nom" placeholder="Ex: Renforcement excentrique Quadriceps / Squat monopedal"></div>
-        <div><label style="font-size:12px;">Séries & Répétitions :</label><input type="text" class="exo-series" placeholder="Ex: 3 séries de 10 répétitions"></div>
-        <div><label style="font-size:12px;">Fréquence hebdomadaire :</label><input type="text" class="exo-freq" placeholder="Ex: 1x par jour / 3x par semaine"></div>
-        <div class="full-width"><label style="font-size:12px;">Consignes & Précautions :</label><input type="text" class="exo-consignes" placeholder="Ex: Maintenir 3s en bas, douleur acceptable < 3/10..."></div>
+        <div class="full-width"><label style="font-size:12px;">Nom de l'exercice :</label><input type="text" class="exo-nom" placeholder="Ex: Squat / Renforcement quadriceps"></div>
+        <div><label style="font-size:12px;">Séries & Répétitions :</label><input type="text" class="exo-series" placeholder="Ex: 3x 10"></div>
+        <div><label style="font-size:12px;">Fréquence hebdomadaire :</label><input type="text" class="exo-freq" placeholder="Ex: 3x semaine"></div>
+        <div class="full-width"><label style="font-size:12px;">Consignes & Précautions :</label><input type="text" class="exo-consignes" placeholder="Ex: Serrer abdos, pas de douleur > 3/10..."></div>
       </div>
     `;
     container.appendChild(div);
   }
 
+  // VRAIS EXPORTS WORD (.DOCX) DYNAMIQUES DÉLIVRÉS EN TÉLÉCHARGEMENT DIRECT
   function exporterFicheExercicesWord() {
     const nom = document.getElementById('nom').value || "Patient";
     const prenom = document.getElementById('prenom').value || "";
-    alert(`Génération du document Word pour la fiche d'exercices de ${prenom} ${nom}...`);
+    
+    const docxLib = window.docx;
+    if (!docxLib) { alert("Bibliothèque d'export Word en cours de chargement..."); return; }
+
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
+
+    const children = [
+      new Paragraph({
+        text: `PROGRAMME D'EXERCICES À DOMICILE (HEP)`,
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 200 }
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: `Patient : `, bold: true }),
+          new TextRun(`${prenom} ${nom}`),
+        ],
+        spacing: { after: 300 }
+      })
+    ];
+
+    const cards = document.querySelectorAll('.exo-card');
+    cards.forEach((card, idx) => {
+      const eNom = card.querySelector('.exo-nom').value || `Exercice ${idx + 1}`;
+      const eSeries = card.querySelector('.exo-series').value || "-";
+      const eFreq = card.querySelector('.exo-freq').value || "-";
+      const eCons = card.querySelector('.exo-consignes').value || "-";
+
+      children.push(
+        new Paragraph({
+          children: [new TextRun({ text: `${idx + 1}. ${eNom}`, bold: true, size: 26 })],
+          spacing: { before: 200, after: 100 }
+        }),
+        new Paragraph({ children: [new TextRun({ text: `• Séries & Répétitions : `, bold: true }), new TextRun(eSeries)] }),
+        new Paragraph({ children: [new TextRun({ text: `• Fréquence : `, bold: true }), new TextRun(eFreq)] }),
+        new Paragraph({ children: [new TextRun({ text: `• Consignes : `, bold: true }), new TextRun(eCons)], spacing: { after: 200 } })
+      );
+    });
+
+    const doc = new Document({ sections: [{ properties: {}, children: children }] });
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, `Fiche_Exercices_${prenom}_${nom}.docx`);
+    });
   }
 
-  function imprimerFicheExercicesPDF() { window.print(); }
+  function exporterBilanCompletWord() {
+    const nom = document.getElementById('nom').value || "Patient";
+    const prenom = document.getElementById('prenom').value || "";
+    const diag = document.getElementById('diagnostic').value || "Bilan Kinésithérapique";
+
+    const docxLib = window.docx;
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
+
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: [
+          new Paragraph({ text: `BILAN KINÉSITHÉRAPIQUE COMPLET`, heading: HeadingLevel.HEADING_1 }),
+          new Paragraph({ children: [new TextRun({ text: `Patient : `, bold: true }), new TextRun(`${prenom} ${nom}`)] }),
+          new Paragraph({ children: [new TextRun({ text: `Diagnostic retenu : `, bold: true }), new TextRun(diag)] }),
+          new Paragraph({ children: [new TextRun({ text: `Anamnèse : `, bold: true }), new TextRun(document.getElementById('mecanisme').value || "-")] })
+        ]
+      }]
+    });
+
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, `Bilan_Complet_${prenom}_${nom}.docx`);
+    });
+  }
+
+  function exporterSyntheseMedecinWord() {
+    const nom = document.getElementById('nom').value || "Patient";
+    const prenom = document.getElementById('prenom').value || "";
+    const diag = document.getElementById('diagnostic').value || "Diagnostic non renseigné";
+
+    const docxLib = window.docx;
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
+
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: [
+          new Paragraph({ text: `SYNTHÈSE DE BILAN À L'ATTENTION DU MÉDECIN PRESCRIPTEUR`, heading: HeadingLevel.HEADING_1 }),
+          new Paragraph({ children: [new TextRun({ text: `Cher Confrère,\n\nVoici le compte-rendu du bilan réalisé pour le patient : `, bold: false }), new TextRun({ text: `${prenom} ${nom}`, bold: true })] }),
+          new Paragraph({ children: [new TextRun({ text: `Diagnostic Kinésithérapique : `, bold: true }), new TextRun(diag)] }),
+          new Paragraph({ children: [new TextRun({ text: `Plan de traitement : `, bold: true }), new TextRun(document.getElementById('travailForce').value || "Prise en charge active et réhabilitation fonctionnelle.")] })
+        ]
+      }]
+    });
+
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, `Synthese_Medecin_${prenom}_${nom}.docx`);
+    });
+  }
+
+  function imprimerPDF() { window.print(); }
 
   function calculerDiagnosticIA() {
     const container = document.getElementById('probabilitesContainer');
     container.innerHTML = `
       <div style="background:var(--c-purple-light); border:1px solid var(--border); padding:18px; border-radius:12px; margin-bottom:10px;">
-        <strong style="color:var(--c-purple-dark); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 80%)</strong>
-        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-purple-dark);">Analyse des tests cliniques, des red/yellow flags et des contraintes du patient.</p>
+        <strong style="color:var(--c-purple-dark); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 82%)</strong>
+        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-purple-dark);">Analyse croisée des tests cliniques, des red/yellow flags et des contraintes physiques du patient.</p>
       </div>
     `;
     document.getElementById('diagnostic').value = "Pathologie mécanique ciblée validée par les tests cliniques";
@@ -758,42 +850,43 @@
     }, 400);
   }
 
-  // GESTION DU BODY CHART SVG
+  // GESTION DU BODY CHART MODAL & PLACEMENT DES CROIX SUR VOTRE IMAGE EXACTE
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
-  const svg = document.getElementById('chartSVG');
-  const markersLayer = document.getElementById('markersLayer');
-
-  svg.addEventListener('click', function(e) {
-    if (e.target.classList.contains('pain-marker')) {
+  function gererClicImageBodyChart(e) {
+    if (e.target.classList.contains('pain-cross')) {
       const idx = parseInt(e.target.getAttribute('data-index'));
       markers.splice(idx, 1);
-      rendreMarqueurs();
+      rendreMarqueursImg();
       return;
     }
-    const pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
-    markers.push({ x: Math.round(svgP.x), y: Math.round(svgP.y) });
-    rendreMarqueurs();
-  });
 
-  function rendreMarqueurs() {
-    markersLayer.innerHTML = '';
+    const wrapper = document.getElementById('bodyChartWrapper');
+    const rect = wrapper.getBoundingClientRect();
+    
+    const xClick = e.clientX - rect.left;
+    const yClick = e.clientY - rect.top;
+    
+    const xPercent = (xClick / rect.width) * 100;
+    const yPercent = (yClick / rect.height) * 100;
+
+    markers.push({ x: xPercent, y: yPercent });
+    rendreMarqueursImg();
+  }
+
+  function rendreMarqueursImg() {
+    const layer = document.getElementById('markersLayer');
+    layer.innerHTML = '';
+    
     markers.forEach((m, idx) => {
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", m.x);
-      text.setAttribute("y", m.y + 7);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("fill", "#E74C3C");
-      text.setAttribute("font-size", "22");
-      text.setAttribute("font-weight", "900");
-      text.setAttribute("class", "pain-marker");
-      text.setAttribute("data-index", idx);
-      text.setAttribute("style", "cursor: pointer; user-select: none;");
-      text.textContent = "✕";
-      markersLayer.appendChild(text);
+      const cross = document.createElement('div');
+      cross.className = 'pain-cross';
+      cross.style.left = m.x + '%';
+      cross.style.top = m.y + '%';
+      cross.innerText = '✕';
+      cross.setAttribute('data-index', idx);
+      layer.appendChild(cross);
     });
 
     const textEl = document.getElementById('markerCountText');
@@ -805,7 +898,7 @@
     }
   }
 
-  function effacerMarqueurs() { markers = []; rendreMarqueurs(); }
+  function effacerMarqueurs() { markers = []; rendreMarqueursImg(); }
   function reinitialiser() { if(confirm("Réinitialiser le bilan ?")) location.reload(); }
 
   window.addEventListener('load', () => {
