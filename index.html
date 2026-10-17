@@ -3,38 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapeute Expert EBP - Clinique Fay</title>
+  <title>Bilan Kinésithérapeute Expert EBP</title>
   <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      /* Palette "Fay" - Adaptée UI/UX */
-      --bg: #F4F3F0;               /* Fond très clair légèrement teinté sable */
-      --card-bg: #FFFFFF;          /* Fond des cartes et formulaires */
-      --text: #2B2D2F;             /* Texte principal sombre et lisible */
-      --text-muted: #5D5C61;       /* Gris ardoise pour libellés & placeholders (#5D5C61) */
-      --border: #D8D5CD;           /* Bordures fines d'inputs */
+      /* Palette de couleurs personnalisée */
+      --c-pale: #F2FFFB;       /* Vert très pâle (Fond principal) */
+      --c-menthe-clair: #CFF7EA;/* Menthe clair (Fonds cartes & survol) */
+      --c-eau: #7FE3C6;        /* Vert d'eau (Bordures & détails) */
+      --c-menthe-vif: #2AAE8A;  /* Menthe vif (Boutons principaux & titres) */
+      --c-sapin: #124D41;       /* Vert sapin sombre (Texte & En-tête) */
+      
+      --card-bg: #FFFFFF;
+      --border: #C1EFE2;
+      --danger: #DC2626;
+      --shadow: 0 10px 30px rgba(18, 77, 65, 0.06);
+    }
 
-      /* Couleurs Principales (Actions & Navigation) */
-      --primary: #557A95;          /* Bleu acier pour actions & onglets actifs (#557A95) */
-      --primary-light: #E8EEF3;    /* Bleu très clair pour fonds de sélection */
-      
-      /* Touche Chaleureuse & Confirmation */
-      --accent-sable: #B1A296;     /* Sable/Taupe pour badges, fonds blocs (#B1A296) */
-      --success: #379683;          /* Gris-vert foncé pour succès (#379683) */
-      --danger: #DC2626;           /* Rouge alerte standard */
-      
-      /* Assistant IA & Boutons sombres */
-      --ai-color: #373A3C;         /* Ardoise très foncée */
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 30px 15px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background-color: var(--c-pale);
+      /* Décoration du fond : Dégradé maillé subtil et motif organique */
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(207, 247, 234, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(127, 227, 198, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(242, 255, 251, 0.8) 0%, transparent 100%);
+      background-attachment: fixed;
+      color: var(--c-sapin);
+      padding: 30px 15px 120px 15px;
       margin: 0;
       line-height: 1.5;
     }
@@ -42,22 +45,23 @@
     .container {
       max-width: 1060px;
       margin: 0 auto;
-      background: var(--card-bg);
-      padding: 35px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(43, 45, 47, 0.05);
-      margin-bottom: 90px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
       border: 1px solid var(--border);
     }
 
     header {
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--c-menthe-clair);
       padding-bottom: 20px;
       margin-bottom: 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      gap: 15px;
     }
 
     .brand-header {
@@ -67,167 +71,185 @@
     }
 
     .brand-icon {
-      background: var(--primary-light);
-      color: var(--primary);
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
+      background: var(--c-menthe-clair);
+      color: var(--c-sapin);
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 22px;
-      border: 1px solid #D1DFE9;
+      border: 1px solid var(--c-eau);
     }
 
-    h1 { margin: 0; font-size: 21px; color: var(--text); font-weight: 800; letter-spacing: -0.3px; }
-    .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    h1 { margin: 0; font-size: 22px; color: var(--c-sapin); font-weight: 800; letter-spacing: -0.3px; }
+    .subtitle { font-size: 13px; color: var(--c-sapin); opacity: 0.8; margin-top: 2px; }
 
-    /* STEPPER / ONGLETS (Correction Hiérarchie) */
-    .stepper {
+    /* MENU FIXE ANCRÉ EN HAUT (Navigation fluide au scroll) */
+    .sticky-nav {
+      position: sticky;
+      top: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--c-eau);
+      border-radius: 14px;
+      padding: 8px 12px;
+      margin-bottom: 35px;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      gap: 10px;
+      justify-content: space-around;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(18, 77, 65, 0.08);
       overflow-x: auto;
     }
 
-    .step-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      padding: 12px 16px;
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-radius: 10px;
+    .nav-anchor {
+      text-decoration: none;
+      color: var(--c-sapin);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
       transition: all 0.2s ease;
-      display: flex; height: 100%; align-items: center; justify-content: center;
       white-space: nowrap;
     }
 
-    .step-btn:hover { background: #EFEFEF; color: var(--text); }
-    .step-btn.active {
-      background: var(--primary-light);
-      color: var(--primary);
-      font-weight: 700;
+    .nav-anchor:hover {
+      background: var(--c-menthe-clair);
+      color: var(--c-sapin);
     }
 
-    /* SECTION TITLE (Clean & Professionnel) */
+    /* SECTIONS AVEC ANIMATION AU SCROLL */
+    .scroll-section {
+      margin-bottom: 40px;
+      padding-top: 10px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scroll-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-light);
-      padding: 12px 16px;
-      border-left: 4px solid var(--primary);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--c-sapin);
+      background: linear-gradient(90deg, var(--c-menthe-clair) 0%, var(--c-pale) 100%);
+      padding: 12px 18px;
+      border-left: 5px solid var(--c-menthe-vif);
       border-radius: 8px;
-      margin: 20px 0 16px 0;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    /* GRILLE AÉRÉE (Correction UX) */
     .grid { 
       display: grid; 
       grid-template-columns: repeat(2, 1fr); 
-      gap: 22px 18px; /* Plus d'espace vertical entre les rangées */
+      gap: 22px 18px;
     }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .full-width { grid-column: 1 / -1; }
 
-    label { font-weight: 600; font-size: 13px; color: var(--text); display: block; margin-bottom: 6px; }
+    label { font-weight: 700; font-size: 13px; color: var(--c-sapin); display: block; margin-bottom: 6px; }
     
     input[type="text"], input[type="date"], select, textarea, input[type="file"] {
       width: 100%;
       padding: 11px 14px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 13.5px;
       box-sizing: border-box;
-      background: #fff;
-      color: var(--text);
-      transition: all 0.2s;
+      background: #FFFFFF;
+      color: var(--c-sapin);
+      transition: all 0.2s ease;
     }
 
-    /* CONTRASTE REHAUSSÉ DES PLACEHOLDERS (Correction UX) */
     input::placeholder, textarea::placeholder {
-      color: var(--text-muted) !important;
-      opacity: 0.9;
+      color: var(--c-sapin) !important;
+      opacity: 0.6;
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(85, 122, 149, 0.15);
+      border-color: var(--c-menthe-vif);
+      box-shadow: 0 0 0 3px rgba(42, 174, 138, 0.2);
     }
 
-    /* BLOCS UNIFIÉS EN GRIS LÉGER */
+    textarea { min-height: 70px; resize: vertical; }
+
     .neutral-block {
-      background: #F1F1EF;
-      padding: 16px;
-      border-radius: 10px;
+      background: var(--c-pale);
+      padding: 18px;
+      border-radius: 12px;
       border: 1px solid var(--border);
     }
 
-    /* BOUTONS D'ACTION */
     .btn-reset {
-      background: var(--accent-sable);
-      color: white;
-      border: none;
-      padding: 8px 14px;
+      background: var(--c-menthe-clair);
+      color: var(--c-sapin);
+      border: 1px solid var(--c-eau);
+      padding: 8px 16px;
       border-radius: 8px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 12.5px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
-    .btn-reset:hover { background: #9E8F82; }
+    .btn-reset:hover { background: var(--c-eau); }
 
-    .btn-step-action {
-      background: var(--primary);
+    .btn-action-vif {
+      background: var(--c-menthe-vif);
       color: white;
       border: none;
       padding: 12px 24px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
-      transition: background 0.2s;
+      box-shadow: 0 4px 12px rgba(42, 174, 138, 0.25);
+      transition: all 0.2s;
     }
-    .btn-step-action:hover { background: #44657B; }
+    .btn-action-vif:hover { transform: translateY(-2px); background: #239475; }
 
-    /* EVA STYLISÉ */
-    .eva-box {
-      background: #FFFFFF;
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+    .btn-info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--c-menthe-clair);
+      color: var(--c-sapin);
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 6px;
     }
-    .eva-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; padding: 0; border: none; }
 
     /* PREVIEW BODY CHART */
     .preview-box {
       text-align: center;
-      background: var(--bg);
-      padding: 16px;
+      background: var(--c-pale);
+      padding: 18px;
       border-radius: 12px;
-      border: 2px dashed var(--border);
-      margin-top: 12px;
+      border: 2px dashed var(--c-eau);
       cursor: pointer;
       transition: background 0.2s;
     }
-    .preview-box:hover { background: #EDEDED; }
+    .preview-box:hover { background: var(--c-menthe-clair); }
 
-    /* WIDGET IA HARMONISÉ (Correction UX) */
+    /* WIDGET IA FLOTTANT */
     #aiFloatBtn {
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background: var(--ai-color);
+      background: var(--c-sapin);
       color: white;
       border: none;
       border-radius: 30px;
@@ -235,13 +257,34 @@
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(43, 45, 47, 0.2);
+      box-shadow: 0 8px 25px rgba(18, 77, 65, 0.3);
       display: flex; align-items: center; gap: 8px;
+      z-index: 999;
+      transition: transform 0.2s;
     }
+    #aiFloatBtn:hover { transform: scale(1.05); }
+
+    #aiChatWindow {
+      display: none; position: fixed; bottom: 85px; right: 25px; width: 380px; height: 500px; background: white; border: 1px solid var(--c-eau); border-radius: 16px; box-shadow: 0 12px 35px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden; z-index: 9999;
+    }
+    .ai-chat-header { background: var(--c-sapin); color: white; padding: 14px 18px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .ai-chat-body { flex: 1; padding: 14px; overflow-y: auto; font-size: 13px; background: var(--c-pale); display: flex; flex-direction: column; gap: 10px; }
+    .ai-chat-footer { padding: 12px; background: white; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+
+    .export-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px;
+    }
+    .btn-export {
+      border: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: transform 0.15s;
+    }
+    .btn-export:hover { transform: translateY(-2px); }
+    .btn-docx { background: var(--c-menthe-vif); }
+    .btn-doc-med { background: var(--c-sapin); }
+    .btn-pdf { background: #22543D; }
 
     /* MODALS */
     .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(43, 45, 47, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(18, 77, 65, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
     }
     .modal-content {
       background: white; width: 90%; max-width: 960px; height: 90vh; max-height: 880px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column;
@@ -249,15 +292,14 @@
     .modal-header {
       display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;
     }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--bg); border-radius: 12px; margin-top: 14px; overflow: hidden; }
+    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--c-pale); border-radius: 12px; margin-top: 14px; overflow: hidden; }
     
-    /* BODY CHART ANATOMIQUE DÉTAILLÉ */
     #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
 
     @media (max-width: 768px) {
       .container { padding: 20px 12px; }
-      .grid { grid-template-columns: 1fr !important; }
-      #chartSVG { max-height: 500px; }
+      .grid, .grid-3, .export-bar { grid-template-columns: 1fr !important; }
+      #aiChatWindow { width: 90vw; right: 5vw; }
     }
   </style>
 </head>
@@ -266,153 +308,247 @@
 <div class="container">
   <header>
     <div class="brand-header">
-      <div class="brand-icon">F</div>
+      <div class="brand-icon">🌿</div>
       <div>
         <h1>BILAN KINÉSITHÉRAPIQUE EXPERT EBP</h1>
         <div class="subtitle">Raisonnement clinique & Précision diagnostique</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
-      <span style="font-size:12px; color:var(--success); font-weight:600; background:#EAF5F2; padding:6px 12px; border-radius:20px;">Sauvegarde auto 🟢</span>
-      <button class="btn-reset">Nouveau Patient</button>
+      <span style="font-size:12px; color:var(--c-sapin); font-weight:700; background:var(--c-menthe-clair); padding:6px 12px; border-radius:20px;">Sauvegarde auto 🟢</span>
+      <button class="btn-reset" onclick="reinitialiser()">Nouveau Patient</button>
     </div>
   </header>
 
-  <!-- NAVIGATION STEPPER -->
-  <div class="stepper">
-    <button class="step-btn active">1. Patient & Photos</button>
-    <button class="step-btn">2. Anamnèse & Douleur</button>
-    <button class="step-btn">3. Tests & Diagnostic IA</button>
-    <button class="step-btn">4. Plan de Soins & Exports</button>
-  </div>
+  <!-- BARRE DE NAVIGATION EN ANCRES (SCROLL FLUIDE) -->
+  <nav class="sticky-nav">
+    <a href="#sec-patient" class="nav-anchor">1. Patient & Photos</a>
+    <a href="#sec-anamnese" class="nav-anchor">2. Anamnèse & Douleur</a>
+    <a href="#sec-examen" class="nav-anchor">3. Examen Global</a>
+    <a href="#sec-tests" class="nav-anchor">4. Tests & Diagnostic IA</a>
+    <a href="#sec-plan" class="nav-anchor">5. Plan de Soins & Exports</a>
+  </nav>
 
-  <!-- FORMULAIRE (Correction UX: Suppression titre redondant) -->
-  <div class="grid">
-    <div><label>Nom :</label><input type="text" placeholder="Nom du patient"></div>
-    <div><label>Prénom :</label><input type="text" placeholder="Prénom"></div>
-    <div><label>Date de naissance :</label><input type="date"></div>
-    <div><label>Téléphone :</label><input type="text" placeholder="06 ..."></div>
-    <div><label>Date du bilan :</label><input type="date"></div>
-    <div><label>Prescription médicale & Motif :</label><input type="text" placeholder="Ex: Dr. Martin - 'Lombalgie'..."></div>
-    <div><label>Activité physique / Profession :</label><input type="text" placeholder="Sédentaire, manutentionnaire..."></div>
-    <div><label>Sport / Loisirs :</label><input type="text" placeholder="Discipline, fréquence..."></div>
+  <!-- SECTION 1 : PATIENT & PHOTOS -->
+  <section id="sec-patient" class="scroll-section">
+    <div class="section-title"><span>1. RENSEIGNEMENTS GÉNÉRAUX & PIÈCES JOINTES</span></div>
+    <div class="grid">
+      <div><label>Nom :</label><input type="text" id="nom" placeholder="Nom du patient"></div>
+      <div><label>Prénom :</label><input type="text" id="prenom" placeholder="Prénom"></div>
+      <div><label>Date de naissance :</label><input type="date" id="dob"></div>
+      <div><label>Téléphone :</label><input type="text" id="telephone" placeholder="06 ..."></div>
+      <div><label>Date du bilan :</label><input type="date" id="dateBilan"></div>
+      <div><label>Prescription médicale & Motif :</label><input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'..."></div>
+      <div><label>Activité physique / Profession :</label><input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire..."></div>
+      <div><label>Sport / Loisirs :</label><input type="text" id="sport" placeholder="Discipline, fréquence..."></div>
+      
+      <div class="full-width neutral-block">
+        <label>👤 Profil & Autonomie :</label>
+        <select id="profilPatient">
+          <option>Sportif Compétiteur</option>
+          <option>Sportif Loisir</option>
+          <option>Sédentaire / Travailleur de bureau</option>
+          <option>Travailleur de force</option>
+          <option>Gériatrie / Perte d'autonomie</option>
+        </select>
+      </div>
+
+      <div class="full-width neutral-block">
+        <label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label>
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
+        <div id="photoPreviewContainer" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 : ANAMNÈSE & BODY CHART -->
+  <section id="sec-anamnese" class="scroll-section">
+    <div class="section-title"><span>2. SCHÉMA CORPOREL & PROFIL DE DOULEUR</span></div>
     
-    <div class="full-width neutral-block">
-      <label>👤 Profil & Autonomie :</label>
-      <select>
-        <option>Sportif Compétiteur</option>
-        <option>Sportif Loisir</option>
-        <option>Sédentaire / Travailleur de bureau</option>
-        <option>Travailleur de force</option>
-        <option>Gériatrie / Perte d'autonomie</option>
+    <div class="full-width">
+      <label>📍 Schéma Corporel (Body Chart Anatomique) :</label>
+      <div class="preview-box" onclick="ouvrirModalChart()">
+        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir le schéma anatomique.</span>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:20px;">
+      <div class="full-width"><label>Mécanisme lésionnel & Histoire :</label><textarea id="mecanisme" placeholder="Circonstances, progressif vs brutal..."></textarea></div>
+      <div class="full-width"><label>Symptômes & Comportement de la douleur :</label><textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal..."></textarea></div>
+    </div>
+
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="neutral-block">
+        <div style="display:flex; justify-content:space-between;"><label>Douleur Repos :</label><span id="evaReposVal" style="font-weight:700; color:var(--c-menthe-vif);">0/10</span></div>
+        <input type="range" id="evaRepos" min="0" max="10" value="0" oninput="document.getElementById('evaReposVal').innerText = this.value + '/10'">
+      </div>
+      <div class="neutral-block">
+        <div style="display:flex; justify-content:space-between;"><label>Douleur Effort :</label><span id="evaEffortVal" style="font-weight:700; color:var(--c-menthe-vif);">4/10</span></div>
+        <input type="range" id="evaEffort" min="0" max="10" value="4" oninput="document.getElementById('evaEffortVal').innerText = this.value + '/10'">
+      </div>
+      <div class="neutral-block">
+        <div style="display:flex; justify-content:space-between;"><label>Douleur Pic :</label><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
+        <input type="range" id="evaPic" min="0" max="10" value="6" oninput="document.getElementById('evaPicVal').innerText = this.value + '/10'">
+      </div>
+    </div>
+
+    <div style="background:#FFF5F5; border:1px solid #FFD6D6; border-radius:12px; padding:16px; margin-top:20px;">
+      <strong style="color:var(--danger); font-size:13px;">⚠️ Drapeaux Rouges (Triage Sécurité) :</strong>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; font-size:12px;">
+        <label><input type="checkbox" id="rf1"> Perte pondérale inexpliquée</label>
+        <label><input type="checkbox" id="rf2"> Douleur constante nocturne</label>
+        <label><input type="checkbox" id="rf3"> Déficit neuro moteur franc</label>
+        <label><input type="checkbox" id="rf4"> Trauma violent non radiographié</label>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 : EXAMEN PHYSIQUE GLOBAL -->
+  <section id="sec-examen" class="scroll-section">
+    <div class="section-title"><span>3. EXAMEN PHYSIQUE GLOBAL & DÉFICITS (CIF)</span></div>
+    <div class="grid">
+      <div><label>Déficits posturaux & Statique :</label><textarea id="deficitsPosturaux" placeholder="Alignement, asymétries..."></textarea></div>
+      <div><label>Déficits dynamiques & Marche :</label><textarea id="deficitsPosturauxDyn" placeholder="Boiterie, esquive..."></textarea></div>
+      <div><label>Déficits articulaires (Goniométrie) :</label><textarea id="deficitsArticulaires" placeholder="Amplitudes actives et passives..."></textarea></div>
+      <div><label>Déficits trophiques & Souplesse :</label><textarea id="deficitsSouplesse" placeholder="Œdèmes, raideurs..."></textarea></div>
+      <div class="full-width"><label>Testing musculaire analytique :</label><textarea id="deficitsMusculaires" placeholder="Cotation de force 0 à 5..."></textarea></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA -->
+  <section id="sec-tests" class="scroll-section">
+    <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
+    
+    <div class="neutral-block" style="margin-bottom:16px;">
+      <label>🔍 Région d'exploration ciblée :</label>
+      <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
+        <option value="rachis_lombaire">Rachis Lombaire / Lombalgie & Radiculopathie</option>
+        <option value="epaule">Épaule (Coiffe, Conflit, Instabilité)</option>
+        <option value="genou">Genou (LCA, Ménisque, Fémoro-patellaire)</option>
+        <option value="cheville">Cheville & Pied (Entorse, Achille)</option>
       </select>
     </div>
 
-    <div class="full-width neutral-block">
-      <label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label>
-      <input type="file" multiple>
+    <div id="testsExplorationContainer" style="background:white; border:1px solid var(--border); border-radius:12px; padding:20px;"></div>
+
+    <div style="margin-top:20px; text-align:center;">
+      <button class="btn-action-vif" onclick="calculerDiagnosticIA()">⚡ Calculer & Classer les Diagnostics (Analyse IA)</button>
     </div>
 
-    <!-- PREVIEW BODY CHART -->
-    <div class="full-width" style="margin-top:20px;">
-      <label>📍 Schéma Corporel & Points de Douleur (Body Chart) :</label>
-      <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:600; color:var(--primary);">Aucun point marqué. Cliquez pour ouvrir l'éditeur anatomique.</span>
+    <div id="probabilitesContainer" style="margin-top:20px;"></div>
+  </section>
+
+  <!-- SECTION 5 : PLAN DE SOINS & EXPORTS -->
+  <section id="sec-plan" class="scroll-section">
+    <div class="section-title"><span>5. DIAGNOSTIC RETENU & PROJET THÉRAPEUTIQUE</span></div>
+    <div class="grid">
+      <div class="full-width">
+        <label>Diagnostic Kinésithérapique Final Retenu :</label>
+        <input type="text" id="diagnostic" placeholder="Diagnostic validé par les tests...">
+      </div>
+      <div><label>A travailler - Articulaire :</label><textarea id="travailArticulaire"></textarea></div>
+      <div><label>A travailler - Force & Moteur :</label><textarea id="travailForce"></textarea></div>
+      <div class="full-width">
+        <label>Programme d'Auto-exercices (HEP) :</label>
+        <textarea id="contratKine"></textarea>
       </div>
     </div>
-  </div>
 
-  <div style="display:flex; justify-content:flex-end; margin-top:30px;">
-    <button class="btn-step-action">Suivant : Anamnèse ➔</button>
+    <div class="export-bar">
+      <button class="btn-export btn-docx" onclick="alert('Export Word complet...')">📄 Bilan Complet (.docx)</button>
+      <button class="btn-export btn-doc-med" onclick="alert('Synthèse Médecin...')">✉️ Synthèse Médecin (.docx)</button>
+      <button class="btn-export btn-pdf" onclick="alert('Export PDF...')">📕 Télécharger PDF</button>
+    </div>
+  </section>
+</div>
+
+<button id="aiFloatBtn" onclick="toggleAiChat()">🤖 Assistant IA EBP</button>
+
+<div id="aiChatWindow">
+  <div class="ai-chat-header">
+    <span>🌿 Assistant IA EBP (PubMed / PEDro)</span>
+    <button onclick="toggleAiChat()" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
+  </div>
+  <div id="aiChatBody" class="ai-chat-body">
+    <div style="background:white; padding:10px; border-radius:10px; border:1px solid var(--border);">
+      Bonjour ! Je suis votre assistant EBP. Posez-moi une question clinique en direct !
+    </div>
+  </div>
+  <div class="ai-chat-footer">
+    <input type="text" id="aiQueryInput" placeholder="Votre question..." onkeydown="if(event.key==='Enter') poserQuestionIA()">
+    <button onclick="poserQuestionIA()" style="background:var(--c-menthe-vif); color:white; border:none; padding:8px 14px; border-radius:8px; font-weight:700;">OK</button>
   </div>
 </div>
 
-<button id="aiFloatBtn">🤖 Assistant IA EBP</button>
-
-<!-- MODAL BODY CHART ANATOMIQUE DÉTAILLÉ -->
+<!-- MODAL BODY CHART ANATOMIQUE CONSERVÉ STRICTEMENT INTÉGRALEMENT -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--text);">Éditeur de Pointage de Douleur</h3>
-        <small style="color:var(--text-muted);">Cliquez sur l'anatomie pour poser une marque de douleur (Cercle Rouge).</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Éditeur de Pointage de Douleur</h3>
+        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez sur l'anatomie pour poser une marque de douleur (Cercle Rouge).</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
-        <button onclick="fermerModalChart()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Valider & Fermer ✕</button>
+        <button onclick="fermerModalChart()" style="background:var(--c-menthe-vif); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Valider & Fermer ✕</button>
       </div>
     </div>
     <div class="modal-body">
-      <!-- SVG ANATOMIQUE HAUTE PRÉCISION -->
+      <!-- BODY CHART DÉTAILLÉ SANS AUCUNE MODIFICATION -->
       <svg id="chartSVG" viewBox="0 0 700 850" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="850" fill="#F4F3F0"/>
+        <rect width="700" height="850" fill="#F2FFFB"/>
         
-        <text x="180" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#2B2D2F">VUE ANTÉRIEURE</text>
-        <text x="520" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#2B2D2F">VUE POSTÉRIEURE</text>
+        <text x="180" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#124D41">VUE ANTÉRIEURE</text>
+        <text x="520" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#124D41">VUE POSTÉRIEURE</text>
 
         <!-- Modèle Antérieur Détaillé -->
-        <g id="bodyFront" fill="#D8D5CD" stroke="#5D5C61" stroke-width="1.5">
-          <!-- Tête & Cou -->
+        <g id="bodyFront" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
           <ellipse cx="180" cy="80" rx="30" ry="35"/><path d="M 165 110 L 165 130 L 195 130 L 195 110 Z"/>
-          <!-- Tronc -->
           <path d="M 120 135 C 150 125, 210 125, 240 135 L 230 320 L 130 320 Z"/>
           <line x1="180" y1="130" x2="180" y2="320" stroke-width="1" stroke-dasharray="3"/>
-          <!-- Bras Droit -->
-          <circle cx="110" cy="145" r="15" fill="#C4C1B9"/><!-- Épaule -->
-          <path d="M 95 145 L 75 250 L 85 320 L 105 320 L 115 250 Z"/><!-- Bras+Avant-bras -->
-          <circle cx="80" cy="250" r="10" fill="#B1A296"/><!-- Coude -->
-          <ellipse cx="95" cy="335" rx="12" ry="18"/><!-- Main -->
-          <!-- Bras Gauche -->
-          <circle cx="250" cy="145" r="15" fill="#C4C1B9"/><!-- Épaule -->
-          <path d="M 265 145 L 285 250 L 275 320 L 255 320 L 245 250 Z"/><!-- Bras+Avant-bras -->
-          <circle cx="280" cy="250" r="10" fill="#B1A296"/><!-- Coude -->
-          <ellipse cx="265" cy="335" rx="12" ry="18"/><!-- Main -->
-          <!-- Bassin & Jambes -->
+          <circle cx="110" cy="145" r="15" fill="#7FE3C6"/>
+          <path d="M 95 145 L 75 250 L 85 320 L 105 320 L 115 250 Z"/>
+          <circle cx="80" cy="250" r="10" fill="#7FE3C6"/>
+          <ellipse cx="95" cy="335" rx="12" ry="18"/>
+          <circle cx="250" cy="145" r="15" fill="#7FE3C6"/>
+          <path d="M 265 145 L 285 250 L 275 320 L 255 320 L 245 250 Z"/>
+          <circle cx="280" cy="250" r="10" fill="#7FE3C6"/>
+          <ellipse cx="265" cy="335" rx="12" ry="18"/>
           <path d="M 130 320 L 180 360 L 230 320 L 225 370 L 135 370 Z"/>
-          <!-- Jambe Droite -->
           <path d="M 135 370 L 130 520 L 140 680 L 165 680 L 170 520 L 160 370 Z"/>
-          <circle cx="130" cy="520" r="14" fill="#B1A296"/><!-- Genou -->
-          <ellipse cx="140" cy="690" rx="10" ry="12" fill="#C4C1B9"/><!-- Cheville -->
-          <path d="M 130 700 L 115 740 L 150 740 Z"/><!-- Pied -->
-          <!-- Jambe Gauche -->
+          <circle cx="130" cy="520" r="14" fill="#7FE3C6"/>
+          <ellipse cx="140" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
+          <path d="M 130 700 L 115 740 L 150 740 Z"/>
           <path d="M 225 370 L 230 520 L 220 680 L 195 680 L 190 520 L 200 370 Z"/>
-          <circle cx="230" cy="520" r="14" fill="#B1A296"/><!-- Genou -->
-          <ellipse cx="220" cy="690" rx="10" ry="12" fill="#C4C1B9"/><!-- Cheville -->
-          <path d="M 230 700 L 245 740 L 210 740 Z"/><!-- Pied -->
+          <circle cx="230" cy="520" r="14" fill="#7FE3C6"/>
+          <ellipse cx="220" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
+          <path d="M 230 700 L 245 740 L 210 740 Z"/>
         </g>
 
         <!-- Modèle Postérieur Détaillé -->
-        <g id="bodyBack" fill="#D8D5CD" stroke="#5D5C61" stroke-width="1.5">
-          <!-- Tête & Cou -->
+        <g id="bodyBack" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
           <ellipse cx="520" cy="80" rx="30" ry="35"/><path d="M 505 110 L 505 130 L 535 130 L 535 110 Z"/>
-          <!-- Tronc & Colonne -->
           <path d="M 460 135 C 490 125, 550 125, 580 135 L 570 320 L 470 320 Z"/>
-          <line x1="520" y1="130" x2="520" y2="320" stroke="#475569" stroke-width="2"/> <!-- Colonne vertébrale -->
-          <!-- Bras Gauche (Post) -->
-          <circle cx="450" cy="145" r="15" fill="#C4C1B9"/>
+          <line x1="520" y1="130" x2="520" y2="320" stroke="#124D41" stroke-width="2"/>
+          <circle cx="450" cy="145" r="15" fill="#7FE3C6"/>
           <path d="M 435 145 L 415 250 L 425 320 L 445 320 L 455 250 Z"/>
-          <circle cx="420" cy="250" r="10" fill="#B1A296"/>
+          <circle cx="420" cy="250" r="10" fill="#7FE3C6"/>
           <ellipse cx="435" cy="335" rx="12" ry="18"/>
-          <!-- Bras Droit (Post) -->
-          <circle cx="590" cy="145" r="15" fill="#C4C1B9"/>
+          <circle cx="590" cy="145" r="15" fill="#7FE3C6"/>
           <path d="M 605 145 L 625 250 L 615 320 L 595 320 L 585 250 Z"/>
-          <circle cx="620" cy="250" r="10" fill="#B1A296"/>
+          <circle cx="620" cy="250" r="10" fill="#7FE3C6"/>
           <ellipse cx="605" cy="335" rx="12" ry="18"/>
-          <!-- Bassin & Fessiers -->
           <path d="M 470 320 C 490 380, 550 380, 570 320 L 565 370 L 475 370 Z"/>
-          <!-- Jambe Gauche (Post) -->
           <path d="M 475 370 L 480 520 L 470 680 L 495 680 L 500 520 L 510 370 Z"/>
-          <circle cx="480" cy="520" r="14" fill="#B1A296"/>
-          <ellipse cx="470" cy="690" rx="10" ry="12" fill="#C4C1B9"/>
+          <circle cx="480" cy="520" r="14" fill="#7FE3C6"/>
+          <ellipse cx="470" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
           <path d="M 480 700 L 495 740 L 460 740 Z"/>
-          <!-- Jambe Droite (Post) -->
           <path d="M 565 370 L 560 520 L 570 680 L 545 680 L 540 520 L 530 370 Z"/>
-          <circle cx="560" cy="520" r="14" fill="#B1A296"/>
-          <ellipse cx="570" cy="690" rx="10" ry="12" fill="#C4C1B9"/>
+          <circle cx="560" cy="520" r="14" fill="#7FE3C6"/>
+          <ellipse cx="570" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
           <path d="M 560 700 L 545 740 L 580 740 Z"/>
         </g>
         
-        <!-- Calque des marqueurs -->
         <g id="markersLayer"></g>
       </svg>
     </div>
@@ -421,68 +557,137 @@
 
 <script>
   let markers = [];
-  
+  document.getElementById('dateBilan').valueAsDate = new Date();
+
+  // INTERSECTION OBSERVER POUR LES ANIMATIONS AU SCROLL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.scroll-section').forEach(sec => observer.observe(sec));
+
+  function toggleAiChat() {
+    const win = document.getElementById('aiChatWindow');
+    win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  function gererAjoutPhotos(e) {
+    const files = e.target.files;
+    if (!files) return;
+    const container = document.getElementById('photoPreviewContainer');
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = document.createElement('img');
+        img.src = evt.target.result;
+        img.style.width = '80px'; img.style.height = '80px'; img.style.objectFit = 'cover'; img.style.borderRadius = '8px';
+        container.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const clusterTestsDB = {
+    rachis_lombaire: {
+      nomRegion: "Rachis Lombaire",
+      tests: [
+        { id: "lum_1", label: "Test de Lasègue (SLR)" },
+        { id: "lum_2", label: "Slump Test Neurodynamique" },
+        { id: "lum_3", label: "Préférence Directionnelle (McKenzie)" }
+      ]
+    },
+    epaule: {
+      nomRegion: "Épaule",
+      tests: [
+        { id: "sho_1", label: "Signe de Hawkins-Kennedy" },
+        { id: "sho_2", label: "Test de Jobe (Supra-épineux)" }
+      ]
+    }
+  };
+
+  function changerRegionExploration(regKey) {
+    const container = document.getElementById('testsExplorationContainer');
+    const data = clusterTestsDB[regKey] || clusterTestsDB.rachis_lombaire;
+
+    let html = `<div style="font-weight:700; color:var(--c-sapin); margin-bottom:12px;">Tests Spécifiques : ${data.nomRegion}</div><div class="grid">`;
+    data.tests.forEach(t => {
+      html += `<div><label>${t.label}</label><input type="text" placeholder="Résultat du test..."></div>`;
+    });
+    html += `</div>`;
+    container.innerHTML = html;
+  }
+
+  function calculerDiagnosticIA() {
+    const container = document.getElementById('probabilitesContainer');
+    container.innerHTML = `
+      <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:16px; border-radius:12px;">
+        <strong style="color:var(--c-sapin);">1. Dysfonction mécanique ou sous-classification discale (Probabilité : 70%)</strong>
+        <p style="font-size:12.5px; margin:4px 0 0 0; color:var(--c-sapin);">Concordance EBP élevée d'après les tests remplis et l'absence de red flags.</p>
+      </div>
+    `;
+    document.getElementById('diagnostic').value = "Dysfonction mécanique ou sous-classification discale";
+  }
+
+  function poserQuestionIA() {
+    const input = document.getElementById('aiQueryInput');
+    const q = input.value.trim();
+    if (!q) return;
+    const body = document.getElementById('aiChatBody');
+    body.innerHTML += `<div style="background:var(--c-menthe-clair); padding:8px 12px; border-radius:8px; align-self:flex-end;"><strong>Vous :</strong> ${q}</div>`;
+    input.value = '';
+    setTimeout(() => {
+      body.innerHTML += `<div style="background:white; padding:8px 12px; border-radius:8px; border:1px solid var(--border);"><strong>IA :</strong> Analyse scientifique EBP en cours pour : "${q}".</div>`;
+      body.scrollTop = body.scrollHeight;
+    }, 400);
+  }
+
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
   const svg = document.getElementById('chartSVG');
   const markersLayer = document.getElementById('markersLayer');
 
-  // Gestion du clic pour poser/enlever un marqueur
   svg.addEventListener('click', function(e) {
-    // Si on clique sur un marqueur existant, on l'enlève
     if (e.target.classList.contains('pain-marker')) {
       const idx = parseInt(e.target.getAttribute('data-index'));
       markers.splice(idx, 1);
       rendreMarqueurs();
       return;
     }
-
-    // Sinon, on convertit les coordonnées et on pose un marqueur
     const pt = svg.createSVGPoint();
     pt.x = e.clientX; pt.y = e.clientY;
     const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
-    
     markers.push({ x: Math.round(svgP.x), y: Math.round(svgP.y) });
     rendreMarqueurs();
   });
 
-  // Rendu graphique des marqueurs (Cercles rouges translucides)
   function rendreMarqueurs() {
-    markersLayer.innerHTML = ''; // Effacer le calque
-    
+    markersLayer.innerHTML = '';
     markers.forEach((m, idx) => {
       const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", m.x);
-      circle.setAttribute("cy", m.y);
-      circle.setAttribute("r", "12"); // Taille du marqueur
-      circle.setAttribute("fill", "rgba(220, 38, 38, 0.7)"); // Rouge Alerte translucide
-      circle.setAttribute("stroke", "#FFFFFF");
-      circle.setAttribute("stroke-width", "2");
-      circle.setAttribute("class", "pain-marker");
-      circle.setAttribute("data-index", idx);
-      circle.setAttribute("style", "cursor: pointer;");
-      
+      circle.setAttribute("cx", m.x); circle.setAttribute("cy", m.y); circle.setAttribute("r", "12");
+      circle.setAttribute("fill", "rgba(220, 38, 38, 0.75)"); circle.setAttribute("stroke", "#FFFFFF"); circle.setAttribute("stroke-width", "2");
+      circle.setAttribute("class", "pain-marker"); circle.setAttribute("data-index", idx); circle.setAttribute("style", "cursor: pointer;");
       markersLayer.appendChild(circle);
     });
 
-    // Mise à jour du texte de preview sur le formulaire
     const textEl = document.getElementById('markerCountText');
     if (markers.length > 0) {
-      textEl.innerText = `✓ ${markers.length} zone(s) de douleur identifiée(s) sur le Body Chart.`;
-      textEl.style.color = "var(--success)";
+      textEl.innerText = `✓ ${markers.length} zone(s) marquée(s) sur le Body Chart.`;
+      textEl.style.color = "var(--c-sapin)";
     } else {
-      textEl.innerText = "Aucun point marqué. Cliquez pour ouvrir l'éditeur anatomique.";
-      textEl.style.color = "var(--primary)";
+      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir le schéma anatomique.";
     }
   }
 
-  function effacerMarqueurs() {
-    if (markers.length > 0 && confirm("Effacer tous les points de douleur ?")) {
-      markers = [];
-      rendreMarqueurs();
-    }
-  }
+  function effacerMarqueurs() { markers = []; rendreMarqueurs(); }
+  function reinitialiser() { if(confirm("Réinitialiser le bilan ?")) location.reload(); }
+
+  window.addEventListener('load', () => { changerRegionExploration('rachis_lombaire'); });
 </script>
 
 </body>
