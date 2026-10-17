@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      /* Palette extraite directement de l'icône Bilan 3D */
+      /* Palette harmonisée sur le violet, vert et jaune */
       --c-purple: #9B5DE5;
       --c-purple-dark: #3C1B70;
       --c-purple-light: #F3E8FF;
@@ -64,11 +64,10 @@
     }
 
     .brand-header { display: flex; align-items: center; gap: 16px; }
-    .brand-logo {
-      width: 65px;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    .brand-logo-svg {
+      width: 58px;
+      height: 58px;
+      filter: drop-shadow(0 4px 10px rgba(60, 27, 112, 0.15));
     }
 
     h1 { margin: 0; font-size: 22px; color: var(--c-purple-dark); font-weight: 800; }
@@ -154,7 +153,6 @@
     }
     .preview-box:hover { background: var(--c-purple-light); }
 
-    /* PATHOLOGIE BLOCKS */
     .patho-block {
       background: white; border: 1px solid var(--border); border-radius: 14px;
       padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(60,27,112,0.04);
@@ -199,7 +197,7 @@
     .modal-content { background: white; width: 92%; max-width: 1000px; height: 92vh; max-height: 900px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
     .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FFFFFF; border-radius: 12px; margin-top: 14px; overflow: hidden; padding: 10px; }
+    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FAF5FF; border-radius: 12px; margin-top: 14px; overflow: hidden; padding: 10px; }
     
     #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
 
@@ -215,8 +213,20 @@
 <div class="container">
   <header>
     <div class="brand-header">
-      <!-- Logo Bilan icone.png intégré -->
-      <img src="Bilan icone.png" alt="Logo Bilan Kiné" class="brand-logo">
+      <!-- LOGO vectoriel presse-papiers 3D totalement embarqué -->
+      <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="15" width="60" height="75" rx="10" fill="#9B5DE5"/>
+        <rect x="26" y="22" width="48" height="62" rx="6" fill="#F3E8FF"/>
+        <rect x="34" y="32" width="32" height="7" rx="3.5" fill="#F1C40F"/>
+        <rect x="34" y="45" width="32" height="7" rx="3.5" fill="#F1C40F"/>
+        <rect x="34" y="58" width="32" height="7" rx="3.5" fill="#F1C40F"/>
+        <rect x="35" y="10" width="30" height="10" rx="4" fill="#3C1B70"/>
+        <circle cx="28" cy="48" r="14" fill="#3C1B70"/>
+        <circle cx="28" cy="48" r="11" fill="#2ECC71"/>
+        <path d="M22 48L26 52L34 44" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="75" cy="20" r="4" fill="#F1C40F"/>
+        <circle cx="22" cy="80" r="3" fill="#F1C40F"/>
+      </svg>
       <div>
         <h1>BILAN KINÉSITHÉRAPIQUE EXPERT EBP</h1>
         <div class="subtitle">Raisonnement clinique & Précision diagnostique</div>
@@ -300,8 +310,8 @@
     
     <div class="full-width">
       <div class="label-row">
-        <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques Intégrées) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart SVG', 'Cliquez pour ouvrir l\'interface anatomique 4 vues. Cliquez directement sur l\'anatomie pour poser/retirer des croix de douleur (✕).')">i</span>
+        <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques Realistic) :</label>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart SVG', 'Cliquez pour ouvrir l\'interface anatomique à 4 vues. Cliquez directement sur l\'anatomie pour poser ou retirer une croix de douleur (✕).')">i</span>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
         <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
@@ -397,7 +407,7 @@
     </div>
   </section>
 
-  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA (MULTI-PATHOLOGIES EN CASCADE) -->
+  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA -->
   <section id="sec-tests" class="scroll-section">
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
@@ -494,13 +504,13 @@
   </div>
 </div>
 
-<!-- MODAL BODY CHART 4 VUES TRACÉ ORIGINAL (EXACTEMENT VOTRE DESSIN) -->
+<!-- MODAL BODY CHART 4 VUES ANATOMIQUES REALISTES & FINES -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques)</h3>
-        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez sur l'anatomie pour poser une croix (✕). Cliquez sur une croix pour la supprimer.</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques Haute Qualité)</h3>
+        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez directement sur le corps pour ajouter/supprimer une croix de douleur (✕).</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
@@ -508,68 +518,75 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- SVG REPRODUISANT EXACTEMENT VOTRE SCHEMA A 4 VUES AU TRAIT NOIR -->
+      <!-- SVG ANATOMIQUE PROPORTIONNEL & REALISTE (4 VUES) -->
       <svg id="chartSVG" viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
-        <rect width="900" height="650" fill="#FFFFFF"/>
+        <rect width="900" height="650" fill="#FAF5FF"/>
         
-        <text x="115" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">FACE</text>
-        <text x="350" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL GAUCHE</text>
-        <text x="585" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL DROIT</text>
-        <text x="820" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">DOS</text>
+        <text x="115" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">FACE</text>
+        <text x="350" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL GAUCHE</text>
+        <text x="585" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL DROIT</text>
+        <text x="820" y="32" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">DOS</text>
 
-        <!-- Silhouettes noires au trait comme sur votre dessin -->
-        <g id="bodySilhouettes" fill="none" stroke="#222222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <!-- 1. VUE FACE -->
+        <g id="bodySilhouettes" fill="#FFFFFF" stroke="#3C1B70" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 1. FACE ANATOMIQUE REALISTE -->
           <g transform="translate(45, 40)">
-            <ellipse cx="70" cy="50" rx="18" ry="24"/>
-            <path d="M 62 74 L 62 90 L 78 90 L 78 74"/>
-            <path d="M 38 98 C 55 92, 85 92, 102 98 L 94 230 L 46 230 Z"/>
-            <path d="M 38 98 L 20 180 L 10 215 L 22 220 L 32 185 L 42 110"/>
-            <path d="M 102 98 L 120 180 L 130 215 L 118 220 L 108 185 L 98 110"/>
-            <path d="M 46 230 L 68 255 L 94 230 L 88 360 L 52 360 Z"/>
-            <path d="M 52 360 L 48 480 L 58 560 L 72 560 L 82 480 L 88 360"/>
-            <path d="M 58 560 L 48 580 L 72 580 L 72 560"/>
-            <path d="M 72 560 L 92 580 L 68 580"/>
+            <!-- Tête & Cou -->
+            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 44, 76 52, 70 52 C 64 52, 52 44, 52 28 Z"/>
+            <path d="M 62 51 L 62 65 C 50 68, 38 78, 30 92"/>
+            <path d="M 78 51 L 78 65 C 90 68, 102 78, 110 92"/>
+            <!-- Torse & Bassin -->
+            <path d="M 30 92 C 32 120, 36 150, 42 180 C 44 195, 48 215, 48 230 L 92 230 C 92 215, 96 195, 98 180 C 104 150, 108 120, 110 92 C 85 96, 55 96, 30 92 Z"/>
+            <path d="M 48 230 C 42 245, 42 270, 70 285 C 98 270, 98 245, 92 230"/>
+            <!-- Bras Droit -->
+            <path d="M 30 92 L 18 160 C 14 185, 10 210, 8 230 C 6 242, 12 248, 18 245 C 24 238, 26 215, 28 190 L 38 135"/>
+            <!-- Bras Gauche -->
+            <path d="M 110 92 L 122 160 C 126 185, 130 210, 132 230 C 134 242, 128 248, 122 245 C 116 238, 114 215, 112 190 L 102 135"/>
+            <!-- Jambe Droite -->
+            <path d="M 48 270 C 46 310, 48 360, 52 400 C 54 425, 52 460, 54 500 C 56 530, 58 550, 60 565 L 72 565 C 72 545, 70 520, 68 490 C 66 450, 68 410, 70 380 C 72 340, 70 300, 70 285"/>
+            <!-- Pied Droit -->
+            <path d="M 60 565 L 50 585 C 50 590, 70 592, 74 585 L 72 565"/>
+            <!-- Jambe Gauche -->
+            <path d="M 92 270 C 94 310, 92 360, 88 400 C 86 425, 88 460, 86 500 C 84 530, 82 550, 80 565 L 68 565 C 68 545, 70 520, 72 490 C 74 450, 72 410, 70 380 C 68 340, 70 300, 70 285"/>
+            <!-- Pied Gauche -->
+            <path d="M 80 565 L 90 585 C 90 590, 70 592, 66 585 L 68 565"/>
           </g>
 
-          <!-- 2. PROFIL GAUCHE -->
+          <!-- 2. PROFIL GAUCHE ANATOMIQUE -->
           <g transform="translate(280, 40)">
-            <ellipse cx="70" cy="50" rx="20" ry="24"/>
-            <path d="M 50 50 L 45 60 L 52 62"/>
-            <path d="M 60 74 L 64 90 L 76 90 L 72 74"/>
-            <path d="M 64 90 C 80 100, 85 140, 80 230 L 50 230 C 45 160, 50 110, 64 90 Z"/>
-            <path d="M 68 98 L 48 180 L 38 215 L 50 220 L 60 185 L 75 110"/>
-            <path d="M 50 230 C 65 250, 75 250, 80 230 L 72 360 L 52 360 Z"/>
-            <path d="M 52 360 L 48 470 L 58 560 L 80 560 L 70 470 L 72 360"/>
-            <path d="M 58 560 L 38 580 L 80 580 Z"/>
+            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 38, 80 50, 72 52 C 64 52, 58 48, 52 28 Z"/>
+            <path d="M 80 32 L 90 38 L 82 42"/>
+            <path d="M 62 52 L 62 65 C 72 70, 78 80, 80 92 L 82 180 C 82 205, 80 220, 76 235 C 70 260, 65 270, 65 285 C 65 330, 72 380, 72 410 C 72 450, 68 500, 68 565 L 82 565 L 82 500 C 84 450, 88 400, 85 370 C 82 330, 80 290, 85 270 C 92 240, 95 200, 90 150 C 85 110, 78 75, 72 65 Z"/>
+            <!-- Pied -->
+            <path d="M 68 565 L 45 585 L 85 585 L 82 565"/>
           </g>
 
-          <!-- 3. PROFIL DROIT -->
+          <!-- 3. PROFIL DROIT ANATOMIQUE -->
           <g transform="translate(515, 40)">
-            <ellipse cx="70" cy="50" rx="20" ry="24"/>
-            <path d="M 90 50 L 95 60 L 88 62"/>
-            <path d="M 80 74 L 76 90 L 64 90 L 68 74"/>
-            <path d="M 76 90 C 60 100, 55 140, 60 230 L 90 230 C 95 160, 90 110, 76 90 Z"/>
-            <path d="M 72 98 L 92 180 L 102 215 L 90 220 L 80 185 L 65 110"/>
-            <path d="M 90 230 C 75 250, 65 250, 60 230 L 68 360 L 88 360 Z"/>
-            <path d="M 88 360 L 92 470 L 82 560 L 60 560 L 70 470 L 68 360"/>
-            <path d="M 82 560 L 102 580 L 60 580 Z"/>
+            <path d="M 88 28 C 88 12, 52 12, 52 28 C 52 38, 60 50, 68 52 C 76 52, 82 48, 88 28 Z"/>
+            <path d="M 60 32 L 50 38 L 58 42"/>
+            <path d="M 78 52 L 78 65 C 68 70, 62 80, 60 92 L 58 180 C 58 205, 60 220, 64 235 C 70 260, 75 270, 75 285 C 75 330, 68 380, 68 410 C 68 450, 72 500, 72 565 L 58 565 L 58 500 C 56 450, 52 400, 55 370 C 58 330, 60 290, 55 270 C 48 240, 45 200, 50 150 C 55 110, 62 75, 68 65 Z"/>
+            <!-- Pied -->
+            <path d="M 72 565 L 95 585 L 55 585 L 58 565"/>
           </g>
 
-          <!-- 4. VUE DOS -->
+          <!-- 4. DOS ANATOMIQUE REALISTE -->
           <g transform="translate(750, 40)">
-            <ellipse cx="70" cy="50" rx="18" ry="24"/>
-            <path d="M 62 74 L 62 90 L 78 90 L 78 74"/>
-            <path d="M 38 98 C 55 92, 85 92, 102 98 L 94 230 L 46 230 Z"/>
-            <line x1="70" y1="90" x2="70" y2="230" stroke-dasharray="4"/>
-            <path d="M 50 110 L 40 150 L 55 150 Z"/>
-            <path d="M 90 110 L 100 150 L 85 150 Z"/>
-            <path d="M 38 98 L 20 180 L 10 215 L 22 220 L 32 185 L 42 110"/>
-            <path d="M 102 98 L 120 180 L 130 215 L 118 220 L 108 185 L 98 110"/>
-            <path d="M 46 230 C 45 280, 95 280, 94 230 L 88 360 L 52 360 Z"/>
-            <path d="M 52 360 L 48 480 L 58 560 L 72 560 L 82 480 L 88 360"/>
-            <path d="M 58 560 L 48 580 L 72 580 L 72 560"/>
-            <path d="M 72 560 L 92 580 L 68 580"/>
+            <path d="M 52 28 C 52 12, 88 12, 88 28 C 88 44, 76 52, 70 52 C 64 52, 52 44, 52 28 Z"/>
+            <path d="M 62 51 L 62 65 C 50 68, 38 78, 30 92"/>
+            <path d="M 78 51 L 78 65 C 90 68, 102 78, 110 92"/>
+            <path d="M 30 92 C 32 120, 36 150, 42 180 C 44 195, 48 215, 48 230 L 92 230 C 92 215, 96 195, 98 180 C 104 150, 108 120, 110 92 C 85 96, 55 96, 30 92 Z"/>
+            <line x1="70" y1="65" x2="70" y2="280" stroke="#3C1B70" stroke-width="1.2" stroke-dasharray="3"/>
+            <!-- Fessiers -->
+            <path d="M 48 230 C 45 275, 70 290, 70 285 C 70 290, 95 275, 92 230"/>
+            <!-- Bras -->
+            <path d="M 30 92 L 18 160 C 14 185, 10 210, 8 230 C 6 242, 12 248, 18 245 C 24 238, 26 215, 28 190 L 38 135"/>
+            <path d="M 110 92 L 122 160 C 126 185, 130 210, 132 230 C 134 242, 128 248, 122 245 C 116 238, 114 215, 112 190 L 102 135"/>
+            <!-- Jambes -->
+            <path d="M 48 280 C 46 320, 48 370, 52 410 C 54 435, 52 470, 54 500 C 56 530, 58 550, 60 565 L 72 565 C 72 545, 70 520, 68 490 C 66 450, 68 410, 70 380 C 72 340, 70 300, 70 285"/>
+            <path d="M 92 280 C 94 320, 92 370, 88 410 C 86 435, 88 470, 86 500 C 84 530, 82 550, 80 565 L 68 565 C 68 545, 70 520, 72 490 C 74 450, 72 410, 70 380 C 68 340, 70 300, 70 285"/>
+            <!-- Talons -->
+            <path d="M 60 565 L 55 585 L 72 585 L 72 565"/>
+            <path d="M 80 565 L 85 585 L 68 585 L 68 565"/>
           </g>
         </g>
         
@@ -584,7 +601,7 @@
   let exoCounter = 0;
   document.getElementById('dateBilan').valueAsDate = new Date();
 
-  // INTERSECTION OBSERVER ANIMATIONS
+  // INTERSECTION OBSERVER
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
@@ -613,7 +630,6 @@
     });
   }
 
-  // MODAL INFO CLIQUE (I)
   function ouvrirInfoModal(titre, texte) {
     document.getElementById('infoModalTitle').innerText = "ℹ️ " + titre;
     document.getElementById('infoModalBody').innerHTML = texte;
@@ -622,7 +638,6 @@
   function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
   function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
-  // BASE DE DONNÉES COMPLÈTE DE 50 PATHOLOGIES
   const pathologiesDB = {
     lca: { nom: "1. Rupture / Lésion du Ligament Croisé Antérieur (LCA)", tests: [{ id: "t_lca_1", label: "Test de Lachman", info: "Sensibilité ~85% | Spécificité ~94%." }, { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "Sensibilité ~62%." }, { id: "t_lca_3", label: "Pivot Shift Test", info: "Spécificité ~98%." }] },
     menisque: { nom: "2. Lésion Méniscale (Médiale ou Latérale)", tests: [{ id: "t_men_1", label: "Test de Thessaly (20°)", info: "Sensibilité ~89%." }, { id: "t_men_2", label: "Test de McMurray", info: "Spécificité ~85%." }] },
@@ -693,7 +708,6 @@
     }
   }
 
-  /* GESTION HEP EXERCICES PATIENT */
   function ajouterExercicePatient() {
     exoCounter++;
     const container = document.getElementById('exerciceListContainer');
@@ -744,7 +758,7 @@
     }, 400);
   }
 
-  // GESTION DU BODY CHART SVG VECTORIEL AU TRAIT
+  // GESTION DU BODY CHART SVG
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
