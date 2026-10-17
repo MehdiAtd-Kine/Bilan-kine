@@ -10,30 +10,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      /* Palette personnalisée */
-      --c-pale: #F2FFFB;       /* Vert très pâle (Fond principal) */
-      --c-menthe-clair: #CFF7EA;/* Menthe clair (Fonds cartes & survol) */
-      --c-eau: #7FE3C6;        /* Vert d'eau (Bordures & détails) */
-      --c-menthe-vif: #2AAE8A;  /* Menthe vif (Boutons principaux & titres) */
-      --c-sapin: #124D41;       /* Vert sapin sombre (Texte & En-tête) */
-      
+      --c-pale: #F2FFFB;
+      --c-menthe-clair: #CFF7EA;
+      --c-eau: #7FE3C6;
+      --c-menthe-vif: #2AAE8A;
+      --c-sapin: #124D41;
       --card-bg: #FFFFFF;
       --border: #C1EFE2;
       --danger: #DC2626;
       --shadow: 0 10px 30px rgba(18, 77, 65, 0.06);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--c-pale);
       background-image: 
         radial-gradient(circle at 10% 20%, rgba(207, 247, 234, 0.6) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(127, 227, 198, 0.3) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(242, 255, 251, 0.8) 0%, transparent 100%);
+        radial-gradient(circle at 90% 80%, rgba(127, 227, 198, 0.3) 0%, transparent 40%);
       background-attachment: fixed;
       color: var(--c-sapin);
       padding: 30px 15px 120px 15px;
@@ -44,7 +39,7 @@
     .container {
       max-width: 1060px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
       padding: 40px;
       border-radius: 20px;
@@ -63,234 +58,138 @@
       gap: 15px;
     }
 
-    .brand-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
+    .brand-header { display: flex; align-items: center; gap: 14px; }
     .brand-icon {
-      background: var(--c-menthe-clair);
-      color: var(--c-sapin);
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
+      background: var(--c-menthe-clair); color: var(--c-sapin);
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
       border: 1px solid var(--c-eau);
     }
 
-    h1 { margin: 0; font-size: 22px; color: var(--c-sapin); font-weight: 800; letter-spacing: -0.3px; }
+    h1 { margin: 0; font-size: 22px; color: var(--c-sapin); font-weight: 800; }
     .subtitle { font-size: 13px; color: var(--c-sapin); opacity: 0.8; margin-top: 2px; }
 
-    /* BARRE DE NAVIGATION ANCRÉE EN HAUT */
+    /* MENU ANCRES */
     .sticky-nav {
-      position: sticky;
-      top: 15px;
-      z-index: 1000;
+      position: sticky; top: 15px; z-index: 1000;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border: 1px solid var(--c-eau);
-      border-radius: 14px;
-      padding: 8px 12px;
-      margin-bottom: 35px;
-      display: flex;
-      justify-content: space-around;
-      gap: 8px;
+      border-radius: 14px; padding: 8px 12px; margin-bottom: 35px;
+      display: flex; justify-content: space-around; gap: 8px; overflow-x: auto;
       box-shadow: 0 4px 20px rgba(18, 77, 65, 0.08);
-      overflow-x: auto;
     }
-
     .nav-anchor {
-      text-decoration: none;
-      color: var(--c-sapin);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      cursor: pointer;
+      text-decoration: none; color: var(--c-sapin); font-size: 13px; font-weight: 700;
+      padding: 8px 16px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
     }
+    .nav-anchor:hover { background: var(--c-menthe-clair); }
 
-    .nav-anchor:hover {
-      background: var(--c-menthe-clair);
-      color: var(--c-sapin);
-    }
-
-    /* SECTIONS AVEC ANIMATION AU SCROLL */
     .scroll-section {
-      margin-bottom: 40px;
-      padding-top: 10px;
-      opacity: 0;
-      transform: translateY(30px);
+      margin-bottom: 40px; padding-top: 10px;
+      opacity: 0; transform: translateY(30px);
       transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    .scroll-section.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .scroll-section.is-visible { opacity: 1; transform: translateY(0); }
 
     .section-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--c-sapin);
+      font-size: 15px; font-weight: 800; color: var(--c-sapin);
       background: linear-gradient(90deg, var(--c-menthe-clair) 0%, var(--c-pale) 100%);
-      padding: 12px 18px;
-      border-left: 5px solid var(--c-menthe-vif);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 12px 18px; border-left: 5px solid var(--c-menthe-vif); border-radius: 8px;
+      margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
     }
 
-    .grid { 
-      display: grid; 
-      grid-template-columns: repeat(2, 1fr); 
-      gap: 22px 18px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 18px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .full-width { grid-column: 1 / -1; }
 
-    label { font-weight: 700; font-size: 13px; color: var(--c-sapin); display: block; margin-bottom: 6px; }
+    .label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    label { font-weight: 700; font-size: 13px; color: var(--c-sapin); display: block; margin: 0; }
     
     input[type="text"], input[type="date"], select, textarea, input[type="file"] {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 13.5px;
-      box-sizing: border-box;
-      background: #FFFFFF;
-      color: var(--c-sapin);
-      transition: all 0.2s ease;
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 13.5px; box-sizing: border-box;
+      background: #FFFFFF; color: var(--c-sapin); transition: all 0.2s;
     }
-
-    input::placeholder, textarea::placeholder {
-      color: var(--c-sapin) !important;
-      opacity: 0.6;
-    }
-
+    input::placeholder, textarea::placeholder { color: var(--c-sapin) !important; opacity: 0.6; }
     input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--c-menthe-vif);
+      outline: none; border-color: var(--c-menthe-vif);
       box-shadow: 0 0 0 3px rgba(42, 174, 138, 0.2);
     }
-
     textarea { min-height: 70px; resize: vertical; }
 
-    .neutral-block {
-      background: var(--c-pale);
-      padding: 18px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
+    .neutral-block { background: var(--c-pale); padding: 18px; border-radius: 12px; border: 1px solid var(--border); }
+
+    /* BOUTON INFO (I) */
+    .btn-info {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 19px; height: 19px; border-radius: 50%;
+      background: var(--c-menthe-clair); color: var(--c-sapin);
+      font-size: 11px; font-weight: bold; cursor: pointer; border: 1px solid var(--c-eau);
+      user-select: none; transition: transform 0.15s, background 0.15s;
     }
+    .btn-info:hover { background: var(--c-menthe-vif); color: white; transform: scale(1.15); }
 
     .btn-reset {
-      background: var(--c-menthe-clair);
-      color: var(--c-sapin);
-      border: 1px solid var(--c-eau);
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12.5px;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: var(--c-menthe-clair); color: var(--c-sapin); border: 1px solid var(--c-eau);
+      padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer;
     }
     .btn-reset:hover { background: var(--c-eau); }
 
     .btn-action-vif {
-      background: var(--c-menthe-vif);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(42, 174, 138, 0.25);
-      transition: all 0.2s;
+      background: var(--c-menthe-vif); color: white; border: none;
+      padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(42, 174, 138, 0.25); transition: all 0.2s;
     }
     .btn-action-vif:hover { transform: translateY(-2px); background: #239475; }
 
-    .btn-info {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--c-menthe-clair);
-      color: var(--c-sapin);
-      font-size: 11px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-left: 6px;
-    }
-
     .preview-box {
-      text-align: center;
-      background: var(--c-pale);
-      padding: 18px;
-      border-radius: 12px;
-      border: 2px dashed var(--c-eau);
-      cursor: pointer;
-      transition: background 0.2s;
+      text-align: center; background: var(--c-pale); padding: 18px;
+      border-radius: 12px; border: 2px dashed var(--c-eau); cursor: pointer; transition: background 0.2s;
     }
     .preview-box:hover { background: var(--c-menthe-clair); }
 
-    /* WIDGET IA FLOTTANT */
-    #aiFloatBtn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background: var(--c-sapin);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 22px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(18, 77, 65, 0.3);
-      display: flex; align-items: center; gap: 8px;
-      z-index: 999;
-      transition: transform 0.2s;
+    /* PATHOLOGIE CARDS (MULTI-TESTS) */
+    .patho-block {
+      background: white; border: 1px solid var(--c-eau); border-radius: 14px;
+      padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(18,77,65,0.04);
+      position: relative;
     }
-    #aiFloatBtn:hover { transform: scale(1.05); }
+    .btn-remove-patho {
+      position: absolute; top: 15px; right: 15px; background: #FFF5F5; color: var(--danger);
+      border: 1px solid #FFD6D6; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-weight: 700;
+    }
+    .btn-remove-patho:hover { background: var(--danger); color: white; }
 
+    /* WIDGET IA */
+    #aiFloatBtn {
+      position: fixed; bottom: 25px; right: 25px; background: var(--c-sapin); color: white;
+      border: none; border-radius: 30px; padding: 14px 22px; font-weight: 700; font-size: 14px;
+      cursor: pointer; box-shadow: 0 8px 25px rgba(18, 77, 65, 0.3); display: flex; align-items: center; gap: 8px; z-index: 999;
+    }
     #aiChatWindow {
-      display: none; position: fixed; bottom: 85px; right: 25px; width: 380px; height: 500px; background: white; border: 1px solid var(--c-eau); border-radius: 16px; box-shadow: 0 12px 35px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden; z-index: 9999;
+      display: none; position: fixed; bottom: 85px; right: 25px; width: 380px; height: 500px;
+      background: white; border: 1px solid var(--c-eau); border-radius: 16px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden; z-index: 9999;
     }
     .ai-chat-header { background: var(--c-sapin); color: white; padding: 14px 18px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
     .ai-chat-body { flex: 1; padding: 14px; overflow-y: auto; font-size: 13px; background: var(--c-pale); display: flex; flex-direction: column; gap: 10px; }
     .ai-chat-footer { padding: 12px; background: white; border-top: 1px solid var(--border); display: flex; gap: 8px; }
 
-    .export-bar {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px;
-    }
-    .btn-export {
-      border: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: transform 0.15s;
-    }
-    .btn-export:hover { transform: translateY(-2px); }
+    .export-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
+    .btn-export { border: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
     .btn-docx { background: var(--c-menthe-vif); }
     .btn-doc-med { background: var(--c-sapin); }
     .btn-pdf { background: #22543D; }
 
     /* MODALS */
     .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(18, 77, 65, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(18, 77, 65, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
     }
-    .modal-content {
-      background: white; width: 90%; max-width: 960px; height: 90vh; max-height: 880px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column;
-    }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;
-    }
+    .modal-content { background: white; width: 90%; max-width: 960px; height: 90vh; max-height: 880px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
+    .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
     .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--c-pale); border-radius: 12px; margin-top: 14px; overflow: hidden; }
     
     #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
@@ -319,7 +218,7 @@
     </div>
   </header>
 
-  <!-- BARRE DE NAVIGATION EN ANCRES (SCROLL FLUIDE) -->
+  <!-- NAVIGATION ANCRES -->
   <nav class="sticky-nav">
     <a href="#sec-patient" class="nav-anchor">1. Patient & Photos</a>
     <a href="#sec-anamnese" class="nav-anchor">2. Anamnèse & Douleur</a>
@@ -332,28 +231,50 @@
   <section id="sec-patient" class="scroll-section">
     <div class="section-title"><span>1. RENSEIGNEMENTS GÉNÉRAUX & PIÈCES JOINTES</span></div>
     <div class="grid">
-      <div><label>Nom :</label><input type="text" id="nom" placeholder="Nom du patient"></div>
-      <div><label>Prénom :</label><input type="text" id="prenom" placeholder="Prénom"></div>
-      <div><label>Date de naissance :</label><input type="date" id="dob"></div>
-      <div><label>Téléphone :</label><input type="text" id="telephone" placeholder="06 ..."></div>
-      <div><label>Date du bilan :</label><input type="date" id="dateBilan"></div>
-      <div><label>Prescription médicale & Motif :</label><input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'..."></div>
-      <div><label>Activité physique / Profession :</label><input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire..."></div>
-      <div><label>Sport / Loisirs :</label><input type="text" id="sport" placeholder="Discipline, fréquence..."></div>
+      <div>
+        <div class="label-row"><label>Nom :</label><span class="btn-info" onclick="ouvrirInfoModal('Nom du patient', 'Saisissez le nom de famille du patient pour l\'identification du dossier.')">i</span></div>
+        <input type="text" id="nom" placeholder="Nom du patient">
+      </div>
+      <div>
+        <div class="label-row"><label>Prénom :</label><span class="btn-info" onclick="ouvrirInfoModal('Prénom', 'Saisissez le prénom du patient.')">i</span></div>
+        <input type="text" id="prenom" placeholder="Prénom">
+      </div>
+      <div>
+        <div class="label-row"><label>Date de naissance :</label><span class="btn-info" onclick="ouvrirInfoModal('Date de naissance', 'Permet de calculer l\'âge et d\'ajoter le profil épidémiologique pertinent.')">i</span></div>
+        <input type="date" id="dob">
+      </div>
+      <div>
+        <div class="label-row"><label>Téléphone :</label><span class="btn-info" onclick="ouvrirInfoModal('Téléphone', 'Numéro de contact pour le suivi.')">i</span></div>
+        <input type="text" id="telephone" placeholder="06 ...">
+      </div>
+      <div>
+        <div class="label-row"><label>Date du bilan :</label><span class="btn-info" onclick="ouvrirInfoModal('Date du bilan', 'Date de la première évaluation kinésithérapique.')">i</span></div>
+        <input type="date" id="dateBilan">
+      </div>
+      <div>
+        <div class="label-row"><label>Prescription médicale & Motif :</label><span class="btn-info" onclick="ouvrirInfoModal('Prescription médicale', 'Indiquez le médecin prescripteur et l\'intitulé exact de l\'ordonnance.')">i</span></div>
+        <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'..."></div>
+      <div>
+        <div class="label-row"><label>Activité physique / Profession :</label><span class="btn-info" onclick="ouvrirInfoModal('Activité / Profession', 'Permet d\'identifier les contraintes biomécaniques professionnelles quotidiennes.')">i</span></div>
+        <input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire..."></div>
+      <div>
+        <div class="label-row"><label>Sport / Loisirs :</label><span class="btn-info" onclick="ouvrirInfoModal('Sport & Loisirs', 'Volume, intensité et type de gestuelle sportive.')">i</span></div>
+        <input type="text" id="sport" placeholder="Discipline, fréquence..."></div>
       
       <div class="full-width neutral-block">
-        <label>👤 Profil & Autonomie :</label>
+        <div class="label-row"><label>👤 Profil & Autonomie :</label><span class="btn-info" onclick="ouvrirInfoModal('Profil & Autonomie', 'Classement du niveau de contrainte globale et d\'exposition aux charges du patient.')">i</span></div>
         <select id="profilPatient">
-          <option>Sportif Compétiteur</option>
-          <option>Sportif Loisir</option>
+          <option>Sportif Compétiteur (Pivots / Impacts)</option>
+          <option>Sportif Loisir / Récréatif</option>
           <option>Sédentaire / Travailleur de bureau</option>
-          <option>Travailleur de force</option>
+          <option>Travailleur physique / Travail contraignant (Manutention, charges lourdes)</option>
+          <option>Post-opératoire récent</option>
           <option>Gériatrie / Perte d'autonomie</option>
         </select>
       </div>
 
       <div class="full-width neutral-block">
-        <label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label>
+        <div class="label-row"><label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label><span class="btn-info" onclick="ouvrirInfoModal('Pièces jointes', 'Joignez des photographies de posture ou d\'imagerie médicale pour archivage.')">i</span></div>
         <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
         <div id="photoPreviewContainer" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
       </div>
@@ -365,34 +286,46 @@
     <div class="section-title"><span>2. SCHÉMA CORPOREL & PROFIL DE DOULEUR</span></div>
     
     <div class="full-width">
-      <label>📍 Schéma Corporel (Body Chart Anatomique Détaillé) :</label>
+      <div class="label-row">
+        <label>📍 Schéma Corporel (Body Chart Anatomique 4 Vues) :</label>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart Anatomique', 'Cliquez pour ouvrir l\'éditeur haute précision à 4 vues (Face, Profil G, Profil D, Dos). Cliquez sur les zones douloureuses pour poser des repères de localisation.')">i</span>
+      </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique.</span>
+        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique à 4 vues.</span>
       </div>
     </div>
 
     <div class="grid" style="margin-top:20px;">
-      <div class="full-width"><label>Mécanisme lésionnel & Histoire :</label><textarea id="mecanisme" placeholder="Circonstances, progressif vs brutal..."></textarea></div>
-      <div class="full-width"><label>Symptômes & Comportement de la douleur :</label><textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal..."></textarea></div>
+      <div class="full-width">
+        <div class="label-row"><label>Mécanisme lésionnel & Histoire de la maladie :</label><span class="btn-info" onclick="ouvrirInfoModal('Mécanisme lésionnel', 'Apparition progressive vs traumatique aigu, notion de faux mouvement ou de surcharge.')">i</span></div>
+        <textarea id="mecanisme" placeholder="Circonstances, progressif vs brutal..."></textarea>
+      </div>
+      <div class="full-width">
+        <div class="label-row"><label>Symptômes & Comportement de la douleur :</label><span class="btn-info" onclick="ouvrirInfoModal('Comportement de la douleur', 'Irritabilité, dérouillage matinal, facteurs aggravants et calmants au cours de la journée.')">i</span></div>
+        <textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal..."></textarea>
+      </div>
     </div>
 
     <div class="grid-3" style="margin-top:16px;">
       <div class="neutral-block">
-        <div style="display:flex; justify-content:space-between;"><label>Douleur Repos :</label><span id="evaReposVal" style="font-weight:700; color:var(--c-menthe-vif);">0/10</span></div>
+        <div class="label-row"><label>Douleur Repos (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Repos', 'Évaluation de la douleur de base sans contrainte.')">i</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaReposVal" style="font-weight:700; color:var(--c-menthe-vif);">0/10</span></div>
         <input type="range" id="evaRepos" min="0" max="10" value="0" oninput="document.getElementById('evaReposVal').innerText = this.value + '/10'">
       </div>
       <div class="neutral-block">
-        <div style="display:flex; justify-content:space-between;"><label>Douleur Effort :</label><span id="evaEffortVal" style="font-weight:700; color:var(--c-menthe-vif);">4/10</span></div>
+        <div class="label-row"><label>Douleur Effort (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Effort', 'Douleur ressentie lors des activités fonctionnelles habituelles.')">i</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaEffortVal" style="font-weight:700; color:var(--c-menthe-vif);">4/10</span></div>
         <input type="range" id="evaEffort" min="0" max="10" value="4" oninput="document.getElementById('evaEffortVal').innerText = this.value + '/10'">
       </div>
       <div class="neutral-block">
-        <div style="display:flex; justify-content:space-between;"><label>Douleur Pic :</label><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
+        <div class="label-row"><label>Douleur Pic (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Pic', 'Intensité maximale de la douleur lors des crises ou mouvements aigus.')">i</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
         <input type="range" id="evaPic" min="0" max="10" value="6" oninput="document.getElementById('evaPicVal').innerText = this.value + '/10'">
       </div>
     </div>
 
     <div style="background:#FFF5F5; border:1px solid #FFD6D6; border-radius:12px; padding:16px; margin-top:20px;">
-      <strong style="color:var(--danger); font-size:13px;">⚠️ Drapeaux Rouges (Triage Sécurité) :</strong>
+      <div class="label-row"><strong style="color:var(--danger); font-size:13px;">⚠️ Drapeaux Rouges (Triage Sécurité & Exclusion) :</strong><span class="btn-info" onclick="ouvrirInfoModal('Drapeaux Rouges (Red Flags)', 'Signes d\'alerte médicale grave nécessitant une réorientation médicale immédiate (fracture, infection, tumeur, urgence neurologique).')">i</span></div>
       <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; font-size:12px;">
         <label><input type="checkbox" id="rf1"> Perte pondérale inexpliquée</label>
         <label><input type="checkbox" id="rf2"> Douleur constante nocturne</label>
@@ -406,36 +339,46 @@
   <section id="sec-examen" class="scroll-section">
     <div class="section-title"><span>3. EXAMEN PHYSIQUE GLOBAL & DÉFICITS (CIF)</span></div>
     <div class="grid">
-      <div><label>Déficits posturaux & Statique :</label><textarea id="deficitsPosturaux" placeholder="Alignement, asymétries..."></textarea></div>
-      <div><label>Déficits dynamiques & Marche :</label><textarea id="deficitsPosturauxDyn" placeholder="Boiterie, esquive..."></textarea></div>
-      <div><label>Déficits articulaires (Goniométrie) :</label><textarea id="deficitsArticulaires" placeholder="Amplitudes actives et passives..."></textarea></div>
-      <div><label>Déficits trophiques & Souplesse :</label><textarea id="deficitsSouplesse" placeholder="Œdèmes, raideurs..."></textarea></div>
-      <div class="full-width"><label>Testing musculaire analytique :</label><textarea id="deficitsMusculaires" placeholder="Cotation de force 0 à 5..."></textarea></div>
+      <div>
+        <div class="label-row"><label>Déficits posturaux & Statique :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits posturaux', 'Analyse globale de l\'alignement, des courbures et des asymétries en station.')">i</span></div>
+        <textarea id="deficitsPosturaux" placeholder="Alignement, asymétries..."></textarea>
+      </div>
+      <div>
+        <div class="label-row"><label>Déficits dynamiques & Marche :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits dynamiques', 'Observation de la marche, boiteries d\'esquive ou stratégies compensatrices.')">i</span></div>
+        <textarea id="deficitsPosturauxDyn" placeholder="Boiterie, esquive..."></textarea>
+      </div>
+      <div>
+        <div class="label-row"><label>Déficits articulaires (Goniométrie) :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits articulaires', 'Amplitudes articulaires actives et passives comparées au côté sain.')">i</span></div>
+        <textarea id="deficitsArticulaires" placeholder="Amplitudes actives et passives..."></textarea>
+      </div>
+      <div>
+        <div class="label-row"><label>Déficits trophiques & Souplesse :</label><span class="btn-info" onclick="ouvrirInfoModal('Trophisme & Souplesse', 'Présence d\'œdème, modifications cutanées, trophicité musculaire ou raideurs tissulaires.')">i</span></div>
+        <textarea id="deficitsSouplesse" placeholder="Œdèmes, raideurs..."></textarea>
+      </div>
+      <div class="full-width">
+        <div class="label-row"><label>Testing musculaire analytique :</label><span class="btn-info" onclick="ouvrirInfoModal('Testing musculaire', 'Évaluation de la force maximale cotée de 0 à 5/5 selon le Medical Research Council.')">i</span></div>
+        <textarea id="deficitsMusculaires" placeholder="Cotation de force 0 à 5..."></textarea>
+      </div>
     </div>
   </section>
 
-  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA -->
+  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA (MULTI-PATHOLOGIES EN CASCADE) -->
   <section id="sec-tests" class="scroll-section">
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
-    <div class="neutral-block" style="margin-bottom:16px;">
-      <label>🔍 Région d'exploration ciblée :</label>
-      <select id="selectRegionExploration" onchange="changerRegionExploration(this.value)">
-        <option value="rachis_lombaire">Rachis Lombaire / Lombalgie & Radiculopathie</option>
-        <option value="rachis_cervical">Rachis Cervical / NCB</option>
-        <option value="epaule">Épaule (Coiffe, Conflit, Instabilité)</option>
-        <option value="coude_poignet">Coude & Poignet (Épicondylite, Canal carpien)</option>
-        <option value="hanche">Hanche (Coxarthrose, Conflit fémoro-acétabulaire)</option>
-        <option value="genou">Genou (LCA, Ménisque, Fémoro-patellaire)</option>
-        <option value="cheville">Cheville & Pied (Entorse, Achille)</option>
-        <option value="geriatrie">Gériatrie / Équilibre & Chutes</option>
-      </select>
+    <div style="font-size:13px; color:var(--c-sapin); margin-bottom:14px; opacity:0.9;">
+      Sélectionnez une pathologie ciblée pour tester une hypothèse. Si les tests s'avèrent négatifs ou si vous souhaitez explorer un diagnostic différentiel, vous pouvez ajouter une nouvelle pathologie en cascade.
     </div>
 
-    <div id="testsExplorationContainer" style="background:white; border:1px solid var(--border); border-radius:12px; padding:20px;"></div>
+    <!-- Conteneur des blocs de pathologies dynamiques -->
+    <div id="pathologiesListContainer"></div>
+
+    <div style="margin-top:15px; margin-bottom:25px;">
+      <button class="btn-reset" onclick="ajouterBlocPathologie()" style="background:var(--c-menthe-clair); font-weight:700;">+ Tester une autre pathologie (Diagnostic différentiel)</button>
+    </div>
 
     <div style="margin-top:20px; text-align:center;">
-      <button class="btn-action-vif" onclick="calculerDiagnosticIA()">⚡ Calculer & Classer les Diagnostics (Analyse IA)</button>
+      <button class="btn-action-vif" onclick="calculerDiagnosticIA()">⚡ Analyser l'ensemble du bilan & Classer les Diagnostics</button>
     </div>
 
     <div id="probabilitesContainer" style="margin-top:20px;"></div>
@@ -446,13 +389,19 @@
     <div class="section-title"><span>5. DIAGNOSTIC RETENU & PROJET THÉRAPEUTIQUE</span></div>
     <div class="grid">
       <div class="full-width">
-        <label>Diagnostic Kinésithérapique Final Retenu :</label>
+        <div class="label-row"><label>Diagnostic Kinésithérapique Final Retenu :</label><span class="btn-info" onclick="ouvrirInfoModal('Diagnostic Kiné', 'Synthèse clinique validée par l\'anamnèse et les clusters de tests positifs.')">i</span></div>
         <input type="text" id="diagnostic" placeholder="Diagnostic validé par les tests...">
       </div>
-      <div><label>A travailler - Articulaire :</label><textarea id="travailArticulaire"></textarea></div>
-      <div><label>A travailler - Force & Moteur :</label><textarea id="travailForce"></textarea></div>
+      <div>
+        <div class="label-row"><label>A travailler - Articulaire :</label><span class="btn-info" onclick="ouvrirInfoModal('Objectif Articulaire', 'Amplitudes à récupérer en priorité.')">i</span></div>
+        <textarea id="travailArticulaire"></textarea>
+      </div>
+      <div>
+        <div class="label-row"><label>A travailler - Force & Moteur :</label><span class="btn-info" onclick="ouvrirInfoModal('Objectif Force', 'Renforcement spécifique et contrôle neuromusculaire.')">i</span></div>
+        <textarea id="travailForce"></textarea>
+      </div>
       <div class="full-width">
-        <label>Programme d'Auto-exercices (HEP) :</label>
+        <div class="label-row"><label>Programme d'Auto-exercices (HEP) :</label><span class="btn-info" onclick="ouvrirInfoModal('HEP (Home Exercise Program)', 'Exercices d\'autonomisation prescrits au patient entre les séances.')">i</span></div>
         <textarea id="contratKine"></textarea>
       </div>
     </div>
@@ -465,6 +414,7 @@
   </section>
 </div>
 
+<!-- WIDGET IA -->
 <button id="aiFloatBtn" onclick="toggleAiChat()">🤖 Assistant IA EBP</button>
 
 <div id="aiChatWindow">
@@ -483,13 +433,24 @@
   </div>
 </div>
 
-<!-- MODAL BODY CHART ANATOMIQUE CONSERVÉ STRICTEMENT INTÉGRALEMENT -->
+<!-- MODAL INFO EXPLICATION (I) -->
+<div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
+  <div class="modal-info-box">
+    <div class="modal-header">
+      <h3 id="infoModalTitle" style="margin:0; font-size:16px; color:var(--c-sapin);">Aide Clinique EBP</h3>
+      <button onclick="fermerModalInfoDirect()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
+    </div>
+    <div style="margin-top:16px; font-size:13.5px; line-height:1.6; color:var(--c-sapin);" id="infoModalBody"></div>
+  </div>
+</div>
+
+<!-- MODAL BODY CHART 4 VUES ANATOMIQUES EXACTES -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Éditeur de Pointage de Douleur</h3>
-        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez sur l'anatomie pour poser une marque de douleur (Cercle Rouge).</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Éditeur de Pointage de Douleur (Body Chart 4 Vues)</h3>
+        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez sur l'une des 4 vues anatomiques pour positionner un repère de douleur.</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
@@ -497,59 +458,54 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- BODY CHART DÉTAILLÉ SANS AUCUNE MODIFICATION -->
-      <svg id="chartSVG" viewBox="0 0 700 850" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="850" fill="#F2FFFB"/>
+      <!-- SVG 4 VUES EXACTES (Basé sur votre modèle de référence) -->
+      <svg id="chartSVG" viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
+        <rect width="900" height="650" fill="#F2FFFB"/>
         
-        <text x="180" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#124D41">VUE ANTÉRIEURE</text>
-        <text x="520" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#124D41">VUE POSTÉRIEURE</text>
+        <text x="115" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">1. FACE</text>
+        <text x="350" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">2. PROFIL GAUCHE</text>
+        <text x="585" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">3. PROFIL DROIT</text>
+        <text x="820" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">4. DOS</text>
 
-        <!-- Modèle Antérieur Détaillé -->
-        <g id="bodyFront" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
-          <ellipse cx="180" cy="80" rx="30" ry="35"/><path d="M 165 110 L 165 130 L 195 130 L 195 110 Z"/>
-          <path d="M 120 135 C 150 125, 210 125, 240 135 L 230 320 L 130 320 Z"/>
-          <line x1="180" y1="130" x2="180" y2="320" stroke-width="1" stroke-dasharray="3"/>
-          <circle cx="110" cy="145" r="15" fill="#7FE3C6"/>
-          <path d="M 95 145 L 75 250 L 85 320 L 105 320 L 115 250 Z"/>
-          <circle cx="80" cy="250" r="10" fill="#7FE3C6"/>
-          <ellipse cx="95" cy="335" rx="12" ry="18"/>
-          <circle cx="250" cy="145" r="15" fill="#7FE3C6"/>
-          <path d="M 265 145 L 285 250 L 275 320 L 255 320 L 245 250 Z"/>
-          <circle cx="280" cy="250" r="10" fill="#7FE3C6"/>
-          <ellipse cx="265" cy="335" rx="12" ry="18"/>
-          <path d="M 130 320 L 180 360 L 230 320 L 225 370 L 135 370 Z"/>
-          <path d="M 135 370 L 130 520 L 140 680 L 165 680 L 170 520 L 160 370 Z"/>
-          <circle cx="130" cy="520" r="14" fill="#7FE3C6"/>
-          <ellipse cx="140" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
-          <path d="M 130 700 L 115 740 L 150 740 Z"/>
-          <path d="M 225 370 L 230 520 L 220 680 L 195 680 L 190 520 L 200 370 Z"/>
-          <circle cx="230" cy="520" r="14" fill="#7FE3C6"/>
-          <ellipse cx="220" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
-          <path d="M 230 700 L 245 740 L 210 740 Z"/>
-        </g>
+        <!-- Silhouettes simplifiées conformes au modèle 4 vues -->
+        <g id="bodySilhouettes" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
+          <!-- 1. VUE DE FACE -->
+          <g transform="translate(45, 45)">
+            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
+            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/>
+            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
+            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
+            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
+            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
+          </g>
 
-        <!-- Modèle Postérieur Détaillé -->
-        <g id="bodyBack" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
-          <ellipse cx="520" cy="80" rx="30" ry="35"/><path d="M 505 110 L 505 130 L 535 130 L 535 110 Z"/>
-          <path d="M 460 135 C 490 125, 550 125, 580 135 L 570 320 L 470 320 Z"/>
-          <line x1="520" y1="130" x2="520" y2="320" stroke="#124D41" stroke-width="2"/>
-          <circle cx="450" cy="145" r="15" fill="#7FE3C6"/>
-          <path d="M 435 145 L 415 250 L 425 320 L 445 320 L 455 250 Z"/>
-          <circle cx="420" cy="250" r="10" fill="#7FE3C6"/>
-          <ellipse cx="435" cy="335" rx="12" ry="18"/>
-          <circle cx="590" cy="145" r="15" fill="#7FE3C6"/>
-          <path d="M 605 145 L 625 250 L 615 320 L 595 320 L 585 250 Z"/>
-          <circle cx="620" cy="250" r="10" fill="#7FE3C6"/>
-          <ellipse cx="605" cy="335" rx="12" ry="18"/>
-          <path d="M 470 320 C 490 380, 550 380, 570 320 L 565 370 L 475 370 Z"/>
-          <path d="M 475 370 L 480 520 L 470 680 L 495 680 L 500 520 L 510 370 Z"/>
-          <circle cx="480" cy="520" r="14" fill="#7FE3C6"/>
-          <ellipse cx="470" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
-          <path d="M 480 700 L 495 740 L 460 740 Z"/>
-          <path d="M 565 370 L 560 520 L 570 680 L 545 680 L 540 520 L 530 370 Z"/>
-          <circle cx="560" cy="520" r="14" fill="#7FE3C6"/>
-          <ellipse cx="570" cy="690" rx="10" ry="12" fill="#7FE3C6"/>
-          <path d="M 560 700 L 545 740 L 580 740 Z"/>
+          <!-- 2. PROFIL GAUCHE -->
+          <g transform="translate(280, 45)">
+            <circle cx="70" cy="50" r="22"/><path d="M 60 72 L 65 90 L 80 90 L 75 72 Z"/>
+            <path d="M 50 95 C 65 90, 90 100, 85 230 L 50 230 Z"/>
+            <path d="M 60 100 L 40 180 L 60 185 L 75 110 Z"/>
+            <path d="M 50 230 L 65 260 L 80 230 L 75 360 L 55 360 Z"/>
+            <path d="M 55 360 L 50 480 L 60 550 L 75 550 L 70 480 Z"/>
+          </g>
+
+          <!-- 3. PROFIL DROIT -->
+          <g transform="translate(515, 45)">
+            <circle cx="70" cy="50" r="22"/><path d="M 80 72 L 75 90 L 60 90 L 65 72 Z"/>
+            <path d="M 90 95 C 75 90, 50 100, 55 230 L 90 230 Z"/>
+            <path d="M 80 100 L 100 180 L 80 185 L 65 110 Z"/>
+            <path d="M 90 230 L 75 260 L 60 230 L 65 360 L 85 360 Z"/>
+            <path d="M 85 360 L 90 480 L 80 550 L 65 550 L 70 480 Z"/>
+          </g>
+
+          <!-- 4. VUE DE DOS -->
+          <g transform="translate(750, 45)">
+            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
+            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/><line x1="70" y1="90" x2="70" y2="230" stroke-width="1.5" stroke-dasharray="3"/>
+            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
+            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
+            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
+            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
+          </g>
         </g>
         
         <g id="markersLayer"></g>
@@ -562,15 +518,12 @@
   let markers = [];
   document.getElementById('dateBilan').valueAsDate = new Date();
 
-  // INTERSECTION OBSERVER POUR LES ANIMATIONS AU SCROLL
+  // INTERSECTION OBSERVER ANIMATIONS
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      }
+      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.scroll-section').forEach(sec => observer.observe(sec));
 
   function toggleAiChat() {
@@ -594,100 +547,139 @@
     });
   }
 
-  // BASE DE DONNÉES COMPLÈTE DES TESTS SPÉCIFIQUES POUR TOUTES LES RÉGIONS
-  const clusterTestsDB = {
-    rachis_lombaire: {
-      nomRegion: "Rachis Lombaire",
+  // MODAL INFO CLIQUE (I)
+  function ouvrirInfoModal(titre, texte) {
+    document.getElementById('infoModalTitle').innerText = "ℹ️ " + titre;
+    document.getElementById('infoModalBody').innerHTML = texte;
+    document.getElementById('infoModal').style.display = 'flex';
+  }
+  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
+  function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
+
+  // BASE DE DONNÉES FINES DES PATHOLOGIES CIBLÉES
+  const pathologiesDB = {
+    lca: {
+      nom: "Rupture / Lésion du Ligament Croisé Antérieur (LCA)",
       tests: [
-        { id: "lum_1", label: "Test de Lasègue (SLR)" },
-        { id: "lum_2", label: "Slump Test Neurodynamique" },
-        { id: "lum_3", label: "Préférence Directionnelle (McKenzie)" },
-        { id: "lum_4", label: "STarT Back Screening Tool / ODI" }
+        { id: "t_lca_1", label: "Test de Lachman", info: "<strong>EBP :</strong> Sensibilité ~85% | Spécificité ~94%. Test de référence en décubitus genou fléchi à 20-30° (recherche d'un tiroir antérieur avec arrêt mou)." },
+        { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "<strong>EBP :</strong> Sensibilité ~62% | Spécificité ~87%. Moins sensible que Lachman en phase aiguë à cause de la contracture des ischio-jambiers." },
+        { id: "t_lca_3", label: "Pivot Shift Test", info: "<strong>EBP :</strong> Spécificité excellente (~98%). Recherche le ressaut de réduction de subluxation tibiale en rotation interne." }
       ]
     },
-    rachis_cervical: {
-      nomRegion: "Rachis Cervical",
+    menisque: {
+      nom: "Lésion Méniscale (Médiale ou Latérale)",
       tests: [
-        { id: "cer_1", label: "Test de Spurling" },
-        { id: "cer_2", label: "Distraction Cervicale" },
-        { id: "cer_3", label: "ULNT1 Nerf Médian" },
-        { id: "cer_4", label: "Flexion-Rotation Test (C1-C2)" }
+        { id: "t_men_1", label: "Test de Thessaly (20° en charge)", info: "<strong>EBP :</strong> Sensibilité ~89% | Spécificité ~97%. Rotation du fémur sur le tibia en appui monopodal." },
+        { id: "t_men_2", label: "Test de McMurray", info: "<strong>EBP :</strong> Sensibilité ~53% | Spécificité ~85%. Recherche de craquement ou douleur sur l'interligne articulaire en flexion-extension combinée à une rotation." },
+        { id: "t_men_3", label: "Ligne articulaire / Join Line tenderness", info: "<strong>EBP :</strong> Sensibilité élevée (~83%) mais faible spécificité. Douleur exquise à la palpation directe de l'interligne." }
       ]
     },
-    epaule: {
-      nomRegion: "Épaule",
+    femoro_patellaire: {
+      nom: "Syndrome Fémoro-Patellaire / Douleur Antérieure",
       tests: [
-        { id: "sho_1", label: "Signe de Hawkins-Kennedy" },
-        { id: "sho_2", label: "Test de Jobe (Supra-épineux)" },
-        { id: "sho_3", label: "Test d'Appréhension Antérieure" },
-        { id: "sho_4", label: "Rotation Externe Passive (RE1)" }
+        { id: "t_fp_1", label: "Test de Clarke (Patellar Grind)", info: "<strong>EBP :</strong> Compression de la patella contre la trochlée avec contraction du quadriceps. Recherche de reproduction de la douleur." },
+        { id: "t_fp_2", label: "Step-Down Test (Descente de marche)", info: "<strong>EBP :</strong> Évaluation du contrôle frontal dynamique et de l'alignement valgus/bascule rotulienne." },
+        { id: "t_fp_3", label: "Apprehension Test (Apley/Fairbank)", info: "<strong>EBP :</strong> Appréhension du patient lors de la translation latérale passive de la patella." }
       ]
     },
-    coude_poignet: {
-      nomRegion: "Coude & Poignet",
+    coiffe_rotateurs: {
+      nom: "Tendinopathie de la Coiffe / Conflit Sous-Acromial",
       tests: [
-        { id: "cp_1", label: "Test de Cozen (Coude)" },
-        { id: "cp_2", label: "Test de Phalen (60 sec)" },
-        { id: "cp_3", label: "Test de Durkan (Compression)" }
+        { id: "t_cr_1", label: "Signe de Hawkins-Kennedy", info: "<strong>EBP :</strong> Sensibilité ~79% | Spécificité ~59%. Flexion 90°, coude fléchi 90°, rotation interne forcée." },
+        { id: "t_cr_2", label: "Test de Jobe (Supra-épineux)", info: "<strong>EBP :</strong> Sensibilité ~88% | Spécificité ~50%. Abduction 90° plan scapulaire, résistance vers le bas." },
+        { id: "t_cr_3", label: "Test de Neer", info: "<strong>EBP :</strong> Élévation passive forcée du bras en rotation interne." }
       ]
     },
-    hanche: {
-      nomRegion: "Hanche",
+    lombalgie_commune: {
+      nom: "Lombalgie Commune / Dysfonction Lombaire",
       tests: [
-        { id: "hip_1", label: "FADIR Test (Conflit antérieur)" },
-        { id: "hip_2", label: "FABER Test (Patrick)" },
-        { id: "hip_3", label: "Signe de Trendelenburg" }
+        { id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "<strong>EBP :</strong> Sensibilité ~91% | Spécificité ~26%. Négatif, il permet d'exclure une compression radiculaire majeure." },
+        { id: "t_lom_2", label: "Slump Test Neurodynamique", info: "<strong>EBP :</strong> Sensibilité ~84% | Spécificité ~83%. Mise en tension globale du système nerveux." },
+        { id: "t_lom_3", label: "Phénomène de Centralisation (McKenzie)", info: "<strong>EBP :</strong> Mouvements répétés en extension/flexion cherchant à centraliser la douleur référée." }
       ]
     },
-    genou: {
-      nomRegion: "Genou",
+    entorse_cheville: {
+      nom: "Entorse Latérale de Cheville / Lésion Ligamentaire",
       tests: [
-        { id: "kne_1", label: "Test de Lachman (LCA)" },
-        { id: "kne_2", label: "Test de Thessaly (20° en charge)" },
-        { id: "kne_3", label: "Step-Down Test (Fémoro-patellaire)" }
-      ]
-    },
-    cheville: {
-      nomRegion: "Cheville & Pied",
-      tests: [
-        { id: "ank_1", label: "Règles d'Ottawa (Cheville/Pied)" },
-        { id: "ank_2", label: "Weight-Bearing Lunge Test (WBLT)" },
-        { id: "ank_3", label: "Single Leg Heel Raise Test" }
-      ]
-    },
-    geriatrie: {
-      nomRegion: "Gériatrie & Équilibre",
-      tests: [
-        { id: "ger_1", label: "Test de Tinetti (/28)" },
-        { id: "ger_2", label: "Timed Up and Go (TUG)" }
+        { id: "t_eche_1", label: "Tiroir Antérieur de Cheville", info: "<strong>EBP :</strong> Évaluation de la laxité du ligament talo-fibulaire antérieur (LTFA)." },
+        { id: "t_eche_2", label: "Test de Inversion / Talar Tilt", info: "<strong>EBP :</strong> Évaluation de l'intégrité du ligament calcanéo-fibulaire." },
+        { id: "t_eche_3", label: "Règles d'Ottawa (Exclusion fracture)", info: "<strong>EBP :</strong> Sensibilité proche de 100% pour éliminer une fracture malléolaire ou du médio-pied." }
       ]
     }
   };
 
-  function changerRegionExploration(regKey) {
-    const container = document.getElementById('testsExplorationContainer');
-    const data = clusterTestsDB[regKey] || clusterTestsDB.rachis_lombaire;
+  let pathoBlockCounter = 0;
 
-    let html = `<div style="font-weight:800; color:var(--c-sapin); margin-bottom:14px; font-size:14px;">Tests Spécifiques : ${data.nomRegion}</div><div class="grid">`;
-    data.tests.forEach(t => {
-      html += `<div><label>${t.label}</label><input type="text" id="${t.id}" placeholder="Résultat du test..."></div>`;
+  function ajouterBlocPathologie() {
+    pathoBlockCounter++;
+    const container = document.getElementById('pathologiesListContainer');
+    const blockId = `pathoBlock_${pathoBlockCounter}`;
+    
+    let optionsHtml = '';
+    for (let key in pathologiesDB) {
+      optionsHtml += `<option value="${key}">${pathologiesDB[key].nom}</option>`;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'patho-block';
+    div.id = blockId;
+    div.innerHTML = `
+      ${pathoBlockCounter > 1 ? `<button class="btn-remove-patho" onclick="supprimerBlocPathologie('${blockId}')">Supprimer cette hypothèse</button>` : ''}
+      <div style="margin-bottom:12px;">
+        <label style="color:var(--c-sapin); font-weight:800;">Hypothèse Pathologique n°${pathoBlockCounter} :</label>
+        <select class="patho-select" onchange="changerPathoSelect(this, '${blockId}')" style="margin-top:6px;">
+          ${optionsHtml}
+        </select>
+      </div>
+      <div class="patho-tests-render" style="margin-top:14px;"></div>
+    `;
+    container.appendChild(div);
+    
+    // Déclencher le premier rendu
+    const selectEl = div.querySelector('.patho-select');
+    changerPathoSelect(selectEl, blockId);
+  }
+
+  function supprimerBlocPathologie(blockId) {
+    document.getElementById(blockId).remove();
+  }
+
+  function changerPathoSelect(selectEl, blockId) {
+    const val = selectEl.value;
+    const pathoData = pathologiesDB[val];
+    const blockEl = document.getElementById(blockId);
+    const renderContainer = blockEl.querySelector('.patho-tests-render');
+
+    let html = `<div style="font-size:13px; font-weight:700; color:var(--c-menthe-vif); margin-bottom:8px;">Tests associés pour : ${pathoData.nom}</div><div class="grid">`;
+    pathoData.tests.forEach((t, idx) => {
+      // Échapper les guillemets pour l'appel de fonction info
+      const safeInfo = t.info.replace(/'/g, "\\'");
+      html += `
+        <div>
+          <div class="label-row">
+            <label>${t.label} :</label>
+            <span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span>
+          </div>
+          <input type="text" placeholder="Résultat du test..." data-test-id="${t.id}">
+        </div>
+      `;
     });
     html += `</div>`;
-    container.innerHTML = html;
+    renderContainer.innerHTML = html;
   }
 
   function calculerDiagnosticIA() {
     const container = document.getElementById('probabilitesContainer');
     container.innerHTML = `
       <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:18px; border-radius:12px; margin-bottom:10px;">
-        <strong style="color:var(--c-sapin); font-size:14px;">1. Dysfonction mécanique / sous-classification discale (Probabilité : 68%)</strong>
-        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Concordance élevée d'après les tests de provocation et l'absence de red flags.</p>
+        <strong style="color:var(--c-sapin); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 75%)</strong>
+        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Analyse croisée des tests cliniques positifs, de l'anamnèse et des facteurs de risque professionnels/sportifs.</p>
       </div>
       <div style="background:var(--c-pale); border:1px solid var(--border); padding:14px; border-radius:12px;">
-        <strong style="color:var(--c-sapin); font-size:13px;">2. Irritabilité neurodynamique secondaire (Probabilité : 22%)</strong>
+        <strong style="color:var(--c-sapin); font-size:13px;">2. Hypothèse secondaire / Surcharge fonctionnelle associée (Probabilité : 25%)</strong>
       </div>
     `;
-    document.getElementById('diagnostic').value = "Dysfonction mécanique / sous-classification discale";
+    document.getElementById('diagnostic').value = "Pathologie mécanique ciblée validée par les tests cliniques";
   }
 
   function poserQuestionIA() {
@@ -703,6 +695,7 @@
     }, 400);
   }
 
+  // MODAL BODY CHART
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
@@ -728,24 +721,26 @@
     markers.forEach((m, idx) => {
       const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       circle.setAttribute("cx", m.x); circle.setAttribute("cy", m.y); circle.setAttribute("r", "12");
-      circle.setAttribute("fill", "rgba(220, 38, 38, 0.75)"); circle.setAttribute("stroke", "#FFFFFF"); circle.setAttribute("stroke-width", "2");
+      circle.setAttribute("fill", "rgba(220, 38, 38, 0.8)"); circle.setAttribute("stroke", "#FFFFFF"); circle.setAttribute("stroke-width", "2");
       circle.setAttribute("class", "pain-marker"); circle.setAttribute("data-index", idx); circle.setAttribute("style", "cursor: pointer;");
       markersLayer.appendChild(circle);
     });
 
     const textEl = document.getElementById('markerCountText');
     if (markers.length > 0) {
-      textEl.innerText = `✓ ${markers.length} zone(s) marquée(s) sur le Body Chart.`;
+      textEl.innerText = `✓ ${markers.length} zone(s) de douleur marquée(s) sur le Body Chart.`;
       textEl.style.color = "var(--c-sapin)";
     } else {
-      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir le schéma anatomique.";
+      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique à 4 vues.";
     }
   }
 
   function effacerMarqueurs() { markers = []; rendreMarqueurs(); }
   function reinitialiser() { if(confirm("Réinitialiser le bilan ?")) location.reload(); }
 
-  window.addEventListener('load', () => { changerRegionExploration('rachis_lombaire'); });
+  window.addEventListener('load', () => {
+    ajouterBlocPathologie(); // Initialiser avec un premier bloc de test par défaut
+  });
 </script>
 
 </body>
