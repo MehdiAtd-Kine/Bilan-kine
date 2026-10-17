@@ -10,28 +10,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
-      --c-pale: #F2FFFB;
-      --c-menthe-clair: #CFF7EA;
-      --c-eau: #7FE3C6;
-      --c-menthe-vif: #2AAE8A;
-      --c-sapin: #124D41;
+      /* Palette extraite directement de l'icône Bilan 3D */
+      --c-purple: #9B5DE5;
+      --c-purple-dark: #3C1B70;
+      --c-purple-light: #F3E8FF;
+      --c-yellow: #F1C40F;
+      --c-yellow-light: #FEF9E7;
+      --c-green: #2ECC71;
+      --c-bg: #FAF5FF;
+      
       --card-bg: #FFFFFF;
-      --border: #C1EFE2;
-      --danger: #DC2626;
-      --warning: #D97706;
-      --shadow: 0 10px 30px rgba(18, 77, 65, 0.06);
+      --border: #E9D5FF;
+      --danger: #E74C3C;
+      --warning: #E67E22;
+      --shadow: 0 10px 30px rgba(60, 27, 112, 0.08);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--c-pale);
+      background-color: var(--c-bg);
       background-image: 
-        radial-gradient(circle at 10% 20%, rgba(207, 247, 234, 0.6) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(127, 227, 198, 0.3) 0%, transparent 40%);
+        radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(241, 196, 15, 0.12) 0%, transparent 40%);
       background-attachment: fixed;
-      color: var(--c-sapin);
+      color: var(--c-purple-dark);
       padding: 30px 15px 120px 15px;
       margin: 0;
       line-height: 1.5;
@@ -40,7 +44,7 @@
     .container {
       max-width: 1060px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(8px);
       padding: 40px;
       border-radius: 20px;
@@ -49,7 +53,7 @@
     }
 
     header {
-      border-bottom: 2px solid var(--c-menthe-clair);
+      border-bottom: 2px solid var(--c-purple-light);
       padding-bottom: 20px;
       margin-bottom: 25px;
       display: flex;
@@ -59,32 +63,32 @@
       gap: 15px;
     }
 
-    .brand-header { display: flex; align-items: center; gap: 14px; }
-    .brand-icon {
-      background: var(--c-menthe-clair); color: var(--c-sapin);
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
-      border: 1px solid var(--c-eau);
+    .brand-header { display: flex; align-items: center; gap: 16px; }
+    .brand-logo {
+      width: 65px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
     }
 
-    h1 { margin: 0; font-size: 22px; color: var(--c-sapin); font-weight: 800; }
-    .subtitle { font-size: 13px; color: var(--c-sapin); opacity: 0.8; margin-top: 2px; }
+    h1 { margin: 0; font-size: 22px; color: var(--c-purple-dark); font-weight: 800; }
+    .subtitle { font-size: 13px; color: var(--c-purple-dark); opacity: 0.8; margin-top: 2px; }
 
     /* MENU ANCRES */
     .sticky-nav {
       position: sticky; top: 15px; z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
-      border: 1px solid var(--c-eau);
+      border: 1px solid var(--border);
       border-radius: 14px; padding: 8px 12px; margin-bottom: 35px;
       display: flex; justify-content: space-around; gap: 8px; overflow-x: auto;
-      box-shadow: 0 4px 20px rgba(18, 77, 65, 0.08);
+      box-shadow: 0 4px 20px rgba(60, 27, 112, 0.08);
     }
     .nav-anchor {
-      text-decoration: none; color: var(--c-sapin); font-size: 13px; font-weight: 700;
+      text-decoration: none; color: var(--c-purple-dark); font-size: 13px; font-weight: 700;
       padding: 8px 16px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
     }
-    .nav-anchor:hover { background: var(--c-menthe-clair); }
+    .nav-anchor:hover { background: var(--c-purple-light); color: var(--c-purple-dark); }
 
     .scroll-section {
       margin-bottom: 40px; padding-top: 10px;
@@ -94,9 +98,9 @@
     .scroll-section.is-visible { opacity: 1; transform: translateY(0); }
 
     .section-title {
-      font-size: 15px; font-weight: 800; color: var(--c-sapin);
-      background: linear-gradient(90deg, var(--c-menthe-clair) 0%, var(--c-pale) 100%);
-      padding: 12px 18px; border-left: 5px solid var(--c-menthe-vif); border-radius: 8px;
+      font-size: 15px; font-weight: 800; color: var(--c-purple-dark);
+      background: linear-gradient(90deg, var(--c-purple-light) 0%, var(--c-bg) 100%);
+      padding: 12px 18px; border-left: 5px solid var(--c-purple); border-radius: 8px;
       margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
     }
 
@@ -105,55 +109,55 @@
     .full-width { grid-column: 1 / -1; }
 
     .label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    label { font-weight: 700; font-size: 13px; color: var(--c-sapin); display: block; margin: 0; }
+    label { font-weight: 700; font-size: 13px; color: var(--c-purple-dark); display: block; margin: 0; }
     
     input[type="text"], input[type="date"], select, textarea, input[type="file"] {
       width: 100%; padding: 11px 14px; border: 1px solid var(--border);
       border-radius: 10px; font-size: 13.5px; box-sizing: border-box;
-      background: #FFFFFF; color: var(--c-sapin); transition: all 0.2s;
+      background: #FFFFFF; color: var(--c-purple-dark); transition: all 0.2s;
     }
-    input::placeholder, textarea::placeholder { color: var(--c-sapin) !important; opacity: 0.6; }
+    input::placeholder, textarea::placeholder { color: var(--c-purple-dark) !important; opacity: 0.5; }
     input:focus, select:focus, textarea:focus {
-      outline: none; border-color: var(--c-menthe-vif);
-      box-shadow: 0 0 0 3px rgba(42, 174, 138, 0.2);
+      outline: none; border-color: var(--c-purple);
+      box-shadow: 0 0 0 3px rgba(155, 93, 229, 0.2);
     }
     textarea { min-height: 70px; resize: vertical; }
 
-    .neutral-block { background: var(--c-pale); padding: 18px; border-radius: 12px; border: 1px solid var(--border); }
+    .neutral-block { background: var(--c-bg); padding: 18px; border-radius: 12px; border: 1px solid var(--border); }
 
     /* BOUTON INFO (I) */
     .btn-info {
       display: inline-flex; align-items: center; justify-content: center;
       width: 19px; height: 19px; border-radius: 50%;
-      background: var(--c-menthe-clair); color: var(--c-sapin);
-      font-size: 11px; font-weight: bold; cursor: pointer; border: 1px solid var(--c-eau);
+      background: var(--c-purple-light); color: var(--c-purple-dark);
+      font-size: 11px; font-weight: bold; cursor: pointer; border: 1px solid var(--border);
       user-select: none; transition: transform 0.15s, background 0.15s;
     }
-    .btn-info:hover { background: var(--c-menthe-vif); color: white; transform: scale(1.15); }
+    .btn-info:hover { background: var(--c-purple); color: white; transform: scale(1.15); }
 
     .btn-reset {
-      background: var(--c-menthe-clair); color: var(--c-sapin); border: 1px solid var(--c-eau);
+      background: var(--c-purple-light); color: var(--c-purple-dark); border: 1px solid var(--border);
       padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer;
     }
-    .btn-reset:hover { background: var(--c-eau); }
+    .btn-reset:hover { background: var(--c-purple); color: white; }
 
     .btn-action-vif {
-      background: var(--c-menthe-vif); color: white; border: none;
+      background: var(--c-purple); color: white; border: none;
       padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(42, 174, 138, 0.25); transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(155, 93, 229, 0.3); transition: all 0.2s;
     }
-    .btn-action-vif:hover { transform: translateY(-2px); background: #239475; }
+    .btn-action-vif:hover { transform: translateY(-2px); background: #8644D0; }
 
     .preview-box {
-      text-align: center; background: var(--c-pale); padding: 18px;
-      border-radius: 12px; border: 2px dashed var(--c-eau); cursor: pointer; transition: background 0.2s;
+      text-align: center; background: var(--c-bg); padding: 18px;
+      border-radius: 12px; border: 2px dashed var(--c-purple); cursor: pointer; transition: background 0.2s;
     }
-    .preview-box:hover { background: var(--c-menthe-clair); }
+    .preview-box:hover { background: var(--c-purple-light); }
 
     /* PATHOLOGIE BLOCKS */
     .patho-block {
-      background: white; border: 1px solid var(--c-eau); border-radius: 14px;
-      padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(18,77,65,0.04);
+      background: white; border: 1px solid var(--border); border-radius: 14px;
+      padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(60,27,112,0.04);
       position: relative;
     }
     .btn-remove-patho {
@@ -162,41 +166,40 @@
     }
     .btn-remove-patho:hover { background: var(--danger); color: white; }
 
-    /* EXERCISE ITEM CARD */
     .exo-card {
-      background: var(--c-pale); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative;
+      background: var(--c-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative;
     }
 
     /* WIDGET IA */
     #aiFloatBtn {
-      position: fixed; bottom: 25px; right: 25px; background: var(--c-sapin); color: white;
+      position: fixed; bottom: 25px; right: 25px; background: var(--c-purple-dark); color: white;
       border: none; border-radius: 30px; padding: 14px 22px; font-weight: 700; font-size: 14px;
-      cursor: pointer; box-shadow: 0 8px 25px rgba(18, 77, 65, 0.3); display: flex; align-items: center; gap: 8px; z-index: 999;
+      cursor: pointer; box-shadow: 0 8px 25px rgba(60, 27, 112, 0.3); display: flex; align-items: center; gap: 8px; z-index: 999;
     }
     #aiChatWindow {
       display: none; position: fixed; bottom: 85px; right: 25px; width: 380px; height: 500px;
-      background: white; border: 1px solid var(--c-eau); border-radius: 16px;
+      background: white; border: 1px solid var(--border); border-radius: 16px;
       box-shadow: 0 12px 35px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden; z-index: 9999;
     }
-    .ai-chat-header { background: var(--c-sapin); color: white; padding: 14px 18px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-    .ai-chat-body { flex: 1; padding: 14px; overflow-y: auto; font-size: 13px; background: var(--c-pale); display: flex; flex-direction: column; gap: 10px; }
+    .ai-chat-header { background: var(--c-purple-dark); color: white; padding: 14px 18px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .ai-chat-body { flex: 1; padding: 14px; overflow-y: auto; font-size: 13px; background: var(--c-bg); display: flex; flex-direction: column; gap: 10px; }
     .ai-chat-footer { padding: 12px; background: white; border-top: 1px solid var(--border); display: flex; gap: 8px; }
 
     .export-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
     .btn-export { border: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
-    .btn-docx { background: var(--c-menthe-vif); }
-    .btn-doc-med { background: var(--c-sapin); }
-    .btn-pdf { background: #22543D; }
+    .btn-docx { background: var(--c-purple); }
+    .btn-doc-med { background: var(--c-purple-dark); }
+    .btn-pdf { background: var(--c-green); }
 
     /* MODALS */
     .modal-overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(18, 77, 65, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
+      background: rgba(60, 27, 112, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
     }
     .modal-content { background: white; width: 92%; max-width: 1000px; height: 92vh; max-height: 900px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
     .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--c-pale); border-radius: 12px; margin-top: 14px; overflow: hidden; padding: 10px; }
+    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FFFFFF; border-radius: 12px; margin-top: 14px; overflow: hidden; padding: 10px; }
     
     #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
 
@@ -212,14 +215,15 @@
 <div class="container">
   <header>
     <div class="brand-header">
-      <div class="brand-icon">🌿</div>
+      <!-- Logo Bilan icone.png intégré -->
+      <img src="Bilan icone.png" alt="Logo Bilan Kiné" class="brand-logo">
       <div>
         <h1>BILAN KINÉSITHÉRAPIQUE EXPERT EBP</h1>
         <div class="subtitle">Raisonnement clinique & Précision diagnostique</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
-      <span style="font-size:12px; color:var(--c-sapin); font-weight:700; background:var(--c-menthe-clair); padding:6px 12px; border-radius:20px;">Sauvegarde auto 🟢</span>
+      <span style="font-size:12px; color:var(--c-purple-dark); font-weight:700; background:var(--c-yellow-light); border:1px solid var(--c-yellow); padding:6px 12px; border-radius:20px;">Sauvegarde auto 🟢</span>
       <button class="btn-reset" onclick="reinitialiser()">Nouveau Patient</button>
     </div>
   </header>
@@ -297,10 +301,10 @@
     <div class="full-width">
       <div class="label-row">
         <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques Intégrées) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart SVG', 'Cliquez pour ouvrir l\'interfaçe anatomique 4 vues. Cliquez directement sur l\'anatomie pour poser/retirer des croix de douleur (✕).')">i</span>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart SVG', 'Cliquez pour ouvrir l\'interface anatomique 4 vues. Cliquez directement sur l\'anatomie pour poser/retirer des croix de douleur (✕).')">i</span>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
+        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
       </div>
     </div>
 
@@ -318,17 +322,17 @@
     <div class="grid-3" style="margin-top:16px;">
       <div class="neutral-block">
         <div class="label-row"><label>Douleur Repos (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Repos', 'Évaluation de la douleur de base sans contrainte.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaReposVal" style="font-weight:700; color:var(--c-menthe-vif);">0/10</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaReposVal" style="font-weight:700; color:var(--c-purple);">0/10</span></div>
         <input type="range" id="evaRepos" min="0" max="10" value="0" oninput="document.getElementById('evaReposVal').innerText = this.value + '/10'">
       </div>
       <div class="neutral-block">
         <div class="label-row"><label>Douleur Effort (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Effort', 'Douleur ressentie lors des activités fonctionnelles habituelles.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaEffortVal" style="font-weight:700; color:var(--c-menthe-vif);">4/10</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaEffortVal" style="font-weight:700; color:var(--c-purple);">4/10</span></div>
         <input type="range" id="evaEffort" min="0" max="10" value="4" oninput="document.getElementById('evaEffortVal').innerText = this.value + '/10'">
       </div>
       <div class="neutral-block">
         <div class="label-row"><label>Douleur Pic (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Pic', 'Intensité maximale de la douleur lors des crises ou mouvements aigus.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-sapin);">Niveau :</span><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
         <input type="range" id="evaPic" min="0" max="10" value="6" oninput="document.getElementById('evaPicVal').innerText = this.value + '/10'">
       </div>
     </div>
@@ -337,7 +341,7 @@
     <div style="background:#FFF5F5; border:1px solid #FFD6D6; border-radius:12px; padding:16px; margin-top:20px;">
       <div class="label-row">
         <strong style="color:var(--danger); font-size:13px;">⚠️ Drapeaux Rouges / Red Flags (Triage & Urgences Médicales) :</strong>
-        <span class="btn-info" onclick="ouvrirInfoModal('Red Flags (Drapeaux Rouges)', 'Facteurs d\'alerte biomédicale nécessitant un avis médical ou une réorientation urgente (Infection, Tumeur, Fracture, Queue de cheval...).')">i</span>
+        <span class="btn-info" onclick="ouvrirInfoModal('Red Flags', 'Facteurs d\'alerte biomédicale nécessitant un avis médical ou une réorientation urgente.')">i</span>
       </div>
       <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-top:10px; font-size:12px;">
         <label><input type="checkbox" id="rf1"> Perte de poids inexpliquée / Suées nocturnes / Fièvre</label>
@@ -350,10 +354,10 @@
     </div>
 
     <!-- DRAPEAUX JAUNES (YELLOW FLAGS) -->
-    <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:16px; margin-top:16px;">
+    <div style="background:var(--c-yellow-light); border:1px solid #FDE68A; border-radius:12px; padding:16px; margin-top:16px;">
       <div class="label-row">
         <strong style="color:var(--warning); font-size:13px;">🟨 Drapeaux Jaunes / Yellow Flags (Facteurs Psychosociaux de Cronicité) :</strong>
-        <span class="btn-info" onclick="ouvrirInfoModal('Yellow Flags (Drapeaux Jaunes)', 'Facteurs de risque de passage à la chronicité et d\'incapacité prolongée (Croyances erronées, peur du mouvement, anxiété, problèmes au travail).')">i</span>
+        <span class="btn-info" onclick="ouvrirInfoModal('Yellow Flags', 'Facteurs de risque de passage à la chronicité et d\'incapacité prolongée.')">i</span>
       </div>
       <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-top:10px; font-size:12px;">
         <label><input type="checkbox" id="yf1"> Kinésiophobie (Peur du mouvement ou d'aggraver la lésion)</label>
@@ -361,7 +365,7 @@
         <label><input type="checkbox" id="yf3"> Croyance que la douleur nécessite un repos absolu</label>
         <label><input type="checkbox" id="yf4"> Insatisfaction ou conflits professionnels majeurs</label>
         <label><input type="checkbox" id="yf5"> Anxiété / Humeur dépressive / Stress psychosocial élevé</label>
-        <label><input type="checkbox" id="yf6"> Attente de solutions purement passives (médicaments/chirurgie)</label>
+        <label><input type="checkbox" id="yf6"> Attente de solutions purement passives</label>
       </div>
     </div>
   </section>
@@ -387,7 +391,7 @@
         <textarea id="deficitsSouplesse" placeholder="Œdèmes, raideurs..."></textarea>
       </div>
       <div class="full-width">
-        <div class="label-row"><label>Testing musculaire analytique :</label><span class="btn-info" onclick="ouvrirInfoModal('Testing musculaire', 'Évaluation de la force maximale cotée de 0 à 5/5 selon le Medical Research Council.')">i</span></div>
+        <div class="label-row"><label>Testing musculaire analytique :</label><span class="btn-info" onclick="ouvrirInfoModal('Testing musculaire', 'Évaluation de la force maximale cotée de 0 à 5/5 selon le MRC.')">i</span></div>
         <textarea id="deficitsMusculaires" placeholder="Cotation de force 0 à 5..."></textarea>
       </div>
     </div>
@@ -397,15 +401,14 @@
   <section id="sec-tests" class="scroll-section">
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
-    <div style="font-size:13px; color:var(--c-sapin); margin-bottom:14px; opacity:0.9;">
+    <div style="font-size:13px; color:var(--c-purple-dark); margin-bottom:14px; opacity:0.9;">
       Sélectionnez une pathologie parmi les 50 références en kinésithérapie, ou écrivez une pathologie libre. Si les tests sont négatifs, ajoutez une autre hypothèse en cascade.
     </div>
 
-    <!-- Conteneur des blocs de pathologies dynamiques -->
     <div id="pathologiesListContainer"></div>
 
     <div style="margin-top:15px; margin-bottom:25px;">
-      <button class="btn-reset" onclick="ajouterBlocPathologie()" style="background:var(--c-menthe-clair); font-weight:700;">+ Tester une autre pathologie (Diagnostic différentiel)</button>
+      <button class="btn-reset" onclick="ajouterBlocPathologie()" style="background:var(--c-purple-light); font-weight:700;">+ Tester une autre pathologie (Diagnostic différentiel)</button>
     </div>
 
     <div style="margin-top:20px; text-align:center;">
@@ -432,17 +435,17 @@
         <textarea id="travailForce"></textarea>
       </div>
       
-      <!-- MODULE D'EXERCICES PATIENT (HEP) AVEC DÉTAILS & EXPORT -->
-      <div class="full-width neutral-block" style="background:white; border:1px solid var(--c-eau); border-radius:14px;">
+      <!-- MODULE D'EXERCICES PATIENT (HEP) -->
+      <div class="full-width neutral-block" style="background:white; border:1px solid var(--border); border-radius:14px;">
         <div class="label-row" style="margin-bottom:12px;">
-          <strong style="font-size:14px; color:var(--c-sapin);">🏋️ Programme d'Exercices à Domicile (HEP Patient) :</strong>
-          <span class="btn-info" onclick="ouvrirInfoModal('Fiche d\'Exercices Patient', 'Créez les exercices prescrits au patient avec séries, répétitions et consignes. Vous pourrez lui exporter sous forme de fiche dédiée.')">i</span>
+          <strong style="font-size:14px; color:var(--c-purple-dark);">🏋️ Programme d'Exercices à Domicile (HEP Patient) :</strong>
+          <span class="btn-info" onclick="ouvrirInfoModal('Fiche d\'Exercices Patient', 'Créez les exercices prescrits au patient avec séries, répétitions et consignes. Exporter en fiche dédiée.')">i</span>
         </div>
 
         <div id="exerciceListContainer"></div>
 
         <div style="margin-top:10px; display:flex; gap:10px;">
-          <button class="btn-reset" onclick="ajouterExercicePatient()" style="background:var(--c-menthe-clair); font-weight:700;">+ Ajouter un exercice au programme</button>
+          <button class="btn-reset" onclick="ajouterExercicePatient()" style="background:var(--c-purple-light); font-weight:700;">+ Ajouter un exercice au programme</button>
         </div>
 
         <div style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); display:flex; gap:12px; flex-wrap:wrap;">
@@ -476,7 +479,7 @@
   </div>
   <div class="ai-chat-footer">
     <input type="text" id="aiQueryInput" placeholder="Votre question..." onkeydown="if(event.key==='Enter') poserQuestionIA()">
-    <button onclick="poserQuestionIA()" style="background:var(--c-menthe-vif); color:white; border:none; padding:8px 14px; border-radius:8px; font-weight:700;">OK</button>
+    <button onclick="poserQuestionIA()" style="background:var(--c-purple); color:white; border:none; padding:8px 14px; border-radius:8px; font-weight:700;">OK</button>
   </div>
 </div>
 
@@ -484,73 +487,89 @@
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
   <div class="modal-info-box">
     <div class="modal-header">
-      <h3 id="infoModalTitle" style="margin:0; font-size:16px; color:var(--c-sapin);">Aide Clinique EBP</h3>
+      <h3 id="infoModalTitle" style="margin:0; font-size:16px; color:var(--c-purple-dark);">Aide Clinique EBP</h3>
       <button onclick="fermerModalInfoDirect()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
     </div>
-    <div style="margin-top:16px; font-size:13.5px; line-height:1.6; color:var(--c-sapin);" id="infoModalBody"></div>
+    <div style="margin-top:16px; font-size:13.5px; line-height:1.6; color:var(--c-purple-dark);" id="infoModalBody"></div>
   </div>
 </div>
 
-<!-- MODAL BODY CHART VECTORIEL AUTONOME A 4 VUES INTEGRÉES (SANS IMAGE EXTERNE MISSING) -->
+<!-- MODAL BODY CHART 4 VUES TRACÉ ORIGINAL (EXACTEMENT VOTRE DESSIN) -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Body Chart (4 Vues Anatomiques Intégrées)</h3>
-        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez directement sur le corps pour ajouter/supprimer une croix de douleur (✕).</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques)</h3>
+        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez sur l'anatomie pour poser une croix (✕). Cliquez sur une croix pour la supprimer.</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
-        <button onclick="fermerModalChart()" style="background:var(--c-menthe-vif); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Valider & Fermer ✕</button>
+        <button onclick="fermerModalChart()" style="background:var(--c-purple); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Valider & Fermer ✕</button>
       </div>
     </div>
     <div class="modal-body">
-      <!-- SVG 4 VUES ULTRA NET ET AUTONOME -->
+      <!-- SVG REPRODUISANT EXACTEMENT VOTRE SCHEMA A 4 VUES AU TRAIT NOIR -->
       <svg id="chartSVG" viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
-        <rect width="900" height="650" fill="#F2FFFB"/>
+        <rect width="900" height="650" fill="#FFFFFF"/>
         
-        <text x="115" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">1. FACE</text>
-        <text x="350" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">2. PROFIL GAUCHE</text>
-        <text x="585" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">3. PROFIL DROIT</text>
-        <text x="820" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">4. DOS</text>
+        <text x="115" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">FACE</text>
+        <text x="350" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL GAUCHE</text>
+        <text x="585" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL DROIT</text>
+        <text x="820" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">DOS</text>
 
-        <g id="bodySilhouettes" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
-          <!-- 1. FACE -->
-          <g transform="translate(45, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
-            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/>
-            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
-            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
-            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
+        <!-- Silhouettes noires au trait comme sur votre dessin -->
+        <g id="bodySilhouettes" fill="none" stroke="#222222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 1. VUE FACE -->
+          <g transform="translate(45, 40)">
+            <ellipse cx="70" cy="50" rx="18" ry="24"/>
+            <path d="M 62 74 L 62 90 L 78 90 L 78 74"/>
+            <path d="M 38 98 C 55 92, 85 92, 102 98 L 94 230 L 46 230 Z"/>
+            <path d="M 38 98 L 20 180 L 10 215 L 22 220 L 32 185 L 42 110"/>
+            <path d="M 102 98 L 120 180 L 130 215 L 118 220 L 108 185 L 98 110"/>
+            <path d="M 46 230 L 68 255 L 94 230 L 88 360 L 52 360 Z"/>
+            <path d="M 52 360 L 48 480 L 58 560 L 72 560 L 82 480 L 88 360"/>
+            <path d="M 58 560 L 48 580 L 72 580 L 72 560"/>
+            <path d="M 72 560 L 92 580 L 68 580"/>
           </g>
 
           <!-- 2. PROFIL GAUCHE -->
-          <g transform="translate(280, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 60 72 L 65 90 L 80 90 L 75 72 Z"/>
-            <path d="M 50 95 C 65 90, 90 100, 85 230 L 50 230 Z"/>
-            <path d="M 60 100 L 40 180 L 60 185 L 75 110 Z"/>
-            <path d="M 50 230 L 65 260 L 80 230 L 75 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 60 550 L 75 550 L 70 480 Z"/>
+          <g transform="translate(280, 40)">
+            <ellipse cx="70" cy="50" rx="20" ry="24"/>
+            <path d="M 50 50 L 45 60 L 52 62"/>
+            <path d="M 60 74 L 64 90 L 76 90 L 72 74"/>
+            <path d="M 64 90 C 80 100, 85 140, 80 230 L 50 230 C 45 160, 50 110, 64 90 Z"/>
+            <path d="M 68 98 L 48 180 L 38 215 L 50 220 L 60 185 L 75 110"/>
+            <path d="M 50 230 C 65 250, 75 250, 80 230 L 72 360 L 52 360 Z"/>
+            <path d="M 52 360 L 48 470 L 58 560 L 80 560 L 70 470 L 72 360"/>
+            <path d="M 58 560 L 38 580 L 80 580 Z"/>
           </g>
 
           <!-- 3. PROFIL DROIT -->
-          <g transform="translate(515, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 80 72 L 75 90 L 60 90 L 65 72 Z"/>
-            <path d="M 90 95 C 75 90, 50 100, 55 230 L 90 230 Z"/>
-            <path d="M 80 100 L 100 180 L 80 185 L 65 110 Z"/>
-            <path d="M 90 230 L 75 260 L 60 230 L 65 360 L 85 360 Z"/>
-            <path d="M 85 360 L 90 480 L 80 550 L 65 550 L 70 480 Z"/>
+          <g transform="translate(515, 40)">
+            <ellipse cx="70" cy="50" rx="20" ry="24"/>
+            <path d="M 90 50 L 95 60 L 88 62"/>
+            <path d="M 80 74 L 76 90 L 64 90 L 68 74"/>
+            <path d="M 76 90 C 60 100, 55 140, 60 230 L 90 230 C 95 160, 90 110, 76 90 Z"/>
+            <path d="M 72 98 L 92 180 L 102 215 L 90 220 L 80 185 L 65 110"/>
+            <path d="M 90 230 C 75 250, 65 250, 60 230 L 68 360 L 88 360 Z"/>
+            <path d="M 88 360 L 92 470 L 82 560 L 60 560 L 70 470 L 68 360"/>
+            <path d="M 82 560 L 102 580 L 60 580 Z"/>
           </g>
 
-          <!-- 4. DOS -->
-          <g transform="translate(750, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
-            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/><line x1="70" y1="90" x2="70" y2="230" stroke-width="1.5" stroke-dasharray="3"/>
-            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
-            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
-            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
+          <!-- 4. VUE DOS -->
+          <g transform="translate(750, 40)">
+            <ellipse cx="70" cy="50" rx="18" ry="24"/>
+            <path d="M 62 74 L 62 90 L 78 90 L 78 74"/>
+            <path d="M 38 98 C 55 92, 85 92, 102 98 L 94 230 L 46 230 Z"/>
+            <line x1="70" y1="90" x2="70" y2="230" stroke-dasharray="4"/>
+            <path d="M 50 110 L 40 150 L 55 150 Z"/>
+            <path d="M 90 110 L 100 150 L 85 150 Z"/>
+            <path d="M 38 98 L 20 180 L 10 215 L 22 220 L 32 185 L 42 110"/>
+            <path d="M 102 98 L 120 180 L 130 215 L 118 220 L 108 185 L 98 110"/>
+            <path d="M 46 230 C 45 280, 95 280, 94 230 L 88 360 L 52 360 Z"/>
+            <path d="M 52 360 L 48 480 L 58 560 L 72 560 L 82 480 L 88 360"/>
+            <path d="M 58 560 L 48 580 L 72 580 L 72 560"/>
+            <path d="M 72 560 L 92 580 L 68 580"/>
           </g>
         </g>
         
@@ -635,13 +654,13 @@
     div.innerHTML = `
       ${pathoBlockCounter > 1 ? `<button class="btn-remove-patho" onclick="supprimerBlocPathologie('${blockId}')">Supprimer cette hypothèse</button>` : ''}
       <div style="margin-bottom:12px;">
-        <label style="color:var(--c-sapin); font-weight:800;">Hypothèse Diagnostique n°${pathoBlockCounter} :</label>
+        <label style="color:var(--c-purple-dark); font-weight:800;">Hypothèse Diagnostique n°${pathoBlockCounter} :</label>
         <select class="patho-select" onchange="changerPathoSelect(this, '${blockId}')" style="margin-top:6px;">
           ${optionsHtml}
         </select>
       </div>
       <div class="patho-custom-wrapper" style="display:none; margin-bottom:12px;">
-        <label style="font-size:12px; color:var(--c-sapin);">Nom de la pathologie libre :</label>
+        <label style="font-size:12px; color:var(--c-purple-dark);">Nom de la pathologie libre :</label>
         <input type="text" class="patho-custom-input" placeholder="Ex: Tendinopathie rare..." style="margin-top:4px;">
       </div>
       <div class="patho-tests-render" style="margin-top:14px;"></div>
@@ -664,7 +683,7 @@
     } else {
       customWrapper.style.display = 'none';
       const pathoData = pathologiesDB[val];
-      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-menthe-vif); margin-bottom:8px;">Tests associés : ${pathoData.nom}</div><div class="grid">`;
+      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-purple); margin-bottom:8px;">Tests associés : ${pathoData.nom}</div><div class="grid">`;
       pathoData.tests.forEach((t) => {
         const safeInfo = t.info.replace(/'/g, "\\'");
         html += `<div><div class="label-row"><label>${t.label} :</label><span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span></div><input type="text" placeholder="Résultat du test..." data-test-id="${t.id}"></div>`;
@@ -684,7 +703,7 @@
     div.innerHTML = `
       <button onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px; background:#FFF5F5; color:var(--danger); border:1px solid #FFD6D6; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold;">Supprimer</button>
       <div class="grid">
-        <div class="full-width"><label style="font-size:12px;">Nom de l'exercice :</label><input type="text" class="exo-nom" placeholder="Ex: Reinforcement excentrique Quadriceps / Squat monopedal"></div>
+        <div class="full-width"><label style="font-size:12px;">Nom de l'exercice :</label><input type="text" class="exo-nom" placeholder="Ex: Renforcement excentrique Quadriceps / Squat monopedal"></div>
         <div><label style="font-size:12px;">Séries & Répétitions :</label><input type="text" class="exo-series" placeholder="Ex: 3 séries de 10 répétitions"></div>
         <div><label style="font-size:12px;">Fréquence hebdomadaire :</label><input type="text" class="exo-freq" placeholder="Ex: 1x par jour / 3x par semaine"></div>
         <div class="full-width"><label style="font-size:12px;">Consignes & Précautions :</label><input type="text" class="exo-consignes" placeholder="Ex: Maintenir 3s en bas, douleur acceptable < 3/10..."></div>
@@ -704,9 +723,9 @@
   function calculerDiagnosticIA() {
     const container = document.getElementById('probabilitesContainer');
     container.innerHTML = `
-      <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:18px; border-radius:12px; margin-bottom:10px;">
-        <strong style="color:var(--c-sapin); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 80%)</strong>
-        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Analyse des tests cliniques, des red/yellow flags et des contraintes du patient.</p>
+      <div style="background:var(--c-purple-light); border:1px solid var(--border); padding:18px; border-radius:12px; margin-bottom:10px;">
+        <strong style="color:var(--c-purple-dark); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 80%)</strong>
+        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-purple-dark);">Analyse des tests cliniques, des red/yellow flags et des contraintes du patient.</p>
       </div>
     `;
     document.getElementById('diagnostic').value = "Pathologie mécanique ciblée validée par les tests cliniques";
@@ -717,7 +736,7 @@
     const q = input.value.trim();
     if (!q) return;
     const body = document.getElementById('aiChatBody');
-    body.innerHTML += `<div style="background:var(--c-menthe-clair); padding:8px 12px; border-radius:8px; align-self:flex-end;"><strong>Vous :</strong> ${q}</div>`;
+    body.innerHTML += `<div style="background:var(--c-purple-light); padding:8px 12px; border-radius:8px; align-self:flex-end;"><strong>Vous :</strong> ${q}</div>`;
     input.value = '';
     setTimeout(() => {
       body.innerHTML += `<div style="background:white; padding:8px 12px; border-radius:8px; border:1px solid var(--border);"><strong>IA :</strong> Analyse EBP en cours pour : "${q}".</div>`;
@@ -725,7 +744,7 @@
     }, 400);
   }
 
-  // GESTION DU BODY CHART SVG VECTORIEL
+  // GESTION DU BODY CHART SVG VECTORIEL AU TRAIT
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
@@ -751,9 +770,9 @@
     markers.forEach((m, idx) => {
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", m.x);
-      text.setAttribute("y", m.y + 6);
+      text.setAttribute("y", m.y + 7);
       text.setAttribute("text-anchor", "middle");
-      text.setAttribute("fill", "#DC2626");
+      text.setAttribute("fill", "#E74C3C");
       text.setAttribute("font-size", "22");
       text.setAttribute("font-weight", "900");
       text.setAttribute("class", "pain-marker");
@@ -766,7 +785,7 @@
     const textEl = document.getElementById('markerCountText');
     if (markers.length > 0) {
       textEl.innerText = `✓ ${markers.length} zone(s) de douleur marquée(s) sur le Body Chart.`;
-      textEl.style.color = "var(--c-sapin)";
+      textEl.style.color = "var(--c-purple-dark)";
     } else {
       textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.";
     }
