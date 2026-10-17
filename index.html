@@ -149,7 +149,7 @@
     }
     .preview-box:hover { background: var(--c-menthe-clair); }
 
-    /* PATHOLOGIE CARDS (MULTI-TESTS) */
+    /* PATHOLOGIE BLOCKS */
     .patho-block {
       background: white; border: 1px solid var(--c-eau); border-radius: 14px;
       padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(18,77,65,0.04);
@@ -187,12 +187,37 @@
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(18, 77, 65, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
     }
-    .modal-content { background: white; width: 90%; max-width: 960px; height: 90vh; max-height: 880px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
+    .modal-content { background: white; width: 92%; max-width: 1000px; height: 92vh; max-height: 900px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
     .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--c-pale); border-radius: 12px; margin-top: 14px; overflow: hidden; }
+    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: var(--c-pale); border-radius: 12px; margin-top: 14px; overflow: auto; padding: 10px; }
     
-    #chartSVG { width: 100%; height: 100%; max-height: 800px; cursor: crosshair; }
+    /* STYLING BODY CHART IMAGE CONTAINER */
+    .body-chart-img-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+    }
+    .body-chart-img-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .pain-cross {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--danger);
+      text-shadow: 0 0 3px white, 0 0 3px white;
+    }
 
     @media (max-width: 768px) {
       .container { padding: 20px 12px; }
@@ -240,7 +265,7 @@
         <input type="text" id="prenom" placeholder="Prénom">
       </div>
       <div>
-        <div class="label-row"><label>Date de naissance :</label><span class="btn-info" onclick="ouvrirInfoModal('Date de naissance', 'Permet de calculer l\'âge et d\'ajoter le profil épidémiologique pertinent.')">i</span></div>
+        <div class="label-row"><label>Date de naissance :</label><span class="btn-info" onclick="ouvrirInfoModal('Date de naissance', 'Permet de calculer l\'âge et d\'ajuster le profil épidémiologique pertinent.')">i</span></div>
         <input type="date" id="dob">
       </div>
       <div>
@@ -253,13 +278,16 @@
       </div>
       <div>
         <div class="label-row"><label>Prescription médicale & Motif :</label><span class="btn-info" onclick="ouvrirInfoModal('Prescription médicale', 'Indiquez le médecin prescripteur et l\'intitulé exact de l\'ordonnance.')">i</span></div>
-        <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'..."></div>
+        <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'...">
+      </div>
       <div>
         <div class="label-row"><label>Activité physique / Profession :</label><span class="btn-info" onclick="ouvrirInfoModal('Activité / Profession', 'Permet d\'identifier les contraintes biomécaniques professionnelles quotidiennes.')">i</span></div>
-        <input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire..."></div>
+        <input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire...">
+      </div>
       <div>
         <div class="label-row"><label>Sport / Loisirs :</label><span class="btn-info" onclick="ouvrirInfoModal('Sport & Loisirs', 'Volume, intensité et type de gestuelle sportive.')">i</span></div>
-        <input type="text" id="sport" placeholder="Discipline, fréquence..."></div>
+        <input type="text" id="sport" placeholder="Discipline, fréquence...">
+      </div>
       
       <div class="full-width neutral-block">
         <div class="label-row"><label>👤 Profil & Autonomie :</label><span class="btn-info" onclick="ouvrirInfoModal('Profil & Autonomie', 'Classement du niveau de contrainte globale et d\'exposition aux charges du patient.')">i</span></div>
@@ -267,7 +295,7 @@
           <option>Sportif Compétiteur (Pivots / Impacts)</option>
           <option>Sportif Loisir / Récréatif</option>
           <option>Sédentaire / Travailleur de bureau</option>
-          <option>Travailleur physique / Travail contraignant (Manutention, charges lourdes)</option>
+          <option>Travailleur physique / Travail contraignant (Manutention, charges lourdes, postures pénibles)</option>
           <option>Post-opératoire récent</option>
           <option>Gériatrie / Perte d'autonomie</option>
         </select>
@@ -287,11 +315,11 @@
     
     <div class="full-width">
       <div class="label-row">
-        <label>📍 Schéma Corporel (Body Chart Anatomique 4 Vues) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart Anatomique', 'Cliquez pour ouvrir l\'éditeur haute précision à 4 vues (Face, Profil G, Profil D, Dos). Cliquez sur les zones douloureuses pour poser des repères de localisation.')">i</span>
+        <label>📍 Schéma Corporel (Body Chart 4 Vues) :</label>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart', 'Cliquez pour ouvrir l\'image originale à 4 vues. Cliquez directement sur l\'image pour placer des repères de douleur en croix (✕). Cliquez sur une croix pour la supprimer.')">i</span>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique à 4 vues.</span>
+        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-sapin);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
       </div>
     </div>
 
@@ -367,7 +395,7 @@
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
     <div style="font-size:13px; color:var(--c-sapin); margin-bottom:14px; opacity:0.9;">
-      Sélectionnez une pathologie ciblée pour tester une hypothèse. Si les tests s'avèrent négatifs ou si vous souhaitez explorer un diagnostic différentiel, vous pouvez ajouter une nouvelle pathologie en cascade.
+      Sélectionnez une pathologie parmi les 50 références en kinésithérapie, ou écrivez une pathologie libre. Si les tests sont négatifs, ajoutez une autre hypothèse en cascade.
     </div>
 
     <!-- Conteneur des blocs de pathologies dynamiques -->
@@ -444,13 +472,13 @@
   </div>
 </div>
 
-<!-- MODAL BODY CHART 4 VUES ANATOMIQUES EXACTES -->
+<!-- MODAL BODY CHART AVEC VOTRE IMAGE EXACTE À 4 VUES -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
       <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Éditeur de Pointage de Douleur (Body Chart 4 Vues)</h3>
-        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez sur l'une des 4 vues anatomiques pour positionner un repère de douleur.</small>
+        <h3 style="margin:0; font-size:18px; color:var(--c-sapin);">Body Chart (4 Vues Anatomiques)</h3>
+        <small style="color:var(--c-sapin); opacity:0.8;">Cliquez sur l'image pour poser une croix (✕). Cliquez sur une croix pour la supprimer.</small>
       </div>
       <div style="display:flex; gap:10px;">
         <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
@@ -458,58 +486,11 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- SVG 4 VUES EXACTES (Basé sur votre modèle de référence) -->
-      <svg id="chartSVG" viewBox="0 0 900 650" xmlns="http://www.w3.org/2000/svg">
-        <rect width="900" height="650" fill="#F2FFFB"/>
-        
-        <text x="115" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">1. FACE</text>
-        <text x="350" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">2. PROFIL GAUCHE</text>
-        <text x="585" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">3. PROFIL DROIT</text>
-        <text x="820" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#124D41">4. DOS</text>
-
-        <!-- Silhouettes simplifiées conformes au modèle 4 vues -->
-        <g id="bodySilhouettes" fill="#CFF7EA" stroke="#124D41" stroke-width="1.5">
-          <!-- 1. VUE DE FACE -->
-          <g transform="translate(45, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
-            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/>
-            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
-            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
-            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
-          </g>
-
-          <!-- 2. PROFIL GAUCHE -->
-          <g transform="translate(280, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 60 72 L 65 90 L 80 90 L 75 72 Z"/>
-            <path d="M 50 95 C 65 90, 90 100, 85 230 L 50 230 Z"/>
-            <path d="M 60 100 L 40 180 L 60 185 L 75 110 Z"/>
-            <path d="M 50 230 L 65 260 L 80 230 L 75 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 60 550 L 75 550 L 70 480 Z"/>
-          </g>
-
-          <!-- 3. PROFIL DROIT -->
-          <g transform="translate(515, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 80 72 L 75 90 L 60 90 L 65 72 Z"/>
-            <path d="M 90 95 C 75 90, 50 100, 55 230 L 90 230 Z"/>
-            <path d="M 80 100 L 100 180 L 80 185 L 65 110 Z"/>
-            <path d="M 90 230 L 75 260 L 60 230 L 65 360 L 85 360 Z"/>
-            <path d="M 85 360 L 90 480 L 80 550 L 65 550 L 70 480 Z"/>
-          </g>
-
-          <!-- 4. VUE DE DOS -->
-          <g transform="translate(750, 45)">
-            <circle cx="70" cy="50" r="22"/><path d="M 62 72 L 62 90 L 78 90 L 78 72 Z"/>
-            <path d="M 40 95 C 55 90, 85 90, 100 95 L 90 230 L 50 230 Z"/><line x1="70" y1="90" x2="70" y2="230" stroke-width="1.5" stroke-dasharray="3"/>
-            <path d="M 25 100 L 15 180 L 35 185 L 45 110 Z"/><ellipse cx="25" cy="195" rx="8" ry="12"/>
-            <path d="M 115 100 L 125 180 L 105 185 L 95 110 Z"/><ellipse cx="115" cy="195" rx="8" ry="12"/>
-            <path d="M 50 230 L 70 260 L 90 230 L 85 360 L 55 360 Z"/>
-            <path d="M 55 360 L 50 480 L 62 550 L 78 550 L 90 480 L 85 360 Z"/><ellipse cx="70" cy="560" rx="10" ry="6"/>
-          </g>
-        </g>
-        
-        <g id="markersLayer"></g>
-      </svg>
+      <div class="body-chart-img-wrapper" id="bodyChartWrapper" onclick="gererClicImageBodyChart(event)">
+        <!-- Image officielle à 4 vues fournie -->
+        <img src="body chart.png" alt="Body Chart 4 Vues" id="bodyChartImg">
+        <div id="markersLayer"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -556,54 +537,340 @@
   function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
   function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
-  // BASE DE DONNÉES FINES DES PATHOLOGIES CIBLÉES
+  // BASE DE DONNÉES COMPLÈTE DE 50 PATHOLOGIES EN KINÉSITHÉRAPIE
   const pathologiesDB = {
     lca: {
-      nom: "Rupture / Lésion du Ligament Croisé Antérieur (LCA)",
+      nom: "1. Rupture / Lésion du Ligament Croisé Antérieur (LCA)",
       tests: [
-        { id: "t_lca_1", label: "Test de Lachman", info: "<strong>EBP :</strong> Sensibilité ~85% | Spécificité ~94%. Test de référence en décubitus genou fléchi à 20-30° (recherche d'un tiroir antérieur avec arrêt mou)." },
-        { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "<strong>EBP :</strong> Sensibilité ~62% | Spécificité ~87%. Moins sensible que Lachman en phase aiguë à cause de la contracture des ischio-jambiers." },
-        { id: "t_lca_3", label: "Pivot Shift Test", info: "<strong>EBP :</strong> Spécificité excellente (~98%). Recherche le ressaut de réduction de subluxation tibiale en rotation interne." }
+        { id: "t_lca_1", label: "Test de Lachman", info: "<strong>EBP :</strong> Sensibilité ~85% | Spécificité ~94%. Test de référence genou fléchi à 20-30°." },
+        { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "<strong>EBP :</strong> Sensibilité ~62% | Spécificité ~87%." },
+        { id: "t_lca_3", label: "Pivot Shift Test", info: "<strong>EBP :</strong> Spécificité excellente (~98%) pour l'instabilité rotatoire." }
       ]
     },
     menisque: {
-      nom: "Lésion Méniscale (Médiale ou Latérale)",
+      nom: "2. Lésion Méniscale (Médiale ou Latérale)",
       tests: [
-        { id: "t_men_1", label: "Test de Thessaly (20° en charge)", info: "<strong>EBP :</strong> Sensibilité ~89% | Spécificité ~97%. Rotation du fémur sur le tibia en appui monopodal." },
-        { id: "t_men_2", label: "Test de McMurray", info: "<strong>EBP :</strong> Sensibilité ~53% | Spécificité ~85%. Recherche de craquement ou douleur sur l'interligne articulaire en flexion-extension combinée à une rotation." },
-        { id: "t_men_3", label: "Ligne articulaire / Join Line tenderness", info: "<strong>EBP :</strong> Sensibilité élevée (~83%) mais faible spécificité. Douleur exquise à la palpation directe de l'interligne." }
+        { id: "t_men_1", label: "Test de Thessaly (20°)", info: "<strong>EBP :</strong> Sensibilité ~89% | Spécificité ~97% en appui monopodal." },
+        { id: "t_men_2", label: "Test de McMurray", info: "<strong>EBP :</strong> Sensibilité ~53% | Spécificité ~85%." },
+        { id: "t_men_3", label: "Ligne articulaire tenderness", info: "<strong>EBP :</strong> Sensibilité ~83%." }
       ]
     },
     femoro_patellaire: {
-      nom: "Syndrome Fémoro-Patellaire / Douleur Antérieure",
+      nom: "3. Syndrome Fémoro-Patellaire (Douleur Antérieure)",
       tests: [
-        { id: "t_fp_1", label: "Test de Clarke (Patellar Grind)", info: "<strong>EBP :</strong> Compression de la patella contre la trochlée avec contraction du quadriceps. Recherche de reproduction de la douleur." },
-        { id: "t_fp_2", label: "Step-Down Test (Descente de marche)", info: "<strong>EBP :</strong> Évaluation du contrôle frontal dynamique et de l'alignement valgus/bascule rotulienne." },
-        { id: "t_fp_3", label: "Apprehension Test (Apley/Fairbank)", info: "<strong>EBP :</strong> Appréhension du patient lors de la translation latérale passive de la patella." }
+        { id: "t_fp_1", label: "Test de Clarke", info: "Compression patellaire contre la trochlée avec contraction active." },
+        { id: "t_fp_2", label: "Step-Down Test", info: "Évaluation du contrôle frontal dynamique et valgus dynamique." }
       ]
     },
-    coiffe_rotateurs: {
-      nom: "Tendinopathie de la Coiffe / Conflit Sous-Acromial",
+    arthrose_genou: {
+      nom: "4. Gonarthrose (Arthrose du Genou)",
       tests: [
-        { id: "t_cr_1", label: "Signe de Hawkins-Kennedy", info: "<strong>EBP :</strong> Sensibilité ~79% | Spécificité ~59%. Flexion 90°, coude fléchi 90°, rotation interne forcée." },
-        { id: "t_cr_2", label: "Test de Jobe (Supra-épineux)", info: "<strong>EBP :</strong> Sensibilité ~88% | Spécificité ~50%. Abduction 90° plan scapulaire, résistance vers le bas." },
-        { id: "t_cr_3", label: "Test de Neer", info: "<strong>EBP :</strong> Élévation passive forcée du bras en rotation interne." }
+        { id: "t_gon_1", label: "Critères cliniques ACR", info: "Douleur matinale < 30 min, crépitements, raideur et ostéophytes." },
+        { id: "t_gon_2", label: "Périmètre de marche & Mobilité", info: "Évaluation de la perte d'extension et de flexion passive." }
       ]
     },
-    lombalgie_commune: {
-      nom: "Lombalgie Commune / Dysfonction Lombaire",
+    tendinopathie_patellaire: {
+      nom: "5. Tendinopathie Patellaire (Jumper's Knee)",
       tests: [
-        { id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "<strong>EBP :</strong> Sensibilité ~91% | Spécificité ~26%. Négatif, il permet d'exclure une compression radiculaire majeure." },
-        { id: "t_lom_2", label: "Slump Test Neurodynamique", info: "<strong>EBP :</strong> Sensibilité ~84% | Spécificité ~83%. Mise en tension globale du système nerveux." },
-        { id: "t_lom_3", label: "Phénomène de Centralisation (McKenzie)", info: "<strong>EBP :</strong> Mouvements répétés en extension/flexion cherchant à centraliser la douleur référée." }
+        { id: "t_tpat_1", label: "Palpation tendon pôle inf patellaire", info: "Douleur élective exquise sur le tendon patellaire en charge." },
+        { id: "t_tpat_2", label: "Decline Squat Test", info: "Squat unipodal sur plan incliné à 25°." }
+      ]
+    },
+    tendinopathie_achille: {
+      nom: "6. Tendinopathie Achilléenne (Corporelle ou Insertionnelle)",
+      tests: [
+        { id: "t_ach_1", label: "Arc Sign (Signe de l'arc)", info: "Mobilité de la tuméfaction le long du tendon lors de la flexion/dorsiflexion." },
+        { id: "t_ach_2", label: "Royal London Hospital Test", info: "Sensibilité douloureuse modifiée cheville en extension vs flexion." }
+      ]
+    },
+    rupture_achille: {
+      nom: "7. Rupture du Tendon d'Achille",
+      tests: [
+        { id: "t_rach_1", label: "Test de Thompson (Matles / Simmonds)", info: "<strong>EBP :</strong> Absence de plantarflexion lors de la compression du mollet en décubitus ventral (Sensibilité ~96%)." },
+        { id: "t_rach_2", label: "Palpation d'une encoche (Gap test)", info: "Discontinuité palpée sur le corps du tendon." }
       ]
     },
     entorse_cheville: {
-      nom: "Entorse Latérale de Cheville / Lésion Ligamentaire",
+      nom: "8. Entorse Latérale de Cheville (Lésion LTFA / LCF)",
       tests: [
-        { id: "t_eche_1", label: "Tiroir Antérieur de Cheville", info: "<strong>EBP :</strong> Évaluation de la laxité du ligament talo-fibulaire antérieur (LTFA)." },
-        { id: "t_eche_2", label: "Test de Inversion / Talar Tilt", info: "<strong>EBP :</strong> Évaluation de l'intégrité du ligament calcanéo-fibulaire." },
-        { id: "t_eche_3", label: "Règles d'Ottawa (Exclusion fracture)", info: "<strong>EBP :</strong> Sensibilité proche de 100% pour éliminer une fracture malléolaire ou du médio-pied." }
+        { id: "t_ech_1", label: "Tiroir Antérieur de Cheville", info: "Évaluation de la laxité tibio-talaire antérieure." },
+        { id: "t_ech_2", label: "Talar Tilt Test", info: "Évaluation du ligament calcanéo-fibulaire." },
+        { id: "t_ech_3", label: "Règles d'Ottawa (Fracture)", info: "Sensibilité proche de 100% pour exclure une fracture osseuse." }
+      ]
+    },
+    fasciite_plantaire: {
+      nom: "9. Fasciite Plantaire / Aponévrosite Plantaire",
+      tests: [
+        { id: "t_fp_1", label: "Windlass Test", info: "<strong>EBP :</strong> Dorsiflexion passive des orteils reproduisant la douleur sur l'insertion calcanéenne." },
+        { id: "t_fp_2", label: "Palpation du tubercule médial du calcanéus", info: "Douleur exquise au premier appui matinal." }
+      ]
+    },
+    periostite_tibiale: {
+      nom: "10. Périostite Tibiale (Medial Tibial Stress Syndrome)",
+      tests: [
+        { id: "t_per_1", label: "Palpation bord médial du tibia", info: "Douleur diffuse sur plus de 5 cm le long du tiers moyen/inférieur tibial." }
+      ]
+    },
+    coiffe_rotateurs: {
+      nom: "11. Tendinopathie de la Coiffe / Conflit Sous-Acromial",
+      tests: [
+        { id: "t_cr_1", label: "Signe de Hawkins-Kennedy", info: "<strong>EBP :</strong> Sensibilité ~79% | Spécificité ~59%." },
+        { id: "t_cr_2", label: "Test de Jobe (Supra-épineux)", info: "<strong>EBP :</strong> Sensibilité ~88% | Spécificité ~50%." },
+        { id: "t_cr_3", label: "Test de Neer", info: "Élévation passive forcée." }
+      ]
+    },
+    rupture_coiffe: {
+      nom: "12. Rupture Transfixiante de la Coiffe des Rotateurs",
+      tests: [
+        { id: "t_rcr_1", label: "Drop Arm Test (Signe du Sourdine)", info: "Impossibilité de retenir la descente lente du bras en abduction." },
+        { id: "t_rcr_2", label: "Patte Test / Infraspinatus Test", info: "Déficit de rotation externe contre résistance." },
+        { id: "t_rcr_3", label: "Lift-Off Test (Subscapulaire)", info: "Impossibilité de décoller la main du dos." }
+      ]
+    },
+    capsulite_retractile: {
+      nom: "13. Capsulite Rétractile (Épaule Gelée)",
+      tests: [
+        { id: "t_cap_1", label: "Restriction Passive Globale (RE1)", info: "Perte de rotation externe passive > 50% par rapport au côté sain, end-feel capsulaire." }
+      ]
+    },
+    instabilite_epaule: {
+      nom: "14. Instabilité / Luxation Récidivante d'Épaule",
+      tests: [
+        { id: "t_ins_1", label: "Test d'Appréhension Antérieure", info: "<strong>EBP :</strong> Spécificité ~99%. Appréhension en abduction RE." },
+        { id: "t_ins_2", label: "Test de Relocalisation de Jobe", info: "Disparition de l'appréhension lors d'une poussée postérieure sur la tête humérale." }
+      ]
+    },
+    bicipitale: {
+      nom: "15. Tendinopathie du Long Biceps / Lésion SLAP",
+      tests: [
+        { id: "t_bic_1", label: "Test de Speed (Yergason)", info: "Douleur bicipitale dans la gouttière lors de la flexion contrariée." },
+        { id: "t_bic_2", label: "Active Compression Test de O'Brien", info: "Douleur au pli de l'aine ou en profondeur dans l'épaule." }
+      ]
+    },
+    epicondylite_laterale: {
+      nom: "16. Épicondylite Latérale (Tennis Elbow)",
+      tests: [
+        { id: "t_epi_1", label: "Test de Cozen", info: "Extension active du poignet contre résistance avec déviation radiale." },
+        { id: "t_epi_2", label: "Test de Maudsley", info: "Extension contrariée du 3e doigt." },
+        { id: "t_epi_3", label: "Palpation élective épicondyle latéral", info: "Douleur à 1 cm en distal et antérieur de l'épicondyle." }
+      ]
+    },
+    epicondylite_mediale: {
+      nom: "17. Épicondylite Médiale (Golfer's Elbow)",
+      tests: [
+        { id: "t_epim_1", label: "Flexion palmaire du poignet contrariée", info: "Douleur à l'insertion des fléchisseurs sur l'épitrochlée." }
+      ]
+    },
+    canal_carpien: {
+      nom: "18. Syndrome du Canal Carpien (Compression Nerf Médian)",
+      tests: [
+        { id: "t_cc_1", label: "Test de Phalen (60 sec)", info: "<strong>EBP :</strong> Paresthésies dans le territoire médian en flexion palmaire." },
+        { id: "t_cc_2", label: "Test de Durkan", info: "<strong>EBP :</strong> Sensibilité ~87% | Spécificité ~90% par compression directe du canal." },
+        { id: "t_cc_3", label: "Signe de Tinel au poignet", info: "Percussion directe du nerf médian." }
+      ]
+    },
+    de_quervain: {
+      nom: "19. Ténosynovite de De Quervain",
+      tests: [
+        { id: "t_dq_1", label: "Test de Finkelstein", info: "<strong>EBP :</strong> Douleur vive le long du premier compartiment dorsal en inclinaison ulnaire pouf replié." }
+      ]
+    },
+    arthrose_pouce: {
+      nom: "20. Rhizarthrose (Arthrose Trapézométacarpienne)",
+      tests: [
+        { id: "t_rhi_1", label: "Grind Test (Compression-Rotation)", info: "Douleur et crépitements lors de la compression axiale du 1er métacarpien sur le trapèze." }
+      ]
+    },
+    conflit_femoro_acetabulaire: {
+      nom: "21. Conflit Fémoro-Acétabulaire (CFA / FAI)",
+      tests: [
+        { id: "t_cfa_1", label: "FADIR Test", info: "<strong>EBP :</strong> Sensibilité très élevée (~99%). Flexion, Adduction, Rotation Interne." },
+        { id: "t_cfa_2", label: "FABER Test (Patrick)", info: "Flexion, Abduction, Rotation Externe." }
+      ]
+    },
+    coxarthrose: {
+      nom: "22. Coxarthrose (Arthrose de Hanche)",
+      tests: [
+        { id: "t_cox_1", label: "Restriction de Rotation Interne", info: "Perte d'amplitude en rotation interne < 15° couplée à une douleur inguinale." },
+        { id: "t_cox_2", label: "Signe de Trendelenburg", info: "Chute du bassin controlatéral en appui monopodal." }
+      ]
+    },
+    bursite_trochanterienne: {
+      nom: "23. Bursite Trochantérienne / Syndrome Douloureux Grand Trochanter",
+      tests: [
+        { id: "t_burs_1", label: "Palpation du Grand Trochanter", info: "Douleur exquise latérale à la palpation." },
+        { id: "t_burs_2", label: "Abduction contre résistance", info: "Douleur en abduction de hanche." }
+      ]
+    },
+    pubalgie: {
+      nom: "24. Pubalgie / Tendinopathie des Adducteurs",
+      tests: [
+        { id: "t_pub_1", label: "Test de squeezing (Adducteurs contrariés)", info: "Adduction contrariée genoux fléchis ou tendus." },
+        { id: "t_pub_2", label: "Palpation symphyse pubienne", info: "Douleur exquise sur l'anneau pubien." }
+      ]
+    },
+    lombalgie_commune: {
+      nom: "25. Lombalgie Commune / Dysfonction Lombaire",
+      tests: [
+        { id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "<strong>EBP :</strong> Permet d'exclure une compression discale si négatif." },
+        { id: "t_lom_2", label: "Slump Test Neurodynamique", info: "<strong>EBP :</strong> Sensibilité ~84%." },
+        { id: "t_lom_3", label: "Phénomène de Centralisation (McKenzie)", info: "Recherche de centralisation en extension/flexion répétée." }
+      ]
+    },
+    hernie_discale_lombaire: {
+      nom: "26. Hernie Discale Lombaire & Sciatique / Cruralgie",
+      tests: [
+        { id: "t_hdl_1", label: "Lasègue positif < 45°", info: "Reproduction de la douleur radiculaire sur le trajet du sciatique." },
+        { id: "t_hdl_2", label: "Test de Bragard", info: "Lasègue abaissé de quelques degrés avec adjonction d'une dorsiflexion." },
+        { id: "t_hdl_3", label: "Testing neurologique (L4-L5-S1)", info: "Réflexes ostéo-tendineux (rotulien, achilléen) et testing musculaire (tibial ant, extenseur hallux, triceps sural)." }
+      ]
+    },
+    canal_lombaire_etroit: {
+      nom: "27. Canal Lombaire Étroit (Sténose Lombaire)",
+      tests: [
+        { id: "t_cle_1", label: "Signe du Caddie / Two-Stage Treadmill", info: "Soulagement de la claudication neurogène en flexion lombaire (marche penchée en avant)." }
+      ]
+    },
+    spondylolisthésis: {
+      nom: "28. Spondylolisthésis Lombaire",
+      tests: [
+        { id: "t_spon_1", label: "Stork Test (Hyperextension monopodale)", info: "Douleur lombaire unilatérale en extension sur un pied." }
+      ]
+    },
+    cervicalgie_commune: {
+      nom: "29. Cervicalgie Commune / Raideur Cervicale",
+      tests: [
+        { id: "t_cer_1", label: "Amplitudes Actives & Passives", info: "Évaluation des limitations en rotation et inclinaison." }
+      ]
+    },
+    nevralgie_cervico_brachiale: {
+      nom: "30. Névralgie Cervico-Brachiale (NCB)",
+      tests: [
+        { id: "t_ncb_1", label: "Test de Spurling", info: "<strong>EBP :</strong> Extension, inclinaison latérale et compression axiale." },
+        { id: "t_ncb_2", label: "Test de Distraction Cervicale", info: "Soulagement des symptômes par traction axiale." },
+        { id: "t_ncb_3", label: "ULNT1 (Nerf Médian)", info: "Mise en tension neurodynamique du membre supérieur." }
+      ]
+    },
+    cephalee_cervicogenique: {
+      nom: "31. Céphalée Cervicogénique",
+      tests: [
+        { id: "t_ccrv_1", label: "Cervical Flexion-Rotation Test (C1-C2)", info: "<strong>EBP :</strong> Sensibilité ~90% | Spécificité ~91% en flexion maximale et rotation." }
+      ]
+    },
+    entorse_cervicale: {
+      nom: "32. Coup du Lapin (Whiplash / Entorse Cervicale)",
+      tests: [
+        { id: "t_whip_1", label: "Canadian C-Spine Rules", info: "Règles d'imagerie d'urgence pour exclure une fracture cervicale haute." }
+      ]
+    },
+    fissuration_menisque: {
+      nom: "33. Lésion / Kyste Poplité (Kyste de Baker)",
+      tests: [
+        { id: "t_bak_1", label: "Palpation du creux poplité", info: "Masse kystique tendue confirmée par échographie." }
+      ]
+    },
+    tendinite_foots: {
+      nom: "34. Tendinopathie des Ischio-Jambiers / Anserine",
+      tests: [
+        { id: "t_pes_1", label: "Palpation de la patte d'oie", info: "Douleur sur la face médiale supérieure du tibia." }
+      ]
+    },
+    syndrome_tibial_anterieur: {
+      nom: "35. Syndrome des Loges / Shin Splints",
+      tests: [
+        { id: "t_log_1", label: "Palpation loges antéro-latérales", info: "Tension et douleur à l'effort." }
+      ]
+    },
+    metatarsalgie: {
+      nom: "36. Métatarsalgie / Syndrome de Morton",
+      tests: [
+        { id: "t_mor_1", label: "Test de Mulder (Compression transversale)", info: "Reproduction de la douleur inter-métatarsienne et du cliquetis." }
+      ]
+    },
+    hallux_valgus: {
+      nom: "37. Hallux Valgus & Bursite Métatarsienne",
+      tests: [
+        { id: "t_hal_1", label: "Mesure de l'angle MTP1", info: "Déviation latérale du premier orteil." }
+      ]
+    },
+    tendinite_fessier: {
+      nom: "38. Tendinopathie du Moyen Fessier (Gluteus Medius)",
+      tests: [
+        { id: "t_gm_1", label: "Single Leg Stance Test (30s)", info: "Appui monopodal reproduisant la douleur latérale de hanche." }
+      ]
+    },
+    syndrome_ess: {
+      nom: "39. Syndrome de la Bandelette Illiotibiale (Essui-Glace)",
+      tests: [
+        { id: "t_bit_1", label: "Test de Noble", info: "Compression de l'EMA sur le condyle fémoral externe à 30° de flexion genou." },
+        { id: "t_bit_2", label: "Test de Renne", info: "Douleur ressentie lors d'une descente de squat sur un pied." }
+      ]
+    },
+    luxation_patellaire: {
+      nom: "40. Instabilité Rotulienne / Luxation Patellaire",
+      tests: [
+        { id: "t_luxp_1", label: "Apprehension Test", info: "Appréhension majeure lors de la translation latérale passive de la rotule." }
+      ]
+    },
+    maladie_osgood_schlatter: {
+      nom: "41. Maladie d'Osgood-Schlatter (Adolescent)",
+      tests: [
+        { id: "t_osg_1", label: "Palpation de la Tubérosité Tibiale Antérieure", info: "Douleur exquise sur la TTA chez le sujet jeune en croissance." }
+      ]
+    },
+    maladie_sever: {
+      nom: "42. Maladie de Sévère (Apophysite Calcanéenne)",
+      tests: [
+        { id: "t_sev_1", label: "Squeeze Test du Calcanéus", info: "Compression bilatérale de la tubérosité postérieure du calcanéus." }
+      ]
+    },
+    capsulite_retractile_hanche: {
+      nom: "43. Capsulite de Hanche / Rétraction",
+      tests: [
+        { id: "t_caph_1", label: "Périmètre de rotation globale bloqué", info: "Perte stricte des amplitudes passives." }
+      ]
+    },
+    syndrome_pyramidal: {
+      nom: "44. Syndrome du Muscle Pyramidal (imitation sciatique)",
+      tests: [
+        { id: "t_pyr_1", label: "FAIR Test (Flexion, Adduction, Rotation Interne)", info: "Compression du nerf sciatique par le muscle piriforme." }
+      ]
+    },
+    reeducation_post_chir_prothese_genou: {
+      nom: "45. Post-Opératoire : Prothèse Totale de Genou (PTG)",
+      tests: [
+        { id: "t_ptg_1", label: "Mesure Goniométrique Active/Passive", info: "Suivi des gains d'extension (0°) et de flexion (> 90° requis)." }
+      ]
+    },
+    reeducation_post_chir_prothese_hanche: {
+      nom: "46. Post-Opératoire : Prothèse Totale de Hanche (PTH)",
+      tests: [
+        { id: "t_pth_1", label: "Évaluation des périmètres de sécurité", info: "Prévention des luxations (pas de flexion > 90°, pas de RNI excessive)." }
+      ]
+    },
+    fibromyalgie: {
+      nom: "47. Syndrome Fibromyalgique & Douleurs Chroniques",
+      tests: [
+        { id: "t_fib_1", label: "Mapping des Tender Points", info: "Cartographie des points sensibles douloureux disséminés." }
+      ]
+    },
+    vertige_ppv: {
+      nom: "48. Vertige Positionnel Paroxystique Bénin (VPPB)",
+      tests: [
+        { id: "t_vppb_1", label: "Manœuvre de Dix-Hallpike", info: "<strong>EBP :</strong> Test diagnostique provoquant le nystagmus caractéristique." }
+      ]
+    },
+    trouble_equilibre_geriatrie: {
+      nom: "49. Troubles de l'Équilibre & Prévention des Chutes",
+      tests: [
+        { id: "t_eq_1", label: "Timed Up and Go (TUG)", info: "<strong>EBP :</strong> Se lever, marcher 3m, faire demi-tour et s'assoir (> 14s = risque de chute)." },
+        { id: "t_eq_2", label: "Test de Tinetti", info: "Score d'équilibre et de marche /28." }
+      ]
+    },
+    incontinence_urinaire: {
+      nom: "50. Rééducation Périnéale & Incontinence Urinaire",
+      tests: [
+        { id: "t_per_1", label: "Testing Oxford du plancher pelvien", info: "Évaluation de la contraction musculaire périnéale de 0 à 5." }
       ]
     }
   };
@@ -615,7 +882,7 @@
     const container = document.getElementById('pathologiesListContainer');
     const blockId = `pathoBlock_${pathoBlockCounter}`;
     
-    let optionsHtml = '';
+    let optionsHtml = '<option value="libre">-- Saisir une pathologie personnalisée (Champ libre) --</option>';
     for (let key in pathologiesDB) {
       optionsHtml += `<option value="${key}">${pathologiesDB[key].nom}</option>`;
     }
@@ -626,16 +893,19 @@
     div.innerHTML = `
       ${pathoBlockCounter > 1 ? `<button class="btn-remove-patho" onclick="supprimerBlocPathologie('${blockId}')">Supprimer cette hypothèse</button>` : ''}
       <div style="margin-bottom:12px;">
-        <label style="color:var(--c-sapin); font-weight:800;">Hypothèse Pathologique n°${pathoBlockCounter} :</label>
+        <label style="color:var(--c-sapin); font-weight:800;">Hypothèse Diagnostique n°${pathoBlockCounter} :</label>
         <select class="patho-select" onchange="changerPathoSelect(this, '${blockId}')" style="margin-top:6px;">
           ${optionsHtml}
         </select>
+      </div>
+      <div class="patho-custom-wrapper" style="display:none; margin-bottom:12px;">
+        <label style="font-size:12px; color:var(--c-sapin);">Nom de la pathologie libre :</label>
+        <input type="text" class="patho-custom-input" placeholder="Ex: Tendinopathie rare du tenseur du fascia lata..." style="margin-top:4px;">
       </div>
       <div class="patho-tests-render" style="margin-top:14px;"></div>
     `;
     container.appendChild(div);
     
-    // Déclencher le premier rendu
     const selectEl = div.querySelector('.patho-select');
     changerPathoSelect(selectEl, blockId);
   }
@@ -646,37 +916,55 @@
 
   function changerPathoSelect(selectEl, blockId) {
     const val = selectEl.value;
-    const pathoData = pathologiesDB[val];
     const blockEl = document.getElementById(blockId);
+    const customWrapper = blockEl.querySelector('.patho-custom-wrapper');
     const renderContainer = blockEl.querySelector('.patho-tests-render');
 
-    let html = `<div style="font-size:13px; font-weight:700; color:var(--c-menthe-vif); margin-bottom:8px;">Tests associés pour : ${pathoData.nom}</div><div class="grid">`;
-    pathoData.tests.forEach((t, idx) => {
-      // Échapper les guillemets pour l'appel de fonction info
-      const safeInfo = t.info.replace(/'/g, "\\'");
-      html += `
-        <div>
-          <div class="label-row">
-            <label>${t.label} :</label>
-            <span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span>
+    if (val === 'libre') {
+      customWrapper.style.display = 'block';
+      renderContainer.innerHTML = `
+        <div style="font-size:13px; font-weight:700; color:var(--c-menthe-vif); margin-bottom:8px;">Tests Cliniques Personnalisés :</div>
+        <div class="grid">
+          <div>
+            <label>Nom du Test 1 :</label>
+            <input type="text" placeholder="Ex: Test spécifique...">
           </div>
-          <input type="text" placeholder="Résultat du test..." data-test-id="${t.id}">
+          <div>
+            <label>Résultat / Valeur :</label>
+            <input type="text" placeholder="Positif / Négatif / Amplitude...">
+          </div>
         </div>
       `;
-    });
-    html += `</div>`;
-    renderContainer.innerHTML = html;
+    } else {
+      customWrapper.style.display = 'none';
+      const pathoData = pathologiesDB[val];
+      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-menthe-vif); margin-bottom:8px;">Tests associés : ${pathoData.nom}</div><div class="grid">`;
+      pathoData.tests.forEach((t) => {
+        const safeInfo = t.info.replace(/'/g, "\\'");
+        html += `
+          <div>
+            <div class="label-row">
+              <label>${t.label} :</label>
+              <span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span>
+            </div>
+            <input type="text" placeholder="Résultat du test..." data-test-id="${t.id}">
+          </div>
+        `;
+      });
+      html += `</div>`;
+      renderContainer.innerHTML = html;
+    }
   }
 
   function calculerDiagnosticIA() {
     const container = document.getElementById('probabilitesContainer');
     container.innerHTML = `
       <div style="background:var(--c-menthe-clair); border:1px solid var(--c-eau); padding:18px; border-radius:12px; margin-bottom:10px;">
-        <strong style="color:var(--c-sapin); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 75%)</strong>
-        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Analyse croisée des tests cliniques positifs, de l'anamnèse et des facteurs de risque professionnels/sportifs.</p>
+        <strong style="color:var(--c-sapin); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 78%)</strong>
+        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-sapin);">Analyse croisée des tests cliniques renseignés dans les blocs d'hypothèses, de l'anamnèse et des contraintes professionnelles/sportives.</p>
       </div>
       <div style="background:var(--c-pale); border:1px solid var(--border); padding:14px; border-radius:12px;">
-        <strong style="color:var(--c-sapin); font-size:13px;">2. Hypothèse secondaire / Surcharge fonctionnelle associée (Probabilité : 25%)</strong>
+        <strong style="color:var(--c-sapin); font-size:13px;">2. Hypothèse différentielle en cascade (Probabilité : 22%)</strong>
       </div>
     `;
     document.getElementById('diagnostic').value = "Pathologie mécanique ciblée validée par les tests cliniques";
@@ -695,35 +983,45 @@
     }, 400);
   }
 
-  // MODAL BODY CHART
+  // GESTION DU BODY CHART AVEC VOTRE IMAGE EXACTE ET CROIX CLIQUABLES
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
-  const svg = document.getElementById('chartSVG');
-  const markersLayer = document.getElementById('markersLayer');
+  function gererClicImageBodyChart(e) {
+    const wrapper = document.getElementById('bodyChartWrapper');
+    const rect = wrapper.getBoundingClientRect();
+    
+    // Coordonnées relatives en pourcentage (%) pour rester responsive
+    const xClick = e.clientX - rect.left;
+    const yClick = e.clientY - rect.top;
+    
+    const xPercent = (xClick / rect.width) * 100;
+    const yPercent = (yClick / rect.height) * 100;
 
-  svg.addEventListener('click', function(e) {
-    if (e.target.classList.contains('pain-marker')) {
+    // Si on clique sur une croix existante (via la bulle parent ou l'élément), on l'enlève
+    if (e.target.classList.contains('pain-cross')) {
       const idx = parseInt(e.target.getAttribute('data-index'));
       markers.splice(idx, 1);
-      rendreMarqueurs();
+      rendreMarqueursImg();
       return;
     }
-    const pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
-    markers.push({ x: Math.round(svgP.x), y: Math.round(svgP.y) });
-    rendreMarqueurs();
-  });
 
-  function rendreMarqueurs() {
-    markersLayer.innerHTML = '';
+    markers.push({ x: xPercent, y: yPercent });
+    rendreMarqueursImg();
+  }
+
+  function rendreMarqueursImg() {
+    const layer = document.getElementById('markersLayer');
+    layer.innerHTML = '';
+    
     markers.forEach((m, idx) => {
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", m.x); circle.setAttribute("cy", m.y); circle.setAttribute("r", "12");
-      circle.setAttribute("fill", "rgba(220, 38, 38, 0.8)"); circle.setAttribute("stroke", "#FFFFFF"); circle.setAttribute("stroke-width", "2");
-      circle.setAttribute("class", "pain-marker"); circle.setAttribute("data-index", idx); circle.setAttribute("style", "cursor: pointer;");
-      markersLayer.appendChild(circle);
+      const cross = document.createElement('div');
+      cross.className = 'pain-cross';
+      cross.style.left = m.x + '%';
+      cross.style.top = m.y + '%';
+      cross.innerText = '✕';
+      cross.setAttribute('data-index', idx);
+      layer.appendChild(cross);
     });
 
     const textEl = document.getElementById('markerCountText');
@@ -731,11 +1029,11 @@
       textEl.innerText = `✓ ${markers.length} zone(s) de douleur marquée(s) sur le Body Chart.`;
       textEl.style.color = "var(--c-sapin)";
     } else {
-      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir l'éditeur anatomique à 4 vues.";
+      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.";
     }
   }
 
-  function effacerMarqueurs() { markers = []; rendreMarqueurs(); }
+  function effacerMarqueurs() { markers = []; rendreMarqueursImg(); }
   function reinitialiser() { if(confirm("Réinitialiser le bilan ?")) location.reload(); }
 
   window.addEventListener('load', () => {
