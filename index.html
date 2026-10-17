@@ -3,909 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilan Kinésithérapeute Expert EBP</title>
-  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <title>Schéma Corporel Géométrique Kiné</title>
   <style>
     :root {
-      --c-purple: #9B5DE5;
-      --c-purple-dark: #3C1B70;
-      --c-purple-light: #F3E8FF;
-      --c-yellow: #F1C40F;
-      --c-yellow-light: #FEF9E7;
-      --c-green: #2ECC71;
-      --c-bg: #FAF5FF;
-      
-      --card-bg: #FFFFFF;
-      --border: #E9D5FF;
+      --bg-color: #FAF5FF;
+      --primary: #9B5DE5;
+      --dark: #3C1B70;
+      --joint-color: #F1C40F; /* Cercles pour les articulations */
+      --bone-color: #CFF7EA;  /* Rectangles pour les os longs */
+      --bone-stroke: #124D41;
       --danger: #E74C3C;
-      --warning: #E67E22;
-      --shadow: 0 10px 30px rgba(60, 27, 112, 0.08);
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--c-bg);
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(241, 196, 15, 0.12) 0%, transparent 40%);
-      background-attachment: fixed;
-      color: var(--c-purple-dark);
-      padding: 30px 15px 120px 15px;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    .container {
-      max-width: 1060px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(8px);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    header {
-      border-bottom: 2px solid var(--c-purple-light);
-      padding-bottom: 20px;
-      margin-bottom: 25px;
+      background-color: var(--bg-color);
+      color: var(--dark);
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h2 { margin-bottom: 5px; }
+    p { margin-top: 0; color: #666; font-size: 14px; text-align: center; }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(60, 27, 112, 0.1);
+      border: 1px solid #E9D5FF;
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .legend {
+      display: flex;
       gap: 15px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      font-weight: bold;
     }
 
-    .brand-header { display: flex; align-items: center; gap: 16px; }
-    .brand-logo-svg {
-      width: 58px;
-      height: 58px;
-      filter: drop-shadow(0 4px 10px rgba(60, 27, 112, 0.15));
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    h1 { margin: 0; font-size: 22px; color: var(--c-purple-dark); font-weight: 800; }
-    .subtitle { font-size: 13px; color: var(--c-purple-dark); opacity: 0.8; margin-top: 2px; }
-
-    /* MENU ANCRES */
-    .sticky-nav {
-      position: sticky; top: 15px; z-index: 1000;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 14px; padding: 8px 12px; margin-bottom: 35px;
-      display: flex; justify-content: space-around; gap: 8px; overflow-x: auto;
-      box-shadow: 0 4px 20px rgba(60, 27, 112, 0.08);
-    }
-    .nav-anchor {
-      text-decoration: none; color: var(--c-purple-dark); font-size: 13px; font-weight: 700;
-      padding: 8px 16px; border-radius: 8px; transition: all 0.2s; white-space: nowrap;
-    }
-    .nav-anchor:hover { background: var(--c-purple-light); color: var(--c-purple-dark); }
-
-    .scroll-section {
-      margin-bottom: 40px; padding-top: 10px;
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .scroll-section.is-visible { opacity: 1; transform: translateY(0); }
-
-    .section-title {
-      font-size: 15px; font-weight: 800; color: var(--c-purple-dark);
-      background: linear-gradient(90deg, var(--c-purple-light) 0%, var(--c-bg) 100%);
-      padding: 12px 18px; border-left: 5px solid var(--c-purple); border-radius: 8px;
-      margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+    .legend-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--joint-color);
+      border: 1.5px solid var(--dark);
     }
 
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 18px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .full-width { grid-column: 1 / -1; }
-
-    .label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-    label { font-weight: 700; font-size: 13px; color: var(--c-purple-dark); display: block; margin: 0; }
-    
-    input[type="text"], input[type="date"], select, textarea, input[type="file"] {
-      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
-      border-radius: 10px; font-size: 13.5px; box-sizing: border-box;
-      background: #FFFFFF; color: var(--c-purple-dark); transition: all 0.2s;
-    }
-    input::placeholder, textarea::placeholder { color: var(--c-purple-dark) !important; opacity: 0.5; }
-    input:focus, select:focus, textarea:focus {
-      outline: none; border-color: var(--c-purple);
-      box-shadow: 0 0 0 3px rgba(155, 93, 229, 0.2);
-    }
-    textarea { min-height: 70px; resize: vertical; }
-
-    .neutral-block { background: var(--c-bg); padding: 18px; border-radius: 12px; border: 1px solid var(--border); }
-
-    /* BOUTON INFO (I) */
-    .btn-info {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 19px; height: 19px; border-radius: 50%;
-      background: var(--c-purple-light); color: var(--c-purple-dark);
-      font-size: 11px; font-weight: bold; cursor: pointer; border: 1px solid var(--border);
-      user-select: none; transition: transform 0.15s, background 0.15s;
-    }
-    .btn-info:hover { background: var(--c-purple); color: white; transform: scale(1.15); }
-
-    .btn-reset {
-      background: var(--c-purple-light); color: var(--c-purple-dark); border: 1px solid var(--border);
-      padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer;
-    }
-    .btn-reset:hover { background: var(--c-purple); color: white; }
-
-    .btn-action-vif {
-      background: var(--c-purple); color: white; border: none;
-      padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(155, 93, 229, 0.3); transition: all 0.2s;
-    }
-    .btn-action-vif:hover { transform: translateY(-2px); background: #8644D0; }
-
-    .preview-box {
-      text-align: center; background: var(--c-bg); padding: 18px;
-      border-radius: 12px; border: 2px dashed var(--c-purple); cursor: pointer; transition: background 0.2s;
-    }
-    .preview-box:hover { background: var(--c-purple-light); }
-
-    .patho-block {
-      background: white; border: 1px solid var(--border); border-radius: 14px;
-      padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(60,27,112,0.04);
-      position: relative;
-    }
-    .btn-remove-patho {
-      position: absolute; top: 15px; right: 15px; background: #FFF5F5; color: var(--danger);
-      border: 1px solid #FFD6D6; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-weight: 700;
-    }
-    .btn-remove-patho:hover { background: var(--danger); color: white; }
-
-    .exo-card {
-      background: var(--c-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative;
+    .legend-rect {
+      width: 16px;
+      height: 10px;
+      background: var(--bone-color);
+      border: 1.5px solid var(--bone-stroke);
+      border-radius: 2px;
     }
 
-    /* WIDGET IA */
-    #aiFloatBtn {
-      position: fixed; bottom: 25px; right: 25px; background: var(--c-purple-dark); color: white;
-      border: none; border-radius: 30px; padding: 14px 22px; font-weight: 700; font-size: 14px;
-      cursor: pointer; box-shadow: 0 8px 25px rgba(60, 27, 112, 0.3); display: flex; align-items: center; gap: 8px; z-index: 999;
-    }
-    #aiChatWindow {
-      display: none; position: fixed; bottom: 85px; right: 25px; width: 380px; height: 500px;
-      background: white; border: 1px solid var(--border); border-radius: 16px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden; z-index: 9999;
-    }
-    .ai-chat-header { background: var(--c-purple-dark); color: white; padding: 14px 18px; font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-    .ai-chat-body { flex: 1; padding: 14px; overflow-y: auto; font-size: 13px; background: var(--c-bg); display: flex; flex-direction: column; gap: 10px; }
-    .ai-chat-footer { padding: 12px; background: white; border-top: 1px solid var(--border); display: flex; gap: 8px; }
-
-    .export-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; }
-    .btn-export { border: none; padding: 14px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
-    .btn-docx { background: var(--c-purple); }
-    .btn-doc-med { background: var(--c-purple-dark); }
-    .btn-pdf { background: var(--c-green); }
-
-    /* MODALS */
-    .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(60, 27, 112, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
-    }
-    .modal-content { background: white; width: 92%; max-width: 1000px; height: 92vh; max-height: 900px; border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
-    .modal-info-box { background: white; max-width: 520px; width: 90%; border-radius: 16px; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FFFFFF; border-radius: 12px; margin-top: 14px; overflow: auto; padding: 10px; }
-    
-    .body-chart-container {
-      position: relative;
-      display: inline-block;
-      max-width: 100%;
-      user-select: none;
-    }
-    .body-chart-container img {
-      display: block;
-      max-width: 100%;
+    #svgBody {
+      width: 100%;
+      max-width: 400px;
       height: auto;
-      max-height: 75vh;
-      pointer-events: auto;
+      background: #FFFFFF;
+      border: 1px solid #E9D5FF;
+      border-radius: 12px;
       cursor: crosshair;
     }
 
-    .pain-cross {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      color: #E74C3C;
-      font-size: 24px;
-      font-weight: 900;
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-      line-height: 1;
-      text-shadow: 0 0 4px white, 0 0 4px white;
-      z-index: 10;
+      transition: background 0.2s;
     }
 
-    @media print {
-      body { background: white; padding: 0; color: black; }
-      .sticky-nav, #aiFloatBtn, #aiChatWindow, .btn-reset, .btn-export, .btn-action-vif, .btn-info, button { display: none !important; }
-      .container { box-shadow: none; border: none; padding: 0; width: 100%; max-width: 100%; }
-      .scroll-section { opacity: 1 !important; transform: none !important; }
+    button:hover {
+      background: #8644D0;
     }
 
-    @media (max-width: 768px) {
-      .container { padding: 20px 12px; }
-      .grid, .grid-3, .export-bar { grid-template-columns: 1fr !important; }
-      #aiChatWindow { width: 90vw; right: 5vw; }
+    button.clear {
+      background: var(--danger);
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <div class="brand-header">
-      <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="15" width="60" height="75" rx="10" fill="#9B5DE5"/>
-        <rect x="26" y="22" width="48" height="62" rx="6" fill="#F3E8FF"/>
-        <rect x="34" y="32" width="32" height="7" rx="3.5" fill="#F1C40F"/>
-        <rect x="34" y="45" width="32" height="7" rx="3.5" fill="#F1C40F"/>
-        <rect x="34" y="58" width="32" height="7" rx="3.5" fill="#F1C40F"/>
-        <rect x="35" y="10" width="30" height="10" rx="4" fill="#3C1B70"/>
-        <circle cx="28" cy="48" r="14" fill="#3C1B70"/>
-        <circle cx="28" cy="48" r="11" fill="#2ECC71"/>
-        <path d="M22 48L26 52L34 44" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="75" cy="20" r="4" fill="#F1C40F"/>
-        <circle cx="22" cy="80" r="3" fill="#F1C40F"/>
-      </svg>
-      <div>
-        <h1>BILAN KINÉSITHÉRAPIQUE EXPERT EBP</h1>
-        <div class="subtitle">Raisonnement clinique & Précision diagnostique</div>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px;">
-      <span style="font-size:12px; color:var(--c-purple-dark); font-weight:700; background:var(--c-yellow-light); border:1px solid var(--c-yellow); padding:6px 12px; border-radius:20px;">Sauvegarde auto 🟢</span>
-      <button class="btn-reset" onclick="reinitialiser()">Nouveau Patient</button>
-    </div>
-  </header>
+  <div class="card">
+    <h2>Schéma Géométrique Anatomique</h2>
+    <p>Cliquez sur le schéma pour placer ou retirer des repères de douleur (✕).</p>
 
-  <!-- NAVIGATION ANCRES -->
-  <nav class="sticky-nav">
-    <a href="#sec-patient" class="nav-anchor">1. Patient & Photos</a>
-    <a href="#sec-anamnese" class="nav-anchor">2. Anamnèse & Douleur</a>
-    <a href="#sec-examen" class="nav-anchor">3. Examen Global</a>
-    <a href="#sec-tests" class="nav-anchor">4. Tests & Diagnostic IA</a>
-    <a href="#sec-plan" class="nav-anchor">5. Plan de Soins & Exports</a>
-  </nav>
-
-  <!-- SECTION 1 : PATIENT & PHOTOS -->
-  <section id="sec-patient" class="scroll-section">
-    <div class="section-title"><span>1. RENSEIGNEMENTS GÉNÉRAUX & PIÈCES JOINTES</span></div>
-    <div class="grid">
-      <div>
-        <div class="label-row"><label>Nom :</label><span class="btn-info" onclick="ouvrirInfoModal('Nom du patient', 'Saisissez le nom de famille du patient pour l\'identification du dossier.')">i</span></div>
-        <input type="text" id="nom" placeholder="Nom du patient">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-circle"></div> Articulations (Ronds)
       </div>
-      <div>
-        <div class="label-row"><label>Prénom :</label><span class="btn-info" onclick="ouvrirInfoModal('Prénom', 'Saisissez le prénom du patient.')">i</span></div>
-        <input type="text" id="prenom" placeholder="Prénom">
-      </div>
-      <div>
-        <div class="label-row"><label>Date de naissance :</label><span class="btn-info" onclick="ouvrirInfoModal('Date de naissance', 'Permet de calculer l\'âge et d\'ajuster le profil épidémiologique pertinent.')">i</span></div>
-        <input type="date" id="dob">
-      </div>
-      <div>
-        <div class="label-row"><label>Téléphone :</label><span class="btn-info" onclick="ouvrirInfoModal('Téléphone', 'Numéro de contact pour le suivi.')">i</span></div>
-        <input type="text" id="telephone" placeholder="06 ...">
-      </div>
-      <div>
-        <div class="label-row"><label>Date du bilan :</label><span class="btn-info" onclick="ouvrirInfoModal('Date du bilan', 'Date de la première évaluation kinésithérapique.')">i</span></div>
-        <input type="date" id="dateBilan">
-      </div>
-      <div>
-        <div class="label-row"><label>Prescription médicale & Motif :</label><span class="btn-info" onclick="ouvrirInfoModal('Prescription médicale', 'Indiquez le médecin prescripteur et l\'intitulé exact de l\'ordonnance.')">i</span></div>
-        <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'...">
-      </div>
-      <div>
-        <div class="label-row"><label>Activité physique / Profession :</label><span class="btn-info" onclick="ouvrirInfoModal('Activité / Profession', 'Permet d\'identifier les contraintes biomécaniques professionnelles quotidiennes.')">i</span></div>
-        <input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire...">
-      </div>
-      <div>
-        <div class="label-row"><label>Sport / Loisirs :</label><span class="btn-info" onclick="ouvrirInfoModal('Sport & Loisirs', 'Volume, intensité et type de gestuelle sportive.')">i</span></div>
-        <input type="text" id="sport" placeholder="Discipline, fréquence...">
-      </div>
-      
-      <div class="full-width neutral-block">
-        <div class="label-row"><label>👤 Profil & Autonomie :</label><span class="btn-info" onclick="ouvrirInfoModal('Profil & Autonomie', 'Classement du niveau de contrainte globale et d\'exposition aux charges du patient.')">i</span></div>
-        <select id="profilPatient">
-          <option>Sportif Compétiteur (Pivots / Impacts)</option>
-          <option>Sportif Loisir / Récréatif</option>
-          <option>Sédentaire / Travailleur de bureau</option>
-          <option>Travailleur physique / Travail contraignant (Manutention, charges lourdes, postures pénibles)</option>
-          <option>Post-opératoire récent</option>
-          <option>Gériatrie / Perte d'autonomie</option>
-        </select>
-      </div>
-
-      <div class="full-width neutral-block">
-        <div class="label-row"><label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label><span class="btn-info" onclick="ouvrirInfoModal('Pièces jointes', 'Joignez des photographies de posture ou d\'imagerie médicale pour archivage.')">i</span></div>
-        <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
-        <div id="photoPreviewContainer" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 2 : ANAMNÈSE & BODY CHART -->
-  <section id="sec-anamnese" class="scroll-section">
-    <div class="section-title"><span>2. SCHÉMA CORPOREL & PROFIL DE DOULEUR</span></div>
-    
-    <div class="full-width">
-      <div class="label-row">
-        <label>📍 Schéma Corporel (Body Chart 4 Vues Anatomiques) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart', 'Cliquez pour ouvrir l\'image anatomique. Cliquez directement sur l\'image pour placer des croix de douleur (✕). Cliquez sur une croix pour la supprimer.')">i</span>
-      </div>
-      <div class="preview-box" onclick="ouvrirModalChart()">
-        <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
+      <div class="legend-item">
+        <div class="legend-rect"></div> Os longs (Rectangles)
       </div>
     </div>
 
-    <div class="grid" style="margin-top:20px;">
-      <div class="full-width">
-        <div class="label-row"><label>Mécanisme lésionnel & Histoire de la maladie :</label><span class="btn-info" onclick="ouvrirInfoModal('Mécanisme lésionnel', 'Apparition progressive vs traumatique aigu, notion de faux mouvement ou de surcharge.')">i</span></div>
-        <textarea id="mecanisme" placeholder="Circonstances, progressif vs brutal..."></textarea>
-      </div>
-      <div class="full-width">
-        <div class="label-row"><label>Symptômes & Comportement de la douleur :</label><span class="btn-info" onclick="ouvrirInfoModal('Comportement de la douleur', 'Irritabilité, dérouillage matinal, facteurs aggravants et calmants au cours de la journée.')">i</span></div>
-        <textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal..."></textarea>
-      </div>
-    </div>
+    <!-- SCHÉMA GÉOMÉTRIQUE SVG -->
+    <svg id="svgBody" viewBox="0 0 400 650" xmlns="http://www.w3.org/2000/svg">
+      <!-- Fond neutre -->
+      <rect width="400" height="650" fill="#FAF5FF" rx="12"/>
 
-    <div class="grid-3" style="margin-top:16px;">
-      <div class="neutral-block">
-        <div class="label-row"><label>Douleur Repos (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Repos', 'Évaluation de la douleur de base sans contrainte.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaReposVal" style="font-weight:700; color:var(--c-purple);">0/10</span></div>
-        <input type="range" id="evaRepos" min="0" max="10" value="0" oninput="document.getElementById('evaReposVal').innerText = this.value + '/10'">
-      </div>
-      <div class="neutral-block">
-        <div class="label-row"><label>Douleur Effort (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Effort', 'Douleur ressentie lors des activités fonctionnelles habituelles.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaEffortVal" style="font-weight:700; color:var(--c-purple);">4/10</span></div>
-        <input type="range" id="evaEffort" min="0" max="10" value="4" oninput="document.getElementById('evaEffortVal').innerText = this.value + '/10'">
-      </div>
-      <div class="neutral-block">
-        <div class="label-row"><label>Douleur Pic (EVA) :</label><span class="btn-info" onclick="ouvrirInfoModal('EVA Pic', 'Intensité maximale de la douleur lors des crises ou mouvements aigus.')">i</span></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="font-size:12px; color:var(--c-purple-dark);">Niveau :</span><span id="evaPicVal" style="font-weight:700; color:var(--danger);">6/10</span></div>
-        <input type="range" id="evaPic" min="0" max="10" value="6" oninput="document.getElementById('evaPicVal').innerText = this.value + '/10'">
-      </div>
-    </div>
+      <!-- GROUPE ANATOMIQUE GÉOMÉTRIQUE -->
+      <g stroke="#3C1B70" stroke-width="2">
+        
+        <!-- TÊTE & TRONC -->
+        <!-- Tête (Cercle) -->
+        <circle cx="200" cy="50" r="28" fill="#F3E8FF"/>
+        <!-- Rachis/Tronc (Rectangle central) -->
+        <rect x="180" y="85" width="40" height="150" rx="5" fill="#F3E8FF"/>
 
-    <!-- DRAPEAUX ROUGES (RED FLAGS) -->
-    <div style="background:#FFF5F5; border:1px solid #FFD6D6; border-radius:12px; padding:16px; margin-top:20px;">
-      <div class="label-row">
-        <strong style="color:var(--danger); font-size:13px;">⚠️ Drapeaux Rouges / Red Flags (Triage & Urgences Médicales) :</strong>
-        <span class="btn-info" onclick="ouvrirInfoModal('Red Flags', 'Facteurs d\'alerte biomédicale nécessitant un avis médical ou une réorientation urgente.')">i</span>
-      </div>
-      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-top:10px; font-size:12px;">
-        <label><input type="checkbox" id="rf1"> Perte de poids inexpliquée / Suées nocturnes / Fièvre</label>
-        <label><input type="checkbox" id="rf2"> Douleur nocturne constante et insomniante non soulagée</label>
-        <label><input type="checkbox" id="rf3"> Déficit neurologique moteur franc et progressif (<3/5)</label>
-        <label><input type="checkbox" id="rf4"> Anesthésie en selle / Troubles sphinctériens (Queue de cheval)</label>
-        <label><input type="checkbox" id="rf5"> Traumatisme violent récent / Suspicion de fracture</label>
-        <label><input type="checkbox" id="rf6"> Antécédent personnel de cancer oncologique</label>
-      </div>
-    </div>
+        <!-- MEMBRES SUPÉRIEURS (BRAS) -->
+        <!-- Épaules (Ronds) -->
+        <circle cx="150" cy="95" r="14" fill="#F1C40F"/>
+        <circle cx="250" cy="95" r="14" fill="#F1C40F"/>
 
-    <!-- DRAPEAUX JAUNES (YELLOW FLAGS) -->
-    <div style="background:var(--c-yellow-light); border:1px solid #FDE68A; border-radius:12px; padding:16px; margin-top:16px;">
-      <div class="label-row">
-        <strong style="color:var(--warning); font-size:13px;">🟨 Drapeaux Jaunes / Yellow Flags (Facteurs Psychosociaux de Cronicité) :</strong>
-        <span class="btn-info" onclick="ouvrirInfoModal('Yellow Flags', 'Facteurs de risque de passage à la chronicité et d\'incapacité prolongée.')">i</span>
-      </div>
-      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-top:10px; font-size:12px;">
-        <label><input type="checkbox" id="yf1"> Kinésiophobie (Peur du mouvement ou d'aggraver la lésion)</label>
-        <label><input type="checkbox" id="yf2"> Catastrophisme (Pensées négatives amplifiées sur la douleur)</label>
-        <label><input type="checkbox" id="yf3"> Croyance que la douleur nécessite un repos absolu</label>
-        <label><input type="checkbox" id="yf4"> Insatisfaction ou conflits professionnels majeurs</label>
-        <label><input type="checkbox" id="yf5"> Anxiété / Humeur dépressive / Stress psychosocial élevé</label>
-        <label><input type="checkbox" id="yf6"> Attente de solutions purement passives</label>
-      </div>
-    </div>
-  </section>
+        <!-- Humerus (Rectangles os longs) -->
+        <rect x="130" y="115" width="16" height="65" rx="4" fill="#CFF7EA" stroke="#124D41"/>
+        <rect x="254" y="115" width="16" height="65" rx="4" fill="#CFF7EA" stroke="#124D41"/>
 
-  <!-- SECTION 3 : EXAMEN PHYSIQUE GLOBAL -->
-  <section id="sec-examen" class="scroll-section">
-    <div class="section-title"><span>3. EXAMEN PHYSIQUE GLOBAL & DÉFICITS (CIF)</span></div>
-    <div class="grid">
-      <div>
-        <div class="label-row"><label>Déficits posturaux & Statique :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits posturaux', 'Analyse globale de l\'alignement, des courbures et des asymétries en station.')">i</span></div>
-        <textarea id="deficitsPosturaux" placeholder="Alignement, asymétries..."></textarea>
-      </div>
-      <div>
-        <div class="label-row"><label>Déficits dynamiques & Marche :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits dynamiques', 'Observation de la marche, boiteries d\'esquive ou stratégies compensatrices.')">i</span></div>
-        <textarea id="deficitsPosturauxDyn" placeholder="Boiterie, esquive..."></textarea>
-      </div>
-      <div>
-        <div class="label-row"><label>Déficits articulaires (Goniométrie) :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits articulaires', 'Amplitudes articulaires actives et passives comparées au côté sain.')">i</span></div>
-        <textarea id="deficitsArticulaires" placeholder="Amplitudes actives et passives..."></textarea>
-      </div>
-      <div>
-        <div class="label-row"><label>Déficits trophiques & Souplesse :</label><span class="btn-info" onclick="ouvrirInfoModal('Trophisme & Souplesse', 'Présence d\'œdème, modifications cutanées, trophicité musculaire ou raideurs tissulaires.')">i</span></div>
-        <textarea id="deficitsSouplesse" placeholder="Œdèmes, raideurs..."></textarea>
-      </div>
-      <div class="full-width">
-        <div class="label-row"><label>Testing musculaire analytique :</label><span class="btn-info" onclick="ouvrirInfoModal('Testing musculaire', 'Évaluation de la force maximale cotée de 0 à 5/5 selon le MRC.')">i</span></div>
-        <textarea id="deficitsMusculaires" placeholder="Cotation de force 0 à 5..."></textarea>
-      </div>
-    </div>
-  </section>
+        <!-- Coudes (Ronds) -->
+        <circle cx="138" cy="190" r="10" fill="#F1C40F"/>
+        <circle cx="262" cy="190" r="10" fill="#F1C40F"/>
 
-  <!-- SECTION 4 : TESTS SPÉCIFIQUES & IA -->
-  <section id="sec-tests" class="scroll-section">
-    <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
-    
-    <div style="font-size:13px; color:var(--c-purple-dark); margin-bottom:14px; opacity:0.9;">
-      Sélectionnez une pathologie parmi les 50 références en kinésithérapie, ou écrivez une pathologie libre. Si les tests sont négatifs, ajoutez une autre hypothèse en cascade.
-    </div>
+        <!-- Avant-bras / Radius-Cubitus (Rectangles os longs) -->
+        <rect x="131" y="205" width="14" height="60" rx="3" fill="#CFF7EA" stroke="#124D41"/>
+        <rect x="255" y="205" width="14" height="60" rx="3" fill="#CFF7EA" stroke="#124D41"/>
 
-    <div id="pathologiesListContainer"></div>
+        <!-- Poignets & Mains (Ronds) -->
+        <circle cx="138" cy="272" r="8" fill="#F1C40F"/>
+        <circle cx="262" cy="272" r="8" fill="#F1C40F"/>
 
-    <div style="margin-top:15px; margin-bottom:25px;">
-      <button class="btn-reset" onclick="ajouterBlocPathologie()" style="background:var(--c-purple-light); font-weight:700;">+ Tester une autre pathologie (Diagnostic différentiel)</button>
-    </div>
+        <!-- MEMBRES INFÉRIEURS (JAMBES) -->
+        <!-- Bassin / Hanches (Ronds) -->
+        <circle cx="170" cy="245" r="16" fill="#F1C40F"/>
+        <circle cx="230" cy="245" r="16" fill="#F1C40F"/>
 
-    <div style="margin-top:20px; text-align:center;">
-      <button class="btn-action-vif" onclick="calculerDiagnosticIA()">⚡ Analyser l'ensemble du bilan & Classer les Diagnostics</button>
-    </div>
+        <!-- Fémurs (Rectangles os longs) -->
+        <rect x="158" y="270" width="22" height="130" rx="6" fill="#CFF7EA" stroke="#124D41"/>
+        <rect x="220" y="270" width="22" height="130" rx="6" fill="#CFF7EA" stroke="#124D41"/>
 
-    <div id="probabilitesContainer" style="margin-top:20px;"></div>
-  </section>
+        <!-- Genoux (Ronds) -->
+        <circle cx="169" cy="412" r="15" fill="#F1C40F"/>
+        <circle cx="231" cy="412" r="15" fill="#F1C40F"/>
 
-  <!-- SECTION 5 : PLAN DE SOINS, HEP & EXPORTS -->
-  <section id="sec-plan" class="scroll-section">
-    <div class="section-title"><span>5. DIAGNOSTIC RETENU, PROGRAMME PATIENT & EXPORTS</span></div>
-    <div class="grid">
-      <div class="full-width">
-        <div class="label-row"><label>Diagnostic Kinésithérapique Final Retenu :</label><span class="btn-info" onclick="ouvrirInfoModal('Diagnostic Kiné', 'Synthèse clinique validée par l\'anamnèse et les clusters de tests positifs.')">i</span></div>
-        <input type="text" id="diagnostic" placeholder="Diagnostic validé par les tests...">
-      </div>
-      <div>
-        <div class="label-row"><label>A travailler - Articulaire :</label><span class="btn-info" onclick="ouvrirInfoModal('Objectif Articulaire', 'Amplitudes à récupérer en priorité.')">i</span></div>
-        <textarea id="travailArticulaire"></textarea>
-      </div>
-      <div>
-        <div class="label-row"><label>A travailler - Force & Moteur :</label><span class="btn-info" onclick="ouvrirInfoModal('Objectif Force', 'Renforcement spécifique et contrôle neuromusculaire.')">i</span></div>
-        <textarea id="travailForce"></textarea>
-      </div>
-      
-      <!-- MODULE D'EXERCICES PATIENT (HEP) -->
-      <div class="full-width neutral-block" style="background:white; border:1px solid var(--border); border-radius:14px;">
-        <div class="label-row" style="margin-bottom:12px;">
-          <strong style="font-size:14px; color:var(--c-purple-dark);">🏋️ Programme d'Exercices à Domicile (HEP Patient) :</strong>
-          <span class="btn-info" onclick="ouvrirInfoModal('Fiche d\'Exercices Patient', 'Créez les exercices prescrits au patient avec séries, répétitions et consignes. Exporter en fiche dédiée.')">i</span>
-        </div>
+        <!-- Tibias / Péronés (Rectangles os longs) -->
+        <rect x="160" y="435" width="18" height="120" rx="5" fill="#CFF7EA" stroke="#124D41"/>
+        <rect x="222" y="435" width="18" height="120" rx="5" fill="#CFF7EA" stroke="#124D41"/>
 
-        <div id="exerciceListContainer"></div>
+        <!-- Chevilles (Ronds) -->
+        <circle cx="169" cy="565" r="11" fill="#F1C40F"/>
+        <circle cx="231" cy="565" r="11" fill="#F1C40F"/>
 
-        <div style="margin-top:10px; display:flex; gap:10px;">
-          <button class="btn-reset" onclick="ajouterExercicePatient()" style="background:var(--c-purple-light); font-weight:700;">+ Ajouter un exercice au programme</button>
-        </div>
+        <!-- Pieds (Rectangles/Formes de base) -->
+        <rect x="150" y="580" width="24" height="35" rx="4" fill="#F3E8FF"/>
+        <rect x="226" y="580" width="24" height="35" rx="4" fill="#F3E8FF"/>
 
-        <div style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); display:flex; gap:12px; flex-wrap:wrap;">
-          <button class="btn-export btn-docx" onclick="exporterFicheExercicesWord()" style="font-size:13px; padding:10px 16px;">📱 Exporter Fiche Exercices (.docx)</button>
-          <button class="btn-export btn-doc-med" onclick="imprimerPDF()" style="font-size:13px; padding:10px 16px;">📄 Imprimer / PDF Fiche Exercices</button>
-        </div>
-      </div>
-    </div>
+      </g>
 
-    <!-- BARRE D'EXPORT GLOBALE DU BILAN -->
-    <div class="export-bar">
-      <button class="btn-export btn-docx" onclick="exporterBilanCompletWord()">📄 Bilan Complet (.docx)</button>
-      <button class="btn-export btn-doc-med" onclick="exporterSyntheseMedecinWord()">✉️ Synthèse Médecin (.docx)</button>
-      <button class="btn-export btn-pdf" onclick="imprimerPDF()">📕 Imprimer / PDF Bilan</button>
-    </div>
-  </section>
-</div>
+      <!-- Calque pour les croix de douleur rouges (✕) -->
+      <g id="markersLayer"></g>
+    </svg>
 
-<!-- WIDGET IA -->
-<button id="aiFloatBtn" onclick="toggleAiChat()">🤖 Assistant IA EBP</button>
-
-<div id="aiChatWindow">
-  <div class="ai-chat-header">
-    <span>🌿 Assistant IA EBP (PubMed / PEDro)</span>
-    <button onclick="toggleAiChat()" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
-  </div>
-  <div id="aiChatBody" class="ai-chat-body">
-    <div style="background:white; padding:10px; border-radius:10px; border:1px solid var(--border);">
-      Bonjour ! Je suis votre assistant EBP. Posez-moi une question clinique en direct !
+    <div class="controls">
+      <button class="clear" onclick="effacerMarqueurs()">Effacer les croix</button>
     </div>
   </div>
-  <div class="ai-chat-footer">
-    <input type="text" id="aiQueryInput" placeholder="Votre question..." onkeydown="if(event.key==='Enter') poserQuestionIA()">
-    <button onclick="poserQuestionIA()" style="background:var(--c-purple); color:white; border:none; padding:8px 14px; border-radius:8px; font-weight:700;">OK</button>
-  </div>
-</div>
 
-<!-- MODAL INFO EXPLICATION -->
-<div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
-  <div class="modal-info-box">
-    <div class="modal-header">
-      <h3 id="infoModalTitle" style="margin:0; font-size:16px; color:var(--c-purple-dark);">Aide Clinique EBP</h3>
-      <button onclick="fermerModalInfoDirect()" style="background:none; border:none; font-size:18px; cursor:pointer;">✕</button>
-    </div>
-    <div style="margin-top:16px; font-size:13.5px; line-height:1.6; color:var(--c-purple-dark);" id="infoModalBody"></div>
-  </div>
-</div>
+  <script>
+    const svg = document.getElementById('svgBody');
+    const markersLayer = document.getElementById('markersLayer');
+    let markers = [];
 
-<!-- MODAL BODY CHART (VOTRE IMAGE EXACTE A 4 VUES INTÉGRÉE PARFAITEMENT) -->
-<div id="chartModal" class="modal-overlay">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div>
-        <h3 style="margin:0; font-size:18px; color:var(--c-purple-dark);">Body Chart (4 Vues Anatomiques)</h3>
-        <small style="color:var(--c-purple-dark); opacity:0.8;">Cliquez sur le corps pour ajouter des croix de douleur (✕). Cliquez sur une croix pour la retirer.</small>
-      </div>
-      <div style="display:flex; gap:10px;">
-        <button onclick="effacerMarqueurs()" style="background:var(--danger); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Effacer tout</button>
-        <button onclick="fermerModalChart()" style="background:var(--c-purple); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Valider & Fermer ✕</button>
-      </div>
-    </div>
-    <div class="modal-body">
-      <div class="body-chart-container" id="bodyChartWrapper" onclick="gererClicImageBodyChart(event)">
-        <!-- VOTRE IMAGE EXACTE INTEGRÉE EN EMBEDDED SVG/IMAGE DANS LE CODE DIRECTEMENT -->
-        <svg id="bodyChartImageSvg" viewBox="0 0 1000 1000" style="width:100%; max-height:72vh; display:block; cursor:crosshair;">
-          <g fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <!-- VUE 1 : FACE -->
-            <g transform="translate(10, 20)">
-              <ellipse cx="115" cy="110" rx="38" ry="48"/>
-              <circle cx="98" cy="105" r="3" fill="#000"/><circle cx="132" cy="105" r="3" fill="#000"/>
-              <path d="M 105 130 Q 115 136 125 130"/>
-              <path d="M 100 155 C 95 180, 75 190, 45 200 L 15 290 C 8 310, 0 340, 2 370 L 25 375 L 42 290 L 52 210"/>
-              <path d="M 130 155 C 135 180, 155 190, 185 200 L 215 290 C 222 310, 230 340, 228 370 L 205 375 L 188 290 L 178 210"/>
-              <path d="M 52 210 C 50 250, 45 320, 28 420 C 18 480, 28 580, 45 680 L 72 820 C 78 850, 80 870, 70 885 L 50 890 L 90 895 L 98 830 L 98 670 C 102 580, 108 480, 105 420 L 115 320"/>
-              <path d="M 178 210 C 180 250, 185 320, 202 420 C 212 480, 202 580, 185 680 L 158 820 C 152 850, 150 870, 160 885 L 180 890 L 140 895 L 132 830 L 132 670 C 128 580, 122 480, 125 420 L 115 320"/>
-            </g>
+    svg.addEventListener('click', function(e) {
+      // Si on clique sur une croix existante, on la supprime
+      if (e.target.classList.contains('pain-marker')) {
+        const idx = parseInt(e.target.getAttribute('data-index'));
+        markers.splice(idx, 1);
+        rendreMarqueurs();
+        return;
+      }
 
-            <!-- VUE 2 : PROFIL GAUCHE -->
-            <g transform="translate(260, 20)">
-              <ellipse cx="115" cy="110" rx="38" ry="48"/>
-              <circle cx="102" cy="105" r="3" fill="#000"/>
-              <path d="M 95 125 L 105 128"/>
-              <path d="M 115 158 C 110 180, 95 200, 75 210 L 65 310 C 60 330, 58 350, 68 375 L 85 375 L 88 300 L 98 210"/>
-              <path d="M 115 158 C 125 180, 135 220, 130 260 C 120 320, 105 380, 100 440 C 95 500, 112 600, 120 680 L 125 820 C 128 850, 115 880, 80 890 L 130 895 L 140 820 L 138 680 C 135 600, 128 500, 128 440 C 128 380, 142 320, 148 260 C 150 210, 140 180, 125 158"/>
-            </g>
+      // Calcul des coordonnées par rapport au viewBox SVG
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
 
-            <!-- VUE 3 : PROFIL DROIT -->
-            <g transform="translate(480, 20)">
-              <ellipse cx="115" cy="110" rx="38" ry="48"/>
-              <circle cx="128" cy="105" r="3" fill="#000"/>
-              <path d="M 135 125 L 125 128"/>
-              <path d="M 115 158 C 120 180, 135 200, 155 210 L 165 310 C 170 330, 172 350, 162 375 L 145 375 L 142 300 L 132 210"/>
-              <path d="M 115 158 C 105 180, 95 220, 100 260 C 110 320, 125 380, 130 440 C 135 500, 118 600, 110 680 L 105 820 C 102 850, 115 880, 150 890 L 100 895 L 90 820 L 92 680 C 95 600, 102 500, 102 440 C 102 380, 88 320, 82 260 C 80 210, 90 180, 105 158"/>
-            </g>
-
-            <!-- VUE 4 : DOS -->
-            <g transform="translate(730, 20)">
-              <ellipse cx="115" cy="110" rx="38" ry="48"/>
-              <path d="M 100 155 C 95 180, 75 190, 45 200 L 15 290 C 8 310, 0 340, 2 370 L 25 375 L 42 290 L 52 210"/>
-              <path d="M 130 155 C 135 180, 155 190, 185 200 L 215 290 C 222 310, 230 340, 228 370 L 205 375 L 188 290 L 178 210"/>
-              <line x1="115" y1="155" x2="115" y2="420" stroke="#000" stroke-width="2" stroke-dasharray="6"/>
-              <path d="M 52 210 C 50 250, 45 320, 28 420 C 18 480, 28 580, 45 680 L 72 820 C 78 850, 80 870, 70 885 L 50 890 L 90 895 L 98 830 L 98 670 C 102 580, 108 480, 105 420 L 115 320"/>
-              <path d="M 178 210 C 180 250, 185 320, 202 420 C 212 480, 202 580, 185 680 L 158 820 C 152 850, 150 870, 160 885 L 180 890 L 140 895 L 132 830 L 132 670 C 128 580, 122 480, 125 420 L 115 320"/>
-            </g>
-          </g>
-        </svg>
-        <div id="markersLayer"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  let markers = [];
-  let exoCounter = 0;
-  let pathoBlockCounter = 0;
-  document.getElementById('dateBilan').valueAsDate = new Date();
-
-  // INTERSECTION OBSERVER ANIMATION
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
+      markers.push({ x: Math.round(svgP.x), y: Math.round(svgP.y) });
+      rendreMarqueurs();
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.scroll-section').forEach(sec => observer.observe(sec));
 
-  function toggleAiChat() {
-    const win = document.getElementById('aiChatWindow');
-    win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
-  }
-
-  function gererAjoutPhotos(e) {
-    const files = e.target.files;
-    if (!files) return;
-    const container = document.getElementById('photoPreviewContainer');
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const img = document.createElement('img');
-        img.src = evt.target.result;
-        img.style.width = '80px'; img.style.height = '80px'; img.style.objectFit = 'cover'; img.style.borderRadius = '8px';
-        container.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function ouvrirInfoModal(titre, texte) {
-    document.getElementById('infoModalTitle').innerText = "ℹ️ " + titre;
-    document.getElementById('infoModalBody').innerHTML = texte;
-    document.getElementById('infoModal').style.display = 'flex';
-  }
-  function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
-  function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
-
-  const pathologiesDB = {
-    lca: { nom: "1. Rupture / Lésion du Ligament Croisé Antérieur (LCA)", tests: [{ id: "t_lca_1", label: "Test de Lachman", info: "Sensibilité ~85% | Spécificité ~94%." }, { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "Sensibilité ~62%." }, { id: "t_lca_3", label: "Pivot Shift Test", info: "Spécificité ~98%." }] },
-    menisque: { nom: "2. Lésion Méniscale (Médiale ou Latérale)", tests: [{ id: "t_men_1", label: "Test de Thessaly (20°)", info: "Sensibilité ~89%." }, { id: "t_men_2", label: "Test de McMurray", info: "Spécificité ~85%." }] },
-    femoro_patellaire: { nom: "3. Syndrome Fémoro-Patellaire (Douleur Antérieure)", tests: [{ id: "t_fp_1", label: "Test de Clarke", info: "Compression patellaire active." }, { id: "t_fp_2", label: "Step-Down Test", info: "Contrôle frontal dynamique." }] },
-    gonarthrose: { nom: "4. Gonarthrose (Arthrose du Genou)", tests: [{ id: "t_gon_1", label: "Critères ACR", info: "Crépitements, raideur matinale." }] },
-    coiffe_rotateurs: { nom: "5. Tendinopathie de la Coiffe / Conflit Sous-Acromial", tests: [{ id: "t_cr_1", label: "Hawkins-Kennedy", info: "Sensibilité ~79%." }, { id: "t_cr_2", label: "Test de Jobe", info: "Sensibilité ~88%." }] },
-    epicondylite: { nom: "6. Épicondylite Latérale (Tennis Elbow)", tests: [{ id: "t_epi_1", label: "Test de Cozen", info: "Extension poignet contrariée." }] },
-    canal_carpien: { nom: "7. Syndrome du Canal Carpien", tests: [{ id: "t_cc_1", label: "Test de Phalen (60s)", info: "Flexion palmaire." }, { id: "t_cc_2", label: "Test de Durkan", info: "Sensibilité ~87%." }] },
-    lombalgie: { nom: "8. Lombalgie Commune / Dysfonction Lombaire", tests: [{ id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "Exclusion radiculopathie." }, { id: "t_lom_2", label: "Slump Test", info: "Neurodynamique." }] },
-    hernie_lombaire: { nom: "9. Hernie Discale Lombaire & Sciatique", tests: [{ id: "t_hdl_1", label: "Lasègue < 45°", info: "Douleur radiculopathique." }] },
-    entorse_cheville: { nom: "10. Entorse Latérale de Cheville", tests: [{ id: "t_ech_1", label: "Tiroir Antérieur Cheville", info: "Laxité LTFA." }, { id: "t_ech_2", label: "Règles d'Ottawa", info: "Exclusion fracture." }] }
-  };
-
-  function ajouterBlocPathologie() {
-    pathoBlockCounter++;
-    const container = document.getElementById('pathologiesListContainer');
-    const blockId = `pathoBlock_${pathoBlockCounter}`;
-    
-    let optionsHtml = '<option value="libre">-- Saisir une pathologie personnalisée (Champ libre) --</option>';
-    for (let key in pathologiesDB) {
-      optionsHtml += `<option value="${key}">${pathologiesDB[key].nom}</option>`;
-    }
-
-    const div = document.createElement('div');
-    div.className = 'patho-block';
-    div.id = blockId;
-    div.innerHTML = `
-      ${pathoBlockCounter > 1 ? `<button class="btn-remove-patho" onclick="supprimerBlocPathologie('${blockId}')">Supprimer cette hypothèse</button>` : ''}
-      <div style="margin-bottom:12px;">
-        <label style="color:var(--c-purple-dark); font-weight:800;">Hypothèse Diagnostique n°${pathoBlockCounter} :</label>
-        <select class="patho-select" onchange="changerPathoSelect(this, '${blockId}')" style="margin-top:6px;">
-          ${optionsHtml}
-        </select>
-      </div>
-      <div class="patho-custom-wrapper" style="display:none; margin-bottom:12px;">
-        <label style="font-size:12px; color:var(--c-purple-dark);">Nom de la pathologie libre :</label>
-        <input type="text" class="patho-custom-input" placeholder="Ex: Tendinopathie..." style="margin-top:4px;">
-      </div>
-      <div class="patho-tests-render" style="margin-top:14px;"></div>
-    `;
-    container.appendChild(div);
-    changerPathoSelect(div.querySelector('.patho-select'), blockId);
-  }
-
-  function supprimerBlocPathologie(blockId) { document.getElementById(blockId).remove(); }
-
-  function changerPathoSelect(selectEl, blockId) {
-    const val = selectEl.value;
-    const blockEl = document.getElementById(blockId);
-    const customWrapper = blockEl.querySelector('.patho-custom-wrapper');
-    const renderContainer = blockEl.querySelector('.patho-tests-render');
-
-    if (val === 'libre') {
-      customWrapper.style.display = 'block';
-      renderContainer.innerHTML = `<div class="grid"><div><label>Nom du Test 1 :</label><input type="text" placeholder="Test libre..."></div><div><label>Résultat :</label><input type="text" placeholder="Positif / Négatif..."></div></div>`;
-    } else {
-      customWrapper.style.display = 'none';
-      const pathoData = pathologiesDB[val];
-      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-purple); margin-bottom:8px;">Tests associés : ${pathoData.nom}</div><div class="grid">`;
-      pathoData.tests.forEach((t) => {
-        const safeInfo = t.info.replace(/'/g, "\\'");
-        html += `<div><div class="label-row"><label>${t.label} :</label><span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span></div><input type="text" placeholder="Résultat du test..." data-test-id="${t.id}"></div>`;
+    function rendreMarqueurs() {
+      markersLayer.innerHTML = '';
+      markers.forEach((m, idx) => {
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", m.x);
+        text.setAttribute("y", m.y + 7);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("fill", "#E74C3C");
+        text.setAttribute("font-size", "22");
+        text.setAttribute("font-weight", "900");
+        text.setAttribute("class", "pain-marker");
+        text.setAttribute("data-index", idx);
+        text.setAttribute("style", "cursor: pointer; user-select: none;");
+        text.textContent = "✕";
+        markersLayer.appendChild(text);
       });
-      html += `</div>`;
-      renderContainer.innerHTML = html;
-    }
-  }
-
-  function ajouterExercicePatient() {
-    exoCounter++;
-    const container = document.getElementById('exerciceListContainer');
-    const div = document.createElement('div');
-    div.className = 'exo-card';
-    div.id = `exoCard_${exoCounter}`;
-    div.innerHTML = `
-      <button onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px; background:#FFF5F5; color:var(--danger); border:1px solid #FFD6D6; border-radius:6px; cursor:pointer; font-size:11px; font-weight:bold;">Supprimer</button>
-      <div class="grid">
-        <div class="full-width"><label style="font-size:12px;">Nom de l'exercice :</label><input type="text" class="exo-nom" placeholder="Ex: Squat / Renforcement quadriceps"></div>
-        <div><label style="font-size:12px;">Séries & Répétitions :</label><input type="text" class="exo-series" placeholder="Ex: 3x 10"></div>
-        <div><label style="font-size:12px;">Fréquence hebdomadaire :</label><input type="text" class="exo-freq" placeholder="Ex: 3x semaine"></div>
-        <div class="full-width"><label style="font-size:12px;">Consignes & Précautions :</label><input type="text" class="exo-consignes" placeholder="Ex: Serrer abdos, pas de douleur > 3/10..."></div>
-      </div>
-    `;
-    container.appendChild(div);
-  }
-
-  // VRAIS EXPORTS WORD (.DOCX) DYNAMIQUES DÉLIVRÉS EN TÉLÉCHARGEMENT DIRECT
-  function exporterFicheExercicesWord() {
-    const nom = document.getElementById('nom').value || "Patient";
-    const prenom = document.getElementById('prenom').value || "";
-    
-    const docxLib = window.docx;
-    if (!docxLib) { alert("Bibliothèque d'export Word en cours de chargement..."); return; }
-
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
-
-    const children = [
-      new Paragraph({
-        text: `PROGRAMME D'EXERCICES À DOMICILE (HEP)`,
-        heading: HeadingLevel.HEADING_1,
-        spacing: { after: 200 }
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({ text: `Patient : `, bold: true }),
-          new TextRun(`${prenom} ${nom}`),
-        ],
-        spacing: { after: 300 }
-      })
-    ];
-
-    const cards = document.querySelectorAll('.exo-card');
-    cards.forEach((card, idx) => {
-      const eNom = card.querySelector('.exo-nom').value || `Exercice ${idx + 1}`;
-      const eSeries = card.querySelector('.exo-series').value || "-";
-      const eFreq = card.querySelector('.exo-freq').value || "-";
-      const eCons = card.querySelector('.exo-consignes').value || "-";
-
-      children.push(
-        new Paragraph({
-          children: [new TextRun({ text: `${idx + 1}. ${eNom}`, bold: true, size: 26 })],
-          spacing: { before: 200, after: 100 }
-        }),
-        new Paragraph({ children: [new TextRun({ text: `• Séries & Répétitions : `, bold: true }), new TextRun(eSeries)] }),
-        new Paragraph({ children: [new TextRun({ text: `• Fréquence : `, bold: true }), new TextRun(eFreq)] }),
-        new Paragraph({ children: [new TextRun({ text: `• Consignes : `, bold: true }), new TextRun(eCons)], spacing: { after: 200 } })
-      );
-    });
-
-    const doc = new Document({ sections: [{ properties: {}, children: children }] });
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Fiche_Exercices_${prenom}_${nom}.docx`);
-    });
-  }
-
-  function exporterBilanCompletWord() {
-    const nom = document.getElementById('nom').value || "Patient";
-    const prenom = document.getElementById('prenom').value || "";
-    const diag = document.getElementById('diagnostic').value || "Bilan Kinésithérapique";
-
-    const docxLib = window.docx;
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
-
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({ text: `BILAN KINÉSITHÉRAPIQUE COMPLET`, heading: HeadingLevel.HEADING_1 }),
-          new Paragraph({ children: [new TextRun({ text: `Patient : `, bold: true }), new TextRun(`${prenom} ${nom}`)] }),
-          new Paragraph({ children: [new TextRun({ text: `Diagnostic retenu : `, bold: true }), new TextRun(diag)] }),
-          new Paragraph({ children: [new TextRun({ text: `Anamnèse : `, bold: true }), new TextRun(document.getElementById('mecanisme').value || "-")] })
-        ]
-      }]
-    });
-
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Bilan_Complet_${prenom}_${nom}.docx`);
-    });
-  }
-
-  function exporterSyntheseMedecinWord() {
-    const nom = document.getElementById('nom').value || "Patient";
-    const prenom = document.getElementById('prenom').value || "";
-    const diag = document.getElementById('diagnostic').value || "Diagnostic non renseigné";
-
-    const docxLib = window.docx;
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
-
-    const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({ text: `SYNTHÈSE DE BILAN À L'ATTENTION DU MÉDECIN PRESCRIPTEUR`, heading: HeadingLevel.HEADING_1 }),
-          new Paragraph({ children: [new TextRun({ text: `Cher Confrère,\n\nVoici le compte-rendu du bilan réalisé pour le patient : `, bold: false }), new TextRun({ text: `${prenom} ${nom}`, bold: true })] }),
-          new Paragraph({ children: [new TextRun({ text: `Diagnostic Kinésithérapique : `, bold: true }), new TextRun(diag)] }),
-          new Paragraph({ children: [new TextRun({ text: `Plan de traitement : `, bold: true }), new TextRun(document.getElementById('travailForce').value || "Prise en charge active et réhabilitation fonctionnelle.")] })
-        ]
-      }]
-    });
-
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Synthese_Medecin_${prenom}_${nom}.docx`);
-    });
-  }
-
-  function imprimerPDF() { window.print(); }
-
-  function calculerDiagnosticIA() {
-    const container = document.getElementById('probabilitesContainer');
-    container.innerHTML = `
-      <div style="background:var(--c-purple-light); border:1px solid var(--border); padding:18px; border-radius:12px; margin-bottom:10px;">
-        <strong style="color:var(--c-purple-dark); font-size:14px;">1. Pathologie principale ciblée (Probabilité : 82%)</strong>
-        <p style="font-size:12.5px; margin:6px 0 0 0; color:var(--c-purple-dark);">Analyse croisée des tests cliniques, des red/yellow flags et des contraintes physiques du patient.</p>
-      </div>
-    `;
-    document.getElementById('diagnostic').value = "Pathologie mécanique ciblée validée par les tests cliniques";
-  }
-
-  function poserQuestionIA() {
-    const input = document.getElementById('aiQueryInput');
-    const q = input.value.trim();
-    if (!q) return;
-    const body = document.getElementById('aiChatBody');
-    body.innerHTML += `<div style="background:var(--c-purple-light); padding:8px 12px; border-radius:8px; align-self:flex-end;"><strong>Vous :</strong> ${q}</div>`;
-    input.value = '';
-    setTimeout(() => {
-      body.innerHTML += `<div style="background:white; padding:8px 12px; border-radius:8px; border:1px solid var(--border);"><strong>IA :</strong> Analyse EBP en cours pour : "${q}".</div>`;
-      body.scrollTop = body.scrollHeight;
-    }, 400);
-  }
-
-  // GESTION DU BODY CHART MODAL & PLACEMENT DES CROIX SUR VOTRE IMAGE EXACTE
-  function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
-  function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
-
-  function gererClicImageBodyChart(e) {
-    if (e.target.classList.contains('pain-cross')) {
-      const idx = parseInt(e.target.getAttribute('data-index'));
-      markers.splice(idx, 1);
-      rendreMarqueursImg();
-      return;
     }
 
-    const wrapper = document.getElementById('bodyChartWrapper');
-    const rect = wrapper.getBoundingClientRect();
-    
-    const xClick = e.clientX - rect.left;
-    const yClick = e.clientY - rect.top;
-    
-    const xPercent = (xClick / rect.width) * 100;
-    const yPercent = (yClick / rect.height) * 100;
-
-    markers.push({ x: xPercent, y: yPercent });
-    rendreMarqueursImg();
-  }
-
-  function rendreMarqueursImg() {
-    const layer = document.getElementById('markersLayer');
-    layer.innerHTML = '';
-    
-    markers.forEach((m, idx) => {
-      const cross = document.createElement('div');
-      cross.className = 'pain-cross';
-      cross.style.left = m.x + '%';
-      cross.style.top = m.y + '%';
-      cross.innerText = '✕';
-      cross.setAttribute('data-index', idx);
-      layer.appendChild(cross);
-    });
-
-    const textEl = document.getElementById('markerCountText');
-    if (markers.length > 0) {
-      textEl.innerText = `✓ ${markers.length} zone(s) de douleur marquée(s) sur le Body Chart.`;
-      textEl.style.color = "var(--c-purple-dark)";
-    } else {
-      textEl.innerText = "Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.";
+    function effacerMarqueurs() {
+      markers = [];
+      rendreMarqueurs();
     }
-  }
-
-  function effacerMarqueurs() { markers = []; rendreMarqueursImg(); }
-  function reinitialiser() { if(confirm("Réinitialiser le bilan ?")) location.reload(); }
-
-  window.addEventListener('load', () => {
-    ajouterBlocPathologie();
-    ajouterExercicePatient();
-  });
-</script>
-
+  </script>
 </body>
 </html>
