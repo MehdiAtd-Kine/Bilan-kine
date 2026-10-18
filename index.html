@@ -205,7 +205,8 @@
     #svgBody { width: 100%; height: 100%; max-height: 70vh; cursor: crosshair; }
 
     .info-detail-section { margin-top: 10px; font-size: 13px; line-height: 1.6; }
-    .info-detail-title { font-weight: 800; color: var(--c-purple-dark); margin-top: 8px; display: block; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+    .info-detail-title { font-weight: 800; color: var(--c-purple-dark); margin-top: 10px; display: block; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+    .info-detail-section ul { margin: 4px 0; padding-left: 18px; }
 
     @media print {
       body { background: white; padding: 0; color: black; }
@@ -323,7 +324,7 @@
     <div class="full-width">
       <div class="label-row">
         <label>📍 Schéma Corporel (Body Chart Géométrique 4 Vues) :</label>
-        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart', '<span class=\'info-detail-title\'>📍 Cartographie de la Douleur</span>Outil visuel permettant de cartographier la localisation précise des douleurs, engourdissements ou irradiaions.<span class=\'info-detail-title\'>⚙️ Utilisation</span>Cliquez sur le schéma géométrique pour poser ou supprimer des croix rouges (✕).')">i</span>
+        <span class="btn-info" onclick="ouvrirInfoModal('Body Chart', '<span class=\'info-detail-title\'>📍 Cartographie de la Douleur</span>Outil visuel permettant de cartographier la localisation précise des douleurs, engourdissements ou irradiations.<span class=\'info-detail-title\'>⚙️ Utilisation</span>Cliquez sur le schéma géométrique pour poser ou supprimer des croix rouges (✕).')">i</span>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
         <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
@@ -401,7 +402,7 @@
         <textarea id="deficitsPosturaux" placeholder="Alignement, asymétries..."></textarea>
       </div>
       <div>
-        <div class="label-row"><label>Déficits dynamiques & Marche :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits dynamiques', '<span class=\'info-detail-title\'>🚶 Analysis de la Marche</span>Analyse de la phase d\'appui, de la cadence, des boiteries d\'esquive (antalgiques) ou des déficits du pas.')">i</span></div>
+        <div class="label-row"><label>Déficits dynamiques & Marche :</label><span class="btn-info" onclick="ouvrirInfoModal('Déficits dynamiques', '<span class=\'info-detail-title\'>🚶 Analyse de la Marche</span>Analyse de la phase d\'appui, de la cadence, des boiteries d\'esquive (antalgiques) ou des déficits du pas.')">i</span></div>
         <textarea id="deficitsPosturauxDyn" placeholder="Boiterie, esquive..."></textarea>
       </div>
       <div>
@@ -424,7 +425,7 @@
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
     <div style="font-size:13px; color:var(--c-purple-dark); margin-bottom:14px; opacity:0.9;">
-      Sélectionnez une pathologie parmi les 50 références classées par région anatomique, ou saisissez une pathologie libre. Cliquez sur le bouton <strong>(i)</strong> à côté de chaque test pour voir sa réalisation et ses modalités.
+      Sélectionnez une pathologie parmi les références classées par région anatomique, ou saisissez une pathologie libre. Cliquez sur le bouton <strong>(i)</strong> à côté de chaque test pour afficher la procédure complète, la position, le déroulement et les critères de positivité/négativité.
     </div>
 
     <div id="pathologiesListContainer"></div>
@@ -445,7 +446,7 @@
     <div class="section-title"><span>5. DIAGNOSTIC RETENU, PROGRAMME PATIENT & EXPORTS</span></div>
     <div class="grid">
       <div class="full-width">
-        <div class="label-row"><label>Diagnostic Kinésithérapique Final Retenu :</label><span class="btn-info" onclick="ouvrirInfoModal('Diagnostic Kiné', '<span class=\'info-detail-title\'>🎯 Synthèse Clinique</span>Formulation exacte de la déficition anatomoclinique et fonctionnelle retenue après analyse du bilan.')">i</span></div>
+        <div class="label-row"><label>Diagnostic Kinésithérapique Final Retenu :</label><span class="btn-info" onclick="ouvrirInfoModal('Diagnostic Kiné', '<span class=\'info-detail-title\'>🎯 Synthèse Clinique</span>Formulation exacte de la déficience anatomoclinique et fonctionnelle retenue après analyse du bilan.')">i</span></div>
         <input type="text" id="diagnostic" placeholder="Diagnostic validé par les tests...">
       </div>
       <div>
@@ -514,7 +515,7 @@
   </div>
 </div>
 
-<!-- MODAL INFO EXPLICATION DETAILÉE -->
+<!-- MODAL INFO EXPLICATION DÉTAILLÉE -->
 <div id="infoModal" class="modal-overlay" onclick="fermerInfoModal(event)">
   <div class="modal-info-box">
     <div class="modal-header">
@@ -525,7 +526,7 @@
   </div>
 </div>
 
-<!-- MODAL BODY CHART (SCHÉMA GÉOMÉTRIQUE INTÉGRÉ PARFAITEMENT) -->
+<!-- MODAL BODY CHART -->
 <div id="chartModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-header">
@@ -694,29 +695,25 @@
   function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
   function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
-  // FONCTION AUXILIAIRE POUR CRÉER DU CONTENU DÉTAILLÉ DE TEST CLINIQUE
-  function buildTestDetailHtml(nom, sens, spec, modalites, deroulement, raisonsPos, raisonsNeg) {
+  // FONCTION DE STRUCTURATION DES TESTS CLINIQUES SELON LE MODÈLE EXIGÉ
+  function buildTestDetailHtml(nom, sens, spec, posDepart, deroulement, interpretation) {
     return `
       <div class="info-detail-section">
         <span class="info-detail-title">📊 Données Psychométriques (EBP)</span>
         <strong>Sensibilité :</strong> ${sens} | <strong>Spécificité :</strong> ${spec}
         
-        <span class="info-detail-title">📋 Modalités & Positionnement</span>
-        ${modalites}
+        <span class="info-detail-title">Procédure du test</span>
+        <strong>1. Position de départ :</strong> ${posDepart}
+        <br><br>
+        <strong>2. Déroulement du mouvement :</strong> ${deroulement}
         
-        <span class="info-detail-title">🏃 Déroulement du Test</span>
-        ${deroulement}
-        
-        <span class="info-detail-title">➕ Raisons de Positivité</span>
-        ${raisonsPos}
-        
-        <span class="info-detail-title">➖ Raisons de Négativité / Faux Négatifs</span>
-        ${raisonsNeg}
+        <span class="info-detail-title">3. Interprétation & Critères de Positivité</span>
+        ${interpretation}
       </div>
     `;
   }
 
-  // BASE DE DONNÉES DES 50 PATHOLOGIES AVEC TESTS TOTALEMENT DÉTAILLÉS (PROCÉDURES, MODALITÉS & POSITIVITÉ/NÉGATIVITÉ)
+  // BASE DE DONNÉES AVEC STRUCTURE FORMALISÉE CONFORME À L'EXEMPLE
   const pathologiesDB = {
     // --- RACHIS CERVICAL & TÊTE ---
     cervicalgie: {
@@ -728,10 +725,9 @@
           label: "Test de Spurling",
           info: buildTestDetailHtml(
             "Test de Spurling", "~50%", "~93%",
-            "Patient assis le dos droit. Praticien debout derrière le patient.",
-            "Extension cervicale, inclinaison latérale du côté atteint, puis application d'une pression axiale modérée sur le sommet du crâne.",
-            "Reproduction de la douleur radiculaire irradieuse dans le membre supérieur correspondant à la racine nerveuse comprimée.",
-            "Absence de sténose foraminale franche, douleur purement musculaire, ou absence de compression de la racine."
+            "Le patient se tient assis le dos droit sur la table d'examen. On commence par tester le côté sain pour établir une référence.",
+            "Le praticien amène la tête du patient en extension, puis en inclinaison latérale du côté atteint. Il applique ensuite une pression axiale modérée vers le bas sur le sommet du crâne.",
+            "Le test est positif si le patient ressent une douleur radiculopathique aiguë ou une paresthésie irradiant dans le membre supérieur correspondant à la racine nerveuse comprimée dans le foramen intervertébral."
           )
         },
         {
@@ -739,10 +735,9 @@
           label: "Test de Traction Cervicale",
           info: buildTestDetailHtml(
             "Test de Traction Cervicale", "~44%", "~90%",
-            "Patient allongé en décubitus dorsal ou assis.",
-            "Le praticien place ses mains sous l'occiput et la mâchoire puis exerce une traction axiale douce et progressive vers le haut.",
-            "Diminution ou disparition des symptômes radiculaires par décompression du foramen intervertébral.",
-            "Irrritabilité facettaire majeure (la traction peut parfois réveiller une douleur) ou absence de conflit disco-radiculaire."
+            "Le patient est allongé en décubitus dorsal, la tête légèrement fléchie.",
+            "Le praticien place ses mains sous l'occiput et sous le menton du patient, puis applique une traction axiale douce, lente et progressive vers l'arrière.",
+            "Le test est positif si la traction soulage ou fait disparaître les symptômes radiculaires ou la douleur cervicale projetée par élargissement des foramens vertébraux."
           )
         }
       ]
@@ -755,15 +750,15 @@
           id: "t_ncb_1",
           label: "Cluster de Wainner",
           info: buildTestDetailHtml(
-            "Cluster de Wainner (4 tests)", "-", ">99% (si 4/4 pos)",
-            "Combine Spurling, Traction cervicale, ULTT1 (Nerf médian) et Rotation cervicale < 60°.",
-            "Réalisation successive des 4 tests spécifiques de la racine nerveuse.",
-            "4/4 tests positifs : confirmation quasiment certaine d'une radiculopathie cervicale (NCB).",
-            "Moins de 3 tests positifs : forte probabilité d'une autre étiologie (ex: syndrome du défilé, tendinopathie d'épaule)."
+            "Cluster de Wainner", "-", ">99% (si 4/4 pos)",
+            "Patient en position assise ou allongée selon le test individuel du cluster.",
+            "Réalisation combinée de : 1) Test de Spurling, 2) Test de traction cervicale, 3) Test de tension du nerf médian (ULTT1), 4) Rotation cervicale active < 60° du côté atteint.",
+            "La présence de 4 tests positifs confirme de manière quasi-certaine la présence d'une radiculopathie cervicale (NCB)."
           )
         }
       ]
     },
+
     // --- ÉPAULE & MEMBRE SUPÉRIEUR ---
     coiffe_rotateurs: {
       categorie: "2. Épaule & Membre Supérieur",
@@ -774,21 +769,19 @@
           label: "Test d'Hawkins-Kennedy",
           info: buildTestDetailHtml(
             "Test d'Hawkins-Kennedy", "~79%", "~59%",
-            "Patient assis ou debout. Le praticien élève le bras à 90° de flexion antérieure dans le plan de l'omoplate.",
-            "Praticien imprime une rotation interne rapide et passive de l'épaule en maintenant le coude à 90°.",
-            "Douleur vive dans la région antéro-latérale de l'épaule sous le bec acromial (conflit du supra-épineux contre le ligament acromio-coracoïdien).",
-            "Espace sous-acromial préservé, hyperlaxité ou rupture complète isolée du tendon."
+            "Le patient est assis ou debout. Le praticien élève le bras à 90° de flexion antérieure dans le plan de l'omoplate, coude fléchi à 90°.",
+            "Le praticien soutient le coude et imprime une rotation interne rapide et passive de l'épaule en orientant l'avant-bras vers le sol.",
+            "Le test est positif si le patient décrit une douleur vive antéro-latérale sous l'acromion, déclenchée par le conflit du tendon du supraspinatus sous le ligament acromio-coracoïdien."
           )
         },
         {
           id: "t_cr_2",
-          label: "Test de Jobe (Empty Can)",
+          label: "Test de Jobe (Empty Can Test)",
           info: buildTestDetailHtml(
             "Test de Jobe", "~88%", "~62%",
-            "Bras élevés à 90° d'abduction dans le plan scapulaire (30° vers l'avant), pouce orienté vers le sol (rotation interne).",
-            "Praticien exerce une pression vers le bas sur les poignets tandis que le patient résiste en maintenant la position.",
-            "Douleur sous-acromiale et/ou déficit de force signant une tendinopathie ou lésion du supraspinatus.",
-            "Tendon supraspinatus intact, ou compensation par le deltoïde antérieur."
+            "Le patient est debout, les deux bras élevés à 90° d'abduction dans le plan de l'omoplate (30° de flexion antérieure), poignets en rotation interne maximale (pouces orientés vers le sol).",
+            "Le praticien applique une pression bilatérale vers le bas sur les avant-bras tandis que le patient tente de résister activement.",
+            "Le test est considéré comme positif si l'on constate une douleur vive et/ou un déficit de force significatif comparé au côté sain, évoquant une atteinte du tendon du supraspinatus."
           )
         }
       ]
@@ -802,10 +795,9 @@
           label: "Test de Cozen",
           info: buildTestDetailHtml(
             "Test de Cozen", "~84%", "~70%",
-            "Patient assis, coude fléchi à 90°, avant-bras en pronation, poignet en extension et déviation radiale.",
-            "Le praticien oppose une résistance ferme à l'extension du poignet demandée au patient.",
-            "Exacerbation aiguë de la douleur sur l'épicondyle latéral (enthésopathie du court extenseur radial du carpe - ECRB).",
-            "Atteinte purely neurologique (ex: nerf radial au tunnel radial) ou repos tendineux préalable."
+            "Le patient est assis, le coude fléchi à 90°, l'avant-bras en pronation, le poignet fermé en extension et déviation radiale.",
+            "Le praticien stabilise le coude d'une main et pose le pouce sur l'épicondyle latéral. De l'autre main, il oppose une résistance ferme au mouvement d'extension du poignet demandé au patient.",
+            "Le test est positif en cas de reproduction de la douleur élective au niveau de l'insertion proximale des extenseurs du poignet sur l'épicondyle latéral."
           )
         }
       ]
@@ -819,10 +811,9 @@
           label: "Test de Phalen (60s)",
           info: buildTestDetailHtml(
             "Test de Phalen", "~68%", "~73%",
-            "Patient assis, coudes appuyés sur la table.",
-            "Accoler le dos des deux mains l'un contre l'autre en flexion palmaire maximale de poignet à 90° pendant 60 secondes.",
-            "Paresthésies, engourdissements ou fourmillements dans le territoire du nerf médian (pouce, index, majeur).",
-            "Stade précoce sans ischémie nerveuse franche ou syndrome compressif plus haut situé (C6-C7)."
+            "Le patient est assis, coudes posés sur la table d'examen.",
+            "Le patient adosse les faces dorsales des deux mains l'une contre l'autre, maintenant les poignets en flexion palmaire maximale (90°) pendant 60 secondes.",
+            "Le test est positif si le patient ressent des engourdissements, fourmillements ou brûlures dans le territoire du nerf médian (pouce, index, majeur, moitié radiale de l'annulaire)."
           )
         }
       ]
@@ -838,27 +829,9 @@
           label: "Test de Lasègue (SLR)",
           info: buildTestDetailHtml(
             "Test de Lasègue (Straight Leg Raise)", "~91%", "~52%",
-            "Patient en décubitus dorsal strict, jambes allongées.",
-            "Élévation passive du membre inférieur tendu par la cheville jusqu'à l'apparition des symptômes.",
-            "Reproduction de la douleur radiculopathique descendant SOUS le genou entre 30° et 70° d'élévation.",
-            "Lombalgie mécanique pure sans conflit radiculaire, ou douleur serrée isolée des ischio-jambiers."
-          )
-        }
-      ]
-    },
-    coxarthrose: {
-      categorie: "3. Rachis Lombaire, Bassin & Hanche",
-      nom: "Coxarthrose (Arthrose de Hanche)",
-      tests: [
-        {
-          id: "t_cox_1",
-          label: "Restriction de Rotation Interne (FDIR / FADER)",
-          info: buildTestDetailHtml(
-            "Test de Rotation Interne de Hanche", "~86%", "~75%",
-            "Patient allongé en décubitus dorsal, hanche fléchie à 90°.",
-            "Impression d'une rotation interne passive en mesurant l'angle maximal avant résistance ferme.",
-            "Rotation interne passive inférieure à 15° accompagnée de douleur à l'aine, caractéristique de l'arthrose.",
-            "Souplesse capsulaire conservée aux stades débutants."
+            "Le patient est allongé en décubitus dorsal strict, le corps relâché et les membres inférieurs tendus.",
+            "Le praticien saisit le talon du membre atteint et élève lentement la jambe tendue en maintenant le genou en extension complète.",
+            "Le test est positif si une douleur radiculaire est reproduite le long du trajet du nerf sciatique (descendant au-dessous du genou) pour un angle d'élévation compris entre 30° et 70°."
           )
         }
       ]
@@ -874,10 +847,9 @@
           label: "Test de Lachman",
           info: buildTestDetailHtml(
             "Test de Lachman", "~85%", "~94%",
-            "Patient allongé en décubitus dorsal, genou fléchi à 20-30°.",
-            "Une main stabilise le fémur, l'autre saisit le tibia proximal et imprime une traction antérieure brusque.",
-            "Translatation antérieure excessive du tibia par rapport au fémur avec arrêt mou (absence d'arrêt dur).",
-            "Épanchement articulaire sous tension (hémarthrose), contracture réflexe des ischio-jambiers masquant le tiroir."
+            "Le patient est allongé en décubitus dorsal, le genou fléchi à 20°-30° et la cheville relâchée.",
+            "Le praticien empaume le fémur distal d'une main pour le fixer et saisit la partie supérieure du tibia de l'autre hand. Il imprime une traction antérieure brusque et ferme sur le tibia.",
+            "Le test est positif si l'on observe une translation antérieure excessive du tibia par rapport au fémur, associée à la sensation d'un arrêt mou (perte de la buttée dure du LCA)."
           )
         },
         {
@@ -885,10 +857,9 @@
           label: "Pivot Shift Test",
           info: buildTestDetailHtml(
             "Pivot Shift Test", "~24%", "~98%",
-            "Patient allongé, membre inférieur relâché.",
-            "Saisie du pied, combinaison de valgus forcé, rotation interne du tibia et passage de l'extension vers la flexion.",
-            "Ressaut / subluxation antérieure du plateau tibial à 30° de flexion signant l'instabilité rotatoire.",
-            "Test difficile à réaliser hors anesthésie en raison de la défense musculaire du patient."
+            "Le patient est allongé sur le dos, la jambe testée complètement relâchée.",
+            "Le praticien saisit le pied en rotation interne, applique une force en valgus sur la tête de la fibula tout en passant le genou de l'extension vers la flexion.",
+            "Le test est positif s'il se produit un ressaut / subluxation antérieure mesurable du plateau tibial latéral à environ 30° de flexion."
           )
         }
       ]
@@ -902,10 +873,9 @@
           label: "Test de Thessaly (20°)",
           info: buildTestDetailHtml(
             "Test de Thessaly", "~89%", "~97%",
-            "Patient en appui unipodal sur le genou testé, fléchi à 20°.",
-            "Le patient effectue 3 rotations du tronc vers la gauche et vers la droite tout en maintenant la flexion.",
-            "Douleur dans l'interligne articulaire, blocage ou sensation d'accrochage interne/externe.",
-            "Lésion méniscale stable en anse de seau non déplacée."
+            "Le patient se tient debout en appui unipodal sur la jambe à tester. On commence toujours par tester la jambe saine pour que le patient comprenne le mouvement.",
+            "Le genou est fléchi une première fois à 5°, puis à 20°. Le thérapeute tient les mains du patient pour l'aider à garder son équilibre. Le patient effectue trois rotations du tronc et du fémur sur le tibia, le pied restant à plat au sol.",
+            "Le test est positif si le patient ressent une douleur au niveau de l'interligne articulaire, un blocage ou un ressaut pendant la rotation. <br>• Une douleur médiale évoque une atteinte du ménisque médial.<br>• Une douleur latérale évoque une atteinte du ménisque latéral."
           )
         }
       ]
@@ -919,10 +889,9 @@
           label: "Tiroir Antérieur de Cheville",
           info: buildTestDetailHtml(
             "Tiroir Antérieur de Cheville", "~73%", "~91%",
-            "Patient allongé, pied pendant hors de la table en légère flexion plantaire.",
-            "Une main fixe le tibia, l'autre saisit le calcanéum et tire le talus vers l'avant.",
-            "Subluxation antérieure du talus sous la pince malléolaire signant la rupture du ligament talo-fibulaire antérieur (LTFA).",
-            "Réaction antalgique des péroniers / extenseurs verrouillant la cheville."
+            "Le patient est assis ou allongé, la cheville détendue en légère flexion plantaire (10-15°).",
+            "Une main fixe l'extrémité inférieure du tibia, tandis que la paume de l'autre main empaume le calcanéum et tire le talus vers l'avant.",
+            "Le test est positif s'il existe un glissement antérieur excessif du talus sous la pince tibio-fibulaire (laxité du ligament talo-fibulaire antérieur)."
           )
         }
       ]
