@@ -125,7 +125,6 @@
 
     .neutral-block { background: var(--c-bg); padding: 18px; border-radius: 12px; border: 1px solid var(--border); }
 
-    /* BOUTON INFO (I) */
     .btn-info {
       display: inline-flex; align-items: center; justify-content: center;
       width: 19px; height: 19px; border-radius: 50%;
@@ -169,7 +168,6 @@
       background: var(--c-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative;
     }
 
-    /* WIDGET IA */
     #aiFloatBtn {
       position: fixed; bottom: 25px; right: 25px; background: var(--c-purple-dark); color: white;
       border: none; border-radius: 30px; padding: 14px 22px; font-weight: 700; font-size: 14px;
@@ -190,7 +188,6 @@
     .btn-doc-med { background: var(--c-purple-dark); }
     .btn-pdf { background: var(--c-green); }
 
-    /* MODALS */
     .modal-overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(60, 27, 112, 0.6); backdrop-filter: blur(4px); z-index: 10000; justify-content: center; align-items: center;
@@ -200,23 +197,12 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
     .modal-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #FAF5FF; border-radius: 12px; margin-top: 14px; overflow: auto; padding: 10px; }
     
-    .legend {
-      display: flex;
-      gap: 15px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+    .legend { display: flex; gap: 15px; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
     .legend-item { display: flex; align-items: center; gap: 6px; }
     .legend-circle { width: 12px; height: 12px; border-radius: 50%; background: var(--joint-color); border: 1.5px solid var(--c-purple-dark); }
     .legend-rect { width: 14px; height: 8px; background: var(--bone-color); border: 1.5px solid var(--bone-stroke); border-radius: 2px; }
 
-    #svgBody {
-      width: 100%;
-      height: 100%;
-      max-height: 70vh;
-      cursor: crosshair;
-    }
+    #svgBody { width: 100%; height: 100%; max-height: 70vh; cursor: crosshair; }
 
     @media print {
       body { background: white; padding: 0; color: black; }
@@ -435,7 +421,7 @@
     <div class="section-title"><span>4. BATTERIE DE TESTS CLINIQUES & DIAGNOSTIC IA</span></div>
     
     <div style="font-size:13px; color:var(--c-purple-dark); margin-bottom:14px; opacity:0.9;">
-      Sélectionnez une pathologie parmi les 50 références en kinésithérapie, ou écrivez une pathologie libre. Si les tests sont négatifs, ajoutez une autre hypothèse en cascade.
+      Sélectionnez une pathologie parmi les 50 références classées par région anatomique, ou saisissez une pathologie libre.
     </div>
 
     <div id="pathologiesListContainer"></div>
@@ -660,7 +646,6 @@
   let pathoBlockCounter = 0;
   document.getElementById('dateBilan').valueAsDate = new Date();
 
-  // INTERSECTION OBSERVER ANIMATION
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
@@ -697,17 +682,64 @@
   function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
   function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
+  // BASE DE DONNÉES CLASSIFIÉE DES 50 PATHOLOGIES LES PLUS COURANTES EN KINÉSITHÉRAPIE (EBP)
   const pathologiesDB = {
-    lca: { nom: "1. Rupture / Lésion du Ligament Croisé Antérieur (LCA)", tests: [{ id: "t_lca_1", label: "Test de Lachman", info: "Sensibilité ~85% | Spécificité ~94%." }, { id: "t_lca_2", label: "Test du Tiroir Antérieur", info: "Sensibilité ~62%." }, { id: "t_lca_3", label: "Pivot Shift Test", info: "Spécificité ~98%." }] },
-    menisque: { nom: "2. Lésion Méniscale (Médiale ou Latérale)", tests: [{ id: "t_men_1", label: "Test de Thessaly (20°)", info: "Sensibilité ~89%." }, { id: "t_men_2", label: "Test de McMurray", info: "Spécificité ~85%." }] },
-    femoro_patellaire: { nom: "3. Syndrome Fémoro-Patellaire (Douleur Antérieure)", tests: [{ id: "t_fp_1", label: "Test de Clarke", info: "Compression patellaire active." }, { id: "t_fp_2", label: "Step-Down Test", info: "Contrôle frontal dynamique." }] },
-    gonarthrose: { nom: "4. Gonarthrose (Arthrose du Genou)", tests: [{ id: "t_gon_1", label: "Critères ACR", info: "Crépitements, raideur matinale." }] },
-    coiffe_rotateurs: { nom: "5. Tendinopathie de la Coiffe / Conflit Sous-Acromial", tests: [{ id: "t_cr_1", label: "Hawkins-Kennedy", info: "Sensibilité ~79%." }, { id: "t_cr_2", label: "Test de Jobe", info: "Sensibilité ~88%." }] },
-    epicondylite: { nom: "6. Épicondylite Latérale (Tennis Elbow)", tests: [{ id: "t_epi_1", label: "Test de Cozen", info: "Extension poignet contrariée." }] },
-    canal_carpien: { nom: "7. Syndrome du Canal Carpien", tests: [{ id: "t_cc_1", label: "Test de Phalen (60s)", info: "Flexion palmaire." }, { id: "t_cc_2", label: "Test de Durkan", info: "Sensibilité ~87%." }] },
-    lombalgie: { nom: "8. Lombalgie Commune / Dysfonction Lombaire", tests: [{ id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "Exclusion radiculopathie." }, { id: "t_lom_2", label: "Slump Test", info: "Neurodynamique." }] },
-    hernie_lombaire: { nom: "9. Hernie Discale Lombaire & Sciatique", tests: [{ id: "t_hdl_1", label: "Lasègue < 45°", info: "Douleur radiculopathique." }] },
-    entorse_cheville: { nom: "10. Entorse Latérale de Cheville", tests: [{ id: "t_ech_1", label: "Tiroir Antérieur Cheville", info: "Laxité LTFA." }, { id: "t_ech_2", label: "Règles d'Ottawa", info: "Exclusion fracture." }] }
+    // --- RACHIS CERVICAL & TÊTE ---
+    cervicalgie: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Cervicalgie commune / Dysfonction cervicale", tests: [{ id: "t_cerv_1", label: "Test de Spurling", info: "Sensibilité ~50% | Spécificité ~93% pour radiculopathie." }, { id: "t_cerv_2", label: "Test de Traction Cervicale", info: "Spécificité ~90%." }] },
+    whiplash: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Coup du lapin / Whiplash (WAD)", tests: [{ id: "t_whip_1", label: "Test de Flexion-Rotation (CCFT)", info: "Évalue les fléchisseurs profonds du cou." }] },
+    radiculopathie_cervicale: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Névralgie Cervico-Brachiale (NCB)", tests: [{ id: "t_ncb_1", label: "Cluster de Wainner (Spurling, ULTThA, Traction, Rotation <60°)", info: "Spécificité >99% si 4 tests positifs." }] },
+    arnold: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Névralgie d'Arnold (Grand Occipital)", tests: [{ id: "t_arn_1", label: "Palpation / Pression du nerf d'Arnold", info: "Reproduction de la douleur occipito-frontale." }] },
+    tmj: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Dysfonction ATM / Mandibulaire", tests: [{ id: "t_atm_1", label: "Ouverture buccale active & Déviation", info: "Norme > 40mm. Bruits / Ressauts articulaires." }] },
+    cervicogenic_headache: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Céphalée Cervicogénique", tests: [{ id: "t_cchead_1", label: "Test de Flexion-Rotation Cervicale (FRT)", info: "Spécificité ~90% pour C1-C2." }] },
+    dorsalgie: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Dorsalgie commune / Syndrome interscapulaire", tests: [{ id: "t_dors_1", label: "Pression axiale des épineuses thoraciques", info: "Recherche de verrouillage segmentaire." }] },
+    thoracic_outlet: { categorie: "1. Rachis Cervical, Thoracique & Tête", nom: "Syndrome du Défilé Thoraco-Brachial (SDB)", tests: [{ id: "t_sdb_1", label: "Test de Roos (EAST)", info: "Maintien 3 min bras levés." }, { id: "t_sdb_2", label: "Test d'Adson", info: "Diminution du pouls radial." }] },
+
+    // --- ÉPAULE & MEMBRE SUPÉRIEUR ---
+    coiffe_rotateurs: { categorie: "2. Épaule & Membre Supérieur", nom: "Tendinopathy Coiffe / Conflit Sous-Acromial", tests: [{ id: "t_cr_1", label: "Test d'Hawkins-Kennedy", info: "Sensibilité ~79%." }, { id: "t_cr_2", label: "Test de Jobe (Empty Can)", info: "Sensibilité ~88%." }, { id: "t_cr_3", label: "Arc Douloureux (Painful Arc)", info: "Douleur entre 60° et 120° d'abduction." }] },
+    rupture_coiffe: { categorie: "2. Épaule & Membre Supérieur", nom: "Rupture de la Coiffe des Rotateurs", tests: [{ id: "t_rcr_1", label: "Drop Arm Test (Signe du bras tombant)", info: "Spécificité ~92%." }, { id: "t_rcr_2", label: "Lag Sign (Rotateurs Externe)", info: "Spécificité ~94%." }] },
+    capsulite: { categorie: "2. Épaule & Membre Supérieur", nom: "Capsulite Rétractile (Épaule Gelée)", tests: [{ id: "t_cap_1", label: "Restriction stricte RE1 passive (< 50%)", info: "Perte d'amplitude gléno-humérale passive globale." }] },
+    instabilite_epaule: { categorie: "2. Épaule & Membre Supérieur", nom: "Instabilité d'Épaule / Appréhension", tests: [{ id: "t_inst_1", label: "Test d'Appréhension d'Anteriorité", info: "Spécificité ~96%." }, { id: "t_inst_2", label: "Test de Relocalisation de Jobe", info: "Soulagement à la poussée postérieure." }] },
+    biceps_tendinopathy: { categorie: "2. Épaule & Membre Supérieur", nom: "Tendinopathie du Long Biceps / SLAP Lésion", tests: [{ id: "t_bic_1", label: "Speed Test (Biceps Test)", info: "Sensibilité ~63%." }, { id: "t_bic_2", label: "Test de Yergason", info: "Spécificité ~89%." }] },
+    epicondylite: { categorie: "2. Épaule & Membre Supérieur", nom: "Épicondylite Latérale (Tennis Elbow)", tests: [{ id: "t_epi_1", label: "Test de Cozen", info: "Extension poignet contrariée." }, { id: "t_epi_2", label: "Test de Mill", info: "Étirements passifs des épicondyliens." }] },
+    epitrochleite: { categorie: "2. Épaule & Membre Supérieur", nom: "Épitrochléite / Épicondylite Médiale (Golfer's Elbow)", tests: [{ id: "t_epitr_1", label: "Flexion contrariée du poignet & pronation", info: "Douleur à l'épitrochlée." }] },
+    canal_carpien: { categorie: "2. Épaule & Membre Supérieur", nom: "Syndrome du Canal Carpien", tests: [{ id: "t_cc_1", label: "Test de Phalen (60s)", info: "Sensibilité ~68%." }, { id: "t_cc_2", label: "Test de Durkan (Compression directe)", info: "Sensibilité ~87%." }] },
+    dequeervain: { categorie: "2. Épaule & Membre Supérieur", nom: "Ténosynovite de De Quervain", tests: [{ id: "t_dq_1", label: "Test de Finkelstein / Eichhoff", info: "Douleur styloïde radiale." }] },
+    rhizarthrose: { categorie: "2. Épaule & Membre Supérieur", nom: "Rhizarthrose (Arthrose Trapézo-Métacarpienne)", tests: [{ id: "t_rhiz_1", label: "Grind Test du pouce", info: "Axial compression + rotation du M1." }] },
+
+    // --- RACHIS LOMBAIRE, BASSIN & HANCHE ---
+    lombalgie: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Lombalgie Commune / Dysfonction Lombaire", tests: [{ id: "t_lom_1", label: "Test de Lasègue (SLR)", info: "Exclusion radiculopathie si négatif." }, { id: "t_lom_2", label: "Slump Test neurodynamique", info: "Mise en tension dural/sciatique." }] },
+    hernie_lombaire: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Hernie Discale Lombaire & Sciatique (L5/S1)", tests: [{ id: "t_hdl_1", label: "Lasègue croisé (Contralatéral)", info: "Spécificité ~90% pour hernie." }] },
+    cruralgie: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Cruralgie (Radiculopathie L3/L4)", tests: [{ id: "t_crur_1", label: "Test de Léri (PKB / Reverse Lasegue)", info: "Mise en tension du nerf fémoral." }] },
+    canal_lombaire_etroit: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Canal Lombaire Étroit (Sténose du canal)", tests: [{ id: "t_cle_1", label: "Test de Caddy (Claudication neurogène)", info: "Soulagement à la flexion du tronc (Caddy shop)." }] },
+    spondylolisthesis: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Spondylolisthésis / Instabilité Lombaire", tests: [{ id: "t_spond_1", label: "Prone Instability Test", info: "Soulagement de la douleur lors de l'extension active." }] },
+    sacro_iliaque: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Dysfonction Articulation Sacro-Iliaque (ASI)", tests: [{ id: "t_asi_1", label: "Cluster de Laslett (Distraction, Thigh Thrust, Compression, Gaenslen)", info: "3/5 tests positifs confirmant l'ASI." }] },
+    coxarthrose: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Coxarthrose (Arthrose de Hanche)", tests: [{ id: "t_cox_1", label: "Test de FADER / FABER", info: "Perte de rotation interne passive < 15°." }] },
+    conflit_femoro_acetabulaire: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Conflit Fémoro-Acétabulaire (CFA / Labrum)", tests: [{ id: "t_cfa_1", label: "Test FDIR (Flexion, Adduction, Rotation Interne)", info: "Sensibilité ~95%." }] },
+    pubalgie: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Pubalgie / Tendinopathie des Adducteurs", tests: [{ id: "t_pub_1", label: "Squeeze Test (Serrage de ballon à 0°, 45°)", info: "Douleur symphyse ou adducteurs." }] },
+    bursite_trochanterienne: { categorie: "3. Rachis Lombaire, Bassin & Hanche", nom: "Syndrome Douloureux du Grand Trochanter (GTPS)", tests: [{ id: "t_gtps_1", label: "Appui unipodal 30 secondes", info: "Reproduction douleur trochantérienne." }] },
+
+    // --- GENOU, CHEVILLE & PIED ---
+    lca: { categorie: "4. Genou, Cheville & Pied", nom: "Rupture / Lésion du Ligament Croisé Antérieur (LCA)", tests: [{ id: "t_lca_1", label: "Test de Lachman", info: "Sensibilité ~85% | Spécificité ~94%." }, { id: "t_lca_2", label: "Pivot Shift Test", info: "Spécificité ~98%." }] },
+    menisque: { categorie: "4. Genou, Cheville & Pied", nom: "Lésion Méniscale (Médiale ou Latérale)", tests: [{ id: "t_men_1", label: "Test de Thessaly (20°)", info: "Sensibilité ~89%." }, { id: "t_men_2", label: "Test de McMurray", info: "Spécificité ~85%." }] },
+    femoro_patellaire: { categorie: "4. Genou, Cheville & Pied", nom: "Syndrome Fémoro-Patellaire (SFP)", tests: [{ id: "t_fp_1", label: "Step-Down Test", info: "Contrôle frontal & valgus dynamique." }, { id: "t_fp_2", label: "Test de Clarke / Rabot", info: "Appui patellaire." }] },
+    gonarthrose: { categorie: "4. Genou, Cheville & Pied", nom: "Gonarthrose (Arthrose du Genou)", tests: [{ id: "t_gon_1", label: "Critères ACR (Raideur matinale < 30min, crépitants)", info: "Validation arthrosique." }] },
+    tendinopathie_patellaire: { categorie: "4. Genou, Cheville & Pied", nom: "Tendinopathie Patellaire / Rotulienne (Jumper's Knee)", tests: [{ id: "t_tpat_1", label: "Single Leg Decline Squat (Squat décliné)", info: "Reproduction de la douleur de pointe." }] },
+    lli_lle_genou: { categorie: "4. Genou, Cheville & Pied", nom: "Entorse Ligamentaire Collatéral (LCM / LCL Genou)", tests: [{ id: "t_lig_1", label: "Valgus / Varus forcé à 30° de flexion", info: "Laxité ou douleur médiale/latérale." }] },
+    sdt: { categorie: "4. Genou, Cheville & Pied", nom: "Syndrome de l'Essuie-Glace (TFL / Bandelette Ilio-Tibiale)", tests: [{ id: "t_tfl_1", label: "Test de Noble / Test d'Ober", info: "Compression condyle latéral à 30° flexion." }] },
+    entorse_cheville: { categorie: "4. Genou, Cheville & Pied", nom: "Entorse Latérale de Cheville (LTFA / LCF)", tests: [{ id: "t_ech_1", label: "Tiroir Antérieur de Cheville", info: "Test du ligament talo-fibulaire antérieur." }, { id: "t_ech_2", label: "Règles d'Ottawa", info: "Exclusion d'une fracture osseuse." }] },
+    instabilite_cheville: { categorie: "4. Genou, Cheville & Pied", nom: "Instabilité Chronique de Cheville (CAI)", tests: [{ id: "t_cai_1", label: "Star Excursion Balance Test (SEBT)", info: "Déficit de contrôle postural dynamique." }] },
+    tendinopathie_achille: { categorie: "4. Genou, Cheville & Pied", nom: "Tendinopathie d'Achille (Corporéale ou d'Insertion)", tests: [{ id: "t_ach_1", label: "Royal London Hospital Test", info: "Diminution douleur à la dorsiflexion active." }] },
+    rupture_achille: { categorie: "4. Genou, Cheville & Pied", nom: "Rupture du Tendon d'Achille", tests: [{ id: "t_ruptach_1", label: "Test de Thompson (Pression du mollet)", info: "Absence de flexion plantaire passive." }] },
+    fasciite_plantaire: { categorie: "4. Genou, Cheville & Pied", nom: "Fasciite / Aponévrosite Plantaire (Épine Calcanéenne)", tests: [{ id: "t_fp_1", label: "Windlass Test active & passive", info: "Mise en tension de l'aponévrose." }] },
+    periostite: { categorie: "4. Genou, Cheville & Pied", nom: "Périostite Tibiale (MTSS)", tests: [{ id: "t_mtss_1", label: "Palpation bord postéro-médial du tibia (>5cm)", info: "Douleur diffuse à la pression." }] },
+
+    // --- NEUROLOGIE, VESTIBULAIRE & SYSTÉMIQUE ---
+    avc: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Accident Vasculaire Cérébral (AVC / Hémiplegie)", tests: [{ id: "t_avc_1", label: "Échelle de Fugl-Meyer / Score de Ashworth", info: "Évaluation spasticité et commande motrice." }] },
+    parkinson: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Maladie de Parkinson", tests: [{ id: "t_park_1", label: "Timed Up and Go (TUG) / Timed 10m Walk", info: "Risque de chute et freezing de la marche." }] },
+    sep: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Sclérose en Plaques (SEP)", tests: [{ id: "t_sep_1", label: "Expanded Disability Status Scale (EDSS) / Balance", info: "Fatigabilité et ataxie." }] },
+    vppb: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Vertige Positionnel Paroxystique Bénin (VPPB)", tests: [{ id: "t_vppb_1", label: "Manoeuvre de Dix-Hallpike", info: "Déclenchement du nystagmus vertigineux." }] },
+    sdrc: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Algodystrophie / SDRC Type 1", tests: [{ id: "t_sdrc_1", label: "Critères de Budapest", info: "Allodynie, hyperalgesie, oedème, sueurs." }] },
+    fibromyalgie: { categorie: "5. Neurologie, Vestibulaire & Systémique", nom: "Fibromyalgie / Syndrome Douloureux Chronique", tests: [{ id: "t_fib_1", label: "Score WPI (Widespread Pain Index) & FIQ", info: "Évaluation douleur répandue." }] }
   };
 
   function ajouterBlocPathologie() {
@@ -715,9 +747,23 @@
     const container = document.getElementById('pathologiesListContainer');
     const blockId = `pathoBlock_${pathoBlockCounter}`;
     
+    // Génération du select structuré par catégories (optgroup)
     let optionsHtml = '<option value="libre">-- Saisir une pathologie personnalisée (Champ libre) --</option>';
+    
+    // Regroupement dynamique par catégorie
+    const categories = {};
     for (let key in pathologiesDB) {
-      optionsHtml += `<option value="${key}">${pathologiesDB[key].nom}</option>`;
+      const cat = pathologiesDB[key].categorie;
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push({ key: key, nom: pathologiesDB[key].nom });
+    }
+
+    for (let catName in categories) {
+      optionsHtml += `<optgroup label="${catName}">`;
+      categories[catName].forEach(p => {
+        optionsHtml += `<option value="${p.key}">${p.nom}</option>`;
+      });
+      optionsHtml += `</optgroup>`;
     }
 
     const div = document.createElement('div');
@@ -755,7 +801,7 @@
     } else {
       customWrapper.style.display = 'none';
       const pathoData = pathologiesDB[val];
-      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-purple); margin-bottom:8px;">Tests associés : ${pathoData.nom}</div><div class="grid">`;
+      let html = `<div style="font-size:13px; font-weight:700; color:var(--c-purple); margin-bottom:8px;">Tests associés (${pathoData.categorie}) : ${pathoData.nom}</div><div class="grid">`;
       pathoData.tests.forEach((t) => {
         const safeInfo = t.info.replace(/'/g, "\\'");
         html += `<div><div class="label-row"><label>${t.label} :</label><span class="btn-info" onclick="ouvrirInfoModal('${t.label}', '${safeInfo}')">i</span></div><input type="text" placeholder="Résultat du test..." data-test-id="${t.id}"></div>`;
@@ -783,7 +829,6 @@
     container.appendChild(div);
   }
 
-  // EXPORTS WORD (.DOCX) DYNAMIQUES
   function exporterFicheExercicesWord() {
     const nom = document.getElementById('nom').value || "Patient";
     const prenom = document.getElementById('prenom').value || "";
@@ -908,7 +953,6 @@
     }, 400);
   }
 
-  // GESTION DU BODY CHART MODAL & PLACEMENT DES CROIX SUR LE SCHÉMA GÉOMÉTRIQUE
   function ouvrirModalChart() { document.getElementById('chartModal').style.display = 'flex'; }
   function fermerModalChart() { document.getElementById('chartModal').style.display = 'none'; }
 
