@@ -264,52 +264,52 @@
     <div class="section-title"><span>1. RENSEIGNEMENTS GÉNÉRAUX & PIÈCES JOINTES</span></div>
     <div class="grid">
       <div>
-        <div class="label-row"><label>Nom :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Nom du patient', '<span class=\'info-detail-title\'>📌 Définition & Rôle</span>Saisissez le nom de famille du patient pour l\'archivage règlementaire du dossier médical sous format EBP.<span class=\'info-detail-title\'>⚖️ Aspect Légal</span>Assure la traçabilité du bilan kinésithérapique.')">i</button></div>
+        <div class="label-row"><label>Nom :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Nom du patient', 'Saisissez le nom de famille du patient pour l\'archivage.')">i</button></div>
         <input type="text" id="nom" placeholder="Nom du patient">
       </div>
       <div>
-        <div class="label-row"><label>Prénom :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Prénom', '<span class=\'info-detail-title\'>📌 Définition & Rôle</span>Prénom usuel du patient pour la personnalisation des courriers.')">i</button></div>
+        <div class="label-row"><label>Prénom :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Prénom', 'Prénom usuel du patient.')">i</button></div>
         <input type="text" id="prenom" placeholder="Prénom">
       </div>
       <div>
-        <div class="label-row"><label>Date de naissance :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Date de naissance', '<span class=\'info-detail-title\'>📌 Déterminant Épidémiologique</span>L\'âge aide à orienter vers les pathologies prévalentes (ex: instabilités chez les jeunes vs dégénératif).')">i</button></div>
+        <div class="label-row"><label>Date de naissance :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Date de naissance', 'L\'âge aide à orienter vers les pathologies prévalentes.')">i</button></div>
         <input type="date" id="dob">
       </div>
       <div>
-        <div class="label-row"><label>Téléphone :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Téléphone', '<span class=\'info-detail-title\'>📌 Contact Direct</span>Utile pour l\'envoi des programmes d\'exercices.')">i</button></div>
+        <div class="label-row"><label>Téléphone :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Téléphone', 'Contact direct du patient.')">i</button></div>
         <input type="text" id="telephone" placeholder="06 ...">
       </div>
       <div>
-        <div class="label-row"><label>Date du bilan :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Date du bilan', '<span class=\'info-detail-title\'>📌 Baseline Clinique</span>Sert de référence temporelle pour réévaluer le patient.')">i</button></div>
+        <div class="label-row"><label>Date du bilan :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Date du bilan', 'Date de première évaluation.')">i</button></div>
         <input type="date" id="dateBilan">
       </div>
       <div>
-        <div class="label-row"><label>Prescription médicale & Motif :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Prescription médicale', '<span class=\'info-detail-title\'>📌 Motif Médical</span>Renseignez le médecin prescripteur et le libellé exact de l\'ordonnance.')">i</button></div>
+        <div class="label-row"><label>Prescription médicale & Motif :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Prescription médicale', 'Renseignez le médecin et le motif d\'ordonnance.')">i</button></div>
         <input type="text" id="prescription" placeholder="Ex: Dr. Martin - 'Lombalgie'...">
       </div>
       <div>
-        <div class="label-row"><label>Activité physique / Profession :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Activité / Profession', '<span class=\'info-detail-title\'>📌 Contraintes Ergonomiques</span>Analyse des contraintes posturales et de port de charges.')">i</button></div>
+        <div class="label-row"><label>Activité physique / Profession :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Activité / Profession', 'Contraintes posturales et professionnelles.')">i</button></div>
         <input type="text" id="activitePhysique" placeholder="Sédentaire, manutentionnaire...">
       </div>
       <div>
-        <div class="label-row"><label>Sport / Loisirs :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Sport & Loisirs', '<span class=\'info-detail-title\'>📌 Objectifs de Retour au Sport</span>Permet de calibrer les exigences en fin de rééducation.')">i</button></div>
+        <div class="label-row"><label>Sport / Loisirs :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Sport & Loisirs', 'Niveau de pratique et objectifs.')">i</button></div>
         <input type="text" id="sport" placeholder="Discipline, fréquence...">
       </div>
       
       <div class="full-width neutral-block">
-        <div class="label-row"><label>👤 Profil & Autonomie :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Profil & Autonomie', '<span class=\'info-detail-title\'>📌 Catégorisation</span>Catégorisation fonctionnelle de la charge du patient.')">i</button></div>
+        <div class="label-row"><label>👤 Profil & Autonomie :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Profil & Autonomie', 'Classement selon le niveau de charge.')">i</button></div>
         <select id="profilPatient">
           <option>Sportif Compétiteur (Pivots / Impacts)</option>
           <option>Sportif Loisir / Récréatif</option>
           <option>Sédentaire / Travailleur de bureau</option>
-          <option>Travailleur physique / Travail contraignant (Manutention, charges lourdes, postures pénibles)</option>
+          <option>Travailleur physique / Travail contraignant</option>
           <option>Post-opératoire récent</option>
           <option>Gériatrie / Perte d'autonomie</option>
         </select>
       </div>
 
       <div class="full-width neutral-block">
-        <div class="label-row"><label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Pièces jointes', '<span class=\'info-detail-title\'>📷 Archivage Visuel</span>Photos cliniques et comptes-rendus d\'imagerie.')">i</button></div>
+        <div class="label-row"><label>📷 Photos du dossier (Posture, imagerie, cicatrices) :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Pièces jointes', 'Photos et clichés d\'imagerie.')">i</button></div>
         <input type="file" id="photoInput" accept="image/*" multiple onchange="gererAjoutPhotos(event)">
         <div id="photoPreviewContainer" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
       </div>
@@ -323,7 +323,7 @@
     <div class="full-width">
       <div class="label-row">
         <label>📍 Schéma Corporel (Body Chart Géométrique 4 Vues) :</label>
-        <button type="button" class="btn-info" onclick="ouvrirInfoModal('Body Chart', '<span class=\'info-detail-title\'>📍 Cartographie de la Douleur</span>Cliquez sur l\'image pour placer des zones de douleur (✕).')">i</button>
+        <button type="button" class="btn-info" onclick="ouvrirInfoModal('Body Chart', 'Cliquez pour placer les zones de douleur (✕).')">i</button>
       </div>
       <div class="preview-box" onclick="ouvrirModalChart()">
         <span id="markerCountText" style="font-size:13.5px; font-weight:700; color:var(--c-purple-dark);">Aucun point marqué. Cliquez ici pour ouvrir le Body Chart.</span>
@@ -332,11 +332,11 @@
 
     <div class="grid" style="margin-top:20px;">
       <div class="full-width">
-        <div class="label-row"><label>Mécanisme lésionnel & Histoire de la maladie :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Mécanisme', 'Précisez l\'apparition : aiguë vs surutilisation.')">i</button></div>
+        <div class="label-row"><label>Mécanisme lésionnel & Histoire de la maladie :</label></div>
         <textarea id="mecanisme" placeholder="Circonstances, progressif vs brutal..."></textarea>
       </div>
       <div class="full-width">
-        <div class="label-row"><label>Symptômes & Comportement de la douleur :</label><button type="button" class="btn-info" onclick="ouvrirInfoModal('Symptômes', 'Dérouillage matinal, irritabilité tissulaire.')">i</button></div>
+        <div class="label-row"><label>Symptômes & Comportement de la douleur :</label></div>
         <textarea id="symptomes" placeholder="Irritabilité, dérouillage matinal..."></textarea>
       </div>
     </div>
@@ -543,13 +543,11 @@
         <svg id="svgBody" viewBox="0 0 800 650" xmlns="http://www.w3.org/2000/svg">
           <rect width="800" height="650" fill="#FAF5FF" rx="12"/>
 
-          <!-- NOMS DES VUES -->
           <text x="100" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">FACE</text>
           <text x="300" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL GAUCHE</text>
           <text x="500" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">PROFIL DROIT</text>
           <text x="700" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#3C1B70">DOS</text>
 
-          <!-- 1. FACE -->
           <g transform="translate(-100, 10)" stroke="#3C1B70" stroke-width="2">
             <circle cx="200" cy="50" r="28" fill="#F3E8FF"/>
             <rect x="180" y="85" width="40" height="150" rx="5" fill="#F3E8FF"/>
@@ -577,7 +575,6 @@
             <rect x="226" y="580" width="24" height="35" rx="4" fill="#F3E8FF"/>
           </g>
 
-          <!-- 2. PROFIL GAUCHE -->
           <g transform="translate(100, 10)" stroke="#3C1B70" stroke-width="2">
             <circle cx="200" cy="50" r="28" fill="#F3E8FF"/>
             <rect x="188" y="85" width="24" height="150" rx="5" fill="#F3E8FF"/>
@@ -594,7 +591,6 @@
             <rect x="180" y="580" width="35" height="24" rx="4" fill="#F3E8FF"/>
           </g>
 
-          <!-- 3. PROFIL DROIT -->
           <g transform="translate(300, 10)" stroke="#3C1B70" stroke-width="2">
             <circle cx="200" cy="50" r="28" fill="#F3E8FF"/>
             <rect x="188" y="85" width="24" height="150" rx="5" fill="#F3E8FF"/>
@@ -611,7 +607,6 @@
             <rect x="185" y="580" width="35" height="24" rx="4" fill="#F3E8FF"/>
           </g>
 
-          <!-- 4. DOS -->
           <g transform="translate(500, 10)" stroke="#3C1B70" stroke-width="2">
             <circle cx="200" cy="50" r="28" fill="#F3E8FF"/>
             <rect x="180" y="85" width="40" height="150" rx="5" fill="#F3E8FF"/>
@@ -689,7 +684,6 @@
   function fermerInfoModal(e) { if (e.target.id === 'infoModal') document.getElementById('infoModal').style.display = 'none'; }
   function fermerModalInfoDirect() { document.getElementById('infoModal').style.display = 'none'; }
 
-  // FONCTION DE STRUCTURATION DES TESTS CLINIQUES AVEC NETTOYAGE DES SÉPARATEURS
   function buildTestDetailHtml(sens, spec, posDepart, deroulement, interpretation) {
     return `<div class="info-detail-section">` +
       `<span class="info-detail-title">📊 Données Psychométriques (EBP)</span>` +
@@ -702,45 +696,65 @@
       `</div>`;
   }
 
-  // BASE DE DONNÉES COMPLÈTE DES 50 PATHOLOGIES CLASSÉES PAR RÉGIONS ANATOMIQUES
+  // BASE DE DONNÉES COMPLÈTE DES 50 PATHOLOGIES EBP
   const pathologiesDB = {
-    // 1. RACHIS CERVICAL & TÊTE
+    // 1. RACHIS CERVICAL, THORACIQUE & TÊTE
     cervicalgie: {
       categorie: "1. Rachis Cervical, Thoracique & Tête",
       nom: "Cervicalgie commune / Dysfonction cervicale",
       tests: [
-        {
-          id: "t_cerv_1", label: "Test de Spurling",
-          info: buildTestDetailHtml("50%", "93%", "Patient assis le dos droit. On commence par tester le côté sain.", "Extension cervicale, inclinaison latérale du côté atteint et pression axiale modérée vers le bas.", "Test positif en cas de reproduction de la douleur radiculopathique ou de paresthésie dans le membre supérieur.")
-        },
-        {
-          id: "t_cerv_2", label: "Test de Traction Cervicale",
-          info: buildTestDetailHtml("44%", "90%", "Patient allongé en décubitus dorsal, tête relâchée.", "Mains sous l'occiput et le menton, traction axiale douce et progressive vers le haut.", "Test positif si la traction soulage ou fait disparaître la douleur radiculopathique.")
-        }
+        { id: "t_cerv_1", label: "Test de Spurling", info: buildTestDetailHtml("50%", "93%", "Patient assis le dos droit. Tester le côté sain d'abord.", "Extension cervicale, inclinaison latérale du côté atteint et pression axiale modérée vers le bas.", "Positif si douleur radiculopathique ou paresthésie dans le membre supérieur.") },
+        { id: "t_cerv_2", label: "Test de Traction Cervicale", info: buildTestDetailHtml("44%", "90%", "Patient allongé en décubitus dorsal, tête relâchée.", "Mains sous l'occiput et le menton, traction axiale douce et progressive vers le haut.", "Positif si la traction soulage les symptômes radiculaires.") }
       ]
     },
     radiculopathie_cervicale: {
       categorie: "1. Rachis Cervical, Thoracique & Tête",
       nom: "Névralgie Cervico-Brachiale (NCB)",
       tests: [
-        {
-          id: "t_ncb_1", label: "Cluster de Wainner",
-          info: buildTestDetailHtml("-", ">99% (si 4/4 pos)", "Patient assis ou allongé selon le sous-test.", "Combinaison de 4 tests : Spurling, Traction, ULTT1 (médian) et Rotation cervicale < 60°.", "4/4 tests positifs confirment une radiculopathie cervicale à plus de 99%.")
-        },
-        {
-          id: "t_ncb_2", label: "ULTT 1 (Nerf Médian)",
-          info: buildTestDetailHtml("97%", "22%", "Décubitus dorsal strict, épaule stabilisée.", "Abduction d'épaule à 110°, extension du poignet/doigts, supination, extension du coude et inclinaison cervicale opposée.", "Positif si reproduction des symptômes habituels ou asymétrie > 10° d'extension du coude.")
-        }
+        { id: "t_ncb_1", label: "Cluster de Wainner", info: buildTestDetailHtml("-", ">99% (si 4/4 pos)", "Patient assis ou allongé.", "Combinaison : Spurling, Traction, ULTT1 (médian) et Rotation cervicale < 60°.", "4/4 tests positifs confirment une radiculopathie cervicale.") },
+        { id: "t_ncb_2", label: "ULTT 1 (Nerf Médian)", info: buildTestDetailHtml("97%", "22%", "Décubitus dorsal strict, épaule stabilisée.", "Abduction 110°, extension poignet/doigts, supination, extension coude, inclinaison cervicale opposée.", "Positif si reproduction des symptômes habituels ou asymétrie > 10°.") }
       ]
     },
     instabilite_cervicale: {
       categorie: "1. Rachis Cervical, Thoracique & Tête",
       nom: "Instabilité Cervicale Supérieure (C1-C2 / Lig. Alaires)",
       tests: [
-        {
-          id: "t_inst_1", label: "Test de Sharp-Purser",
-          info: buildTestDetailHtml("69%", "96%", "Patient assis en légère flexion cervicale.", "Le praticien stabilise l'épineuse de C2 et applique une pression vers l'arrière sur le front du patient.", "Positif si glissement postérieur senti avec soulagement des symptômes ou bruit de ressaut.")
-        }
+        { id: "t_inst_1", label: "Test de Sharp-Purser", info: buildTestDetailHtml("69%", "96%", "Patient assis en légère flexion cervicale.", "Stabiliser C2 et appliquer une pression postérieure sur le front.", "Positif si glissement postérieur ressenti avec réduction des symptômes.") }
+      ]
+    },
+    whiplash: {
+      categorie: "1. Rachis Cervical, Thoracique & Tête",
+      nom: "Coup du Lapin / Whiplash (WAD)",
+      tests: [
+        { id: "t_wip_1", label: "Test de Flexion-Rotation Cervicale (C1-C2)", info: buildTestDetailHtml("91%", "90%", "Décubitus dorsal, flexion cervicale passive maximale.", "Rotation passive à gauche puis à droite.", "Positif si restriction d'amplitude > 10° ou douleur vive C1-C2.") }
+      ]
+    },
+    cefalee_cervicogenique: {
+      categorie: "1. Rachis Cervical, Thoracique & Tête",
+      nom: "Céphalée Cervicogénique",
+      tests: [
+        { id: "t_cef_1", label: "Palpation des Articulations C0-C3", info: buildTestDetailHtml("80%", "84%", "Décubitus dorsal, tête soutenue.", "Pression postéro-antérieure passive sur les massifs articulaires C0-C3.", "Positif si reproduction exacte de la céphalée habituelle.") }
+      ]
+    },
+    thoracalgie: {
+      categorie: "1. Rachis Cervical, Thoracique & Tête",
+      nom: "Dorsalgie / Thoracalgie Mécanique",
+      tests: [
+        { id: "t_tho_1", label: "Test de Pression Postéro-Antérieure (PA Slide)", info: buildTestDetailHtml("75%", "70%", "Décubitus ventral.", "Pression axiale sur les épineuses thoraciques.", "Positif si reproduction de la douleur segmentaire.") }
+      ]
+    },
+    syndrome_defile_thoracique: {
+      categorie: "1. Rachis Cervical, Thoracique & Tête",
+      nom: "Syndrome du Défilé Thoraco-Brachial (SDB)",
+      tests: [
+        { id: "t_sdb_1", label: "Test de Roos (EAST Test)", info: buildTestDetailHtml("84%", "30%", "Assis, bras à 90° d'abduction et rotation externe, coudes à 90°.", "Ouverture et fermeture répétées des mains pendant 3 minutes.", "Positif si lourdeur, paresthésies ou incapacité de maintenir la position.") }
+      ]
+    },
+    atm: {
+      categorie: "1. Rachis Cervical, Thoracique & Tête",
+      nom: "Dysfonction de l'Articulation Temporo-Mandibulaire (ATM)",
+      tests: [
+        { id: "t_atm_1", label: "Mesure de l'Ouverture Buccale & Palpation Condylienne", info: buildTestDetailHtml("88%", "80%", "Patient assis, ouverture buccale maximale.", "Mesure de la distance inter-incisive (normale > 40 mm) et palpation des condyles.", "Positif si ouverture < 35 mm, déviation ou cliquetis douloureux.") }
       ]
     },
 
@@ -749,56 +763,103 @@
       categorie: "2. Épaule & Membre Supérieur",
       nom: "Tendinopathie Coiffe / Conflit Sous-Acromial",
       tests: [
-        {
-          id: "t_cr_1", label: "Test d'Hawkins-Kennedy",
-          info: buildTestDetailHtml("79%", "59%", "Patient assis, bras élevé à 90° de flexion antérieure dans le plan scapulaire, coude à 90°.", "Praticien imprime une rotation interne rapide et passive de l'épaule.", "Positif si douleur antéro-latérale vive sous l'acromion.")
-        },
-        {
-          id: "t_cr_2", label: "Test de Jobe (Empty Can Test)",
-          info: buildTestDetailHtml("88%", "62%", "Patient debout, bras à 90° d'abduction, 30° de flexion antérieure, pouces vers le sol.", "Pression vers le bas sur les poignets contre résistance active du patient.", "Positif si douleur sous-acromiale ou déficit de force comparé au côté sain (supraspinatus).")
-        }
+        { id: "t_cr_1", label: "Test d'Hawkins-Kennedy", info: buildTestDetailHtml("79%", "59%", "Assis, bras à 90° de flexion antérieure, coude à 90°.", "Rotation interne rapide et passive de l'épaule.", "Positif si douleur sous-acromiale.") },
+        { id: "t_cr_2", label: "Test de Jobe (Empty Can Test)", info: buildTestDetailHtml("88%", "62%", "Debout, bras à 90° d'abduction dans le plan de l'omoplate, pouces vers le sol.", "Pression vers le bas contre résistance.", "Positif si douleur ou déficit de force (supraspinatus).") }
+      ]
+    },
+    rupture_coiffe: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Rupture Transfixiante de la Coiffe",
+      tests: [
+        { id: "t_rc_1", label: "Drop Arm Test (Signe du Bras Mort)", info: buildTestDetailHtml("27%", "98%", "Abduction passive du bras à 120°.", "Demander au patient de redescendre lentement le bras.", "Positif si chute brutale du bras sous 90°.") },
+        { id: "t_rc_2", label: "Lag Sign en Rotation Externe (Infraspinatus)", info: buildTestDetailHtml("70%", "93%", "Bras au corps, coude à 90°, RE passive maximale.", "Le praticien lâche le poignet.", "Positif si le bras repart spontanément en rotation interne.") }
+      ]
+    },
+    tendinopathie_biceps: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Tendinopathie du Long Biceps",
+      tests: [
+        { id: "t_lb_1", label: "Test de Speed (Palm-up Test)", info: buildTestDetailHtml("63%", "58%", "Bras fléchi à 60°, coude tendu, paume vers le haut.", "Pression vers le bas sur le poignet contre résistance.", "Positif si douleur dans la coulisse bicipitale.") }
       ]
     },
     instabilite_epaule: {
       categorie: "2. Épaule & Membre Supérieur",
       nom: "Instabilité Antérieure d'Épaule",
       tests: [
-        {
-          id: "t_inst_ep1", label: "Test d'Appréhension de Rowley / Neer",
-          info: buildTestDetailHtml("80%", "96%", "Décubitus dorsal, épaule en abduction à 90° hors de la table.", "Rotation externe passive lente de l'épaule.", "Positif si appréhension vive (crainte de la luxation).")
-        },
-        {
-          id: "t_inst_ep2", label: "Test de Relocalisation",
-          info: buildTestDetailHtml("85%", "87%", "Même position d'appréhension.", "Pression antérieure vers l'arrière sur la tête humérale.", "Positif si soulagement immédiat de l'appréhension.")
-        }
+        { id: "t_inst_ep1", label: "Test d'Appréhension", info: buildTestDetailHtml("80%", "96%", "Décubitus dorsal, épaule fléchie/abductée à 90° hors table.", "Rotation externe passive lente.", "Positif si appréhension ou crainte de luxation.") },
+        { id: "t_inst_ep2", label: "Test de Relocalisation", info: buildTestDetailHtml("85%", "87%", "Position d'appréhension.", "Pression postéro-antérieure sur la tête humérale.", "Positif si disparition immédiate de l'appréhension.") }
+      ]
+    },
+    capsulite_retractile: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Capsulite Rétractile (Épaule Gelée)",
+      tests: [
+        { id: "t_cap_1", label: "Perte Globale des Amplitudes Passives (RE1)", info: buildTestDetailHtml("90%", "90%", "Décubitus dorsal, coude au corps.", "Rotation externe passive.", "Positif si restriction passive > 50% par rapport au côté sain.") }
+      ]
+    },
+    lesion_slap: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Lésion du Bourrelet / SLAP Lesion",
+      tests: [
+        { id: "t_slap_1", label: "Test d'O'Brien (Active Compression Test)", info: buildTestDetailHtml("67%", "85%", "Bras fléchi à 90°, 10° d'adduction, pouce vers le sol puis paume en haut.", "Pression vers le bas dans les 2 positions.", "Positif si douleur en rotation interne soulagée en supination.") }
+      ]
+    },
+    acromio_claviculaire: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Entorse / Arthrose Acromio-Claviculaire",
+      tests: [
+        { id: "t_ac_1", label: "Cross-Body Adduction Test", info: buildTestDetailHtml("77%", "79%", "Bras fléchi à 90°.", "Adduction horizontale passive maximale vers l'épaule opposée.", "Positif si douleur élective sur l'articulation acromio-claviculaire.") }
       ]
     },
     epicondylite: {
       categorie: "2. Épaule & Membre Supérieur",
       nom: "Épicondylite Latérale (Tennis Elbow)",
       tests: [
-        {
-          id: "t_epi_1", label: "Test de Cozen",
-          info: buildTestDetailHtml("84%", "70%", "Patient assis, coude fléchi à 90°, avant-bras en pronation, poignet fermé en extension.", "Extension du poignet contre résistance ferme du praticien.", "Positif si douleur vive localisée sur l'épicondyle latéral.")
-        },
-        {
-          id: "t_epi_2", label: "Test de Mill",
-          info: buildTestDetailHtml("76%", "81%", "Patient debout ou assis.", "Extension complète du coude, pronation et flexion complète du poignet et des doigts.", "Positif si étirement douloureux au niveau de l'épicondyle latéral.")
-        }
+        { id: "t_epi_1", label: "Test de Cozen", info: buildTestDetailHtml("84%", "70%", "Coude à 90°, avant-bras en pronation, poignet fermé en extension.", "Extension du poignet contre résistance.", "Positif si douleur vive sur l'épicondyle latéral.") },
+        { id: "t_epi_2", label: "Test de Mill", info: buildTestDetailHtml("76%", "81%", "Coude étendu, poignet et doigts fléchis.", "Pronation passive du poignet.", "Positif si étirement douloureux au coude.") }
+      ]
+    },
+    epitrochleite: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Épithrocléite / Épicondylite Médiale (Golf Elbow)",
+      tests: [
+        { id: "t_epim_1", label: "Test d'Épithrocléite Résisté", info: buildTestDetailHtml("81%", "90%", "Coude à 90°, supination, poignet en extension.", "Flexion palmaire du poignet contre résistance.", "Positif si douleur sur l'épicondyle médial.") }
+      ]
+    },
+    instabilite_coude: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Instabilité Ligamentaire du Coude (LCC / LCM)",
+      tests: [
+        { id: "t_cou_1", label: "Stress en Varus & Valgus du Coude", info: buildTestDetailHtml("85%", "88%", "Coude fléchi à 20-30°.", "Application de contraintes en varus et valgus.", "Positif si laxité ou reproduction de la douleur ligamentaire.") }
       ]
     },
     canal_carpien: {
       categorie: "2. Épaule & Membre Supérieur",
       nom: "Syndrome du Canal Carpien",
       tests: [
-        {
-          id: "t_cc_1", label: "Test de Phalen (60s)",
-          info: buildTestDetailHtml("68%", "73%", "Patient assis, coudes sur la table.", "Flexion palmaire maximale des deux poignets adossés pendant 60s.", "Positif si paresthésies/brûlures dans le territoire du nerf médian (pouce, index, majeur).")
-        },
-        {
-          id: "t_cc_2", label: "Signe de Tinel Carpien",
-          info: buildTestDetailHtml("50%", "77%", "Avant-bras en supination, poignet relâché.", "Percussion légère du rétinaculum des fléchisseurs à la face antérieure du poignet.", "Positif si sensation de décharge électrique dans les doigts.")
-        }
+        { id: "t_cc_1", label: "Test de Phalen (60s)", info: buildTestDetailHtml("68%", "73%", "Poignets adossés en flexion palmaire à 90° pendant 60s.", "Maintenir la position.", "Positif si paresthésies dans le territoire du nerf médian.") },
+        { id: "t_cc_2", label: "Signe de Tinel Carpien", info: buildTestDetailHtml("50%", "77%", "Avant-bras en supination.", "Percussion du rétinaculum des fléchisseurs.", "Positif si décharges électriques dans les 3 premiers doigts.") }
+      ]
+    },
+    de_quervain: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Ténosynovite de De Quervain",
+      tests: [
+        { id: "t_dq_1", label: "Test de Finkelstein / Eichhoff", info: buildTestDetailHtml("89%", "85%", "Pouce enfermé dans le poing fermé.", "Inclinaison ulnaire passive brusque du poignet.", "Positif si douleur vive au niveau du styloïde radial.") }
+      ]
+    },
+    instabilite_scapho_lunaire: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Instabilité Scapho-Lunaire",
+      tests: [
+        { id: "t_sl_1", label: "Test de Watson (Shift Test)", info: buildTestDetailHtml("69%", "90%", "Pression sur le pôle distal du scaphoïde.", "Déviation du poignet d'ulnaire vers radiale.", "Positif si ressaut ou douleur vive.") }
+      ]
+    },
+    rhizarthrose: {
+      categorie: "2. Épaule & Membre Supérieur",
+      nom: "Rhizarthrose (Arthrose Trapezo-Métacarpienne)",
+      tests: [
+        { id: "t_rh_1", label: "Grind Test de la Trapezo-Métacarpienne", info: buildTestDetailHtml("64%", "93%", "Saisir le 1er métacarpien.", "Compression axiale et rotation de la base du 1er métacarpien.", "Positif si crépitation ou douleur vive à la base du pouce.") }
       ]
     },
 
@@ -807,38 +868,79 @@
       categorie: "3. Rachis Lombaire, Bassin & Hanche",
       nom: "Lombalgie Commune / Radiculopathie Lombaire",
       tests: [
-        {
-          id: "t_lom_1", label: "Test de Lasègue (SLR)",
-          info: buildTestDetailHtml("91%", "52%", "Décubitus dorsal, jambes tendues relâchées.", "Élévation passive de la jambe tendue par le talon.", "Positif si douleur radiculopathique sous le genou entre 30° et 70° d'élévation.")
-        },
-        {
-          id: "t_lom_2", label: "Test de Léri (Lasègue Inversé / L3-L4)",
-          info: buildTestDetailHtml("84%", "60%", "Décubitus ventral.", "Extension passive de la hanche genou fléchi à 90°.", "Positif si douleur à la face antérieure de la cuisse (nerf fémoral).")
-        }
+        { id: "t_lom_1", label: "Test de Lasègue (SLR)", info: buildTestDetailHtml("91%", "52%", "Décubitus dorsal, jambes tendues.", "Élévation passive de la jambe par le talon.", "Positif si douleur radiculaire descend sous le genou entre 30° et 70°.") },
+        { id: "t_lom_2", label: "Test de Léri (Lasègue Inversé)", info: buildTestDetailHtml("84%", "60%", "Décubitus ventral.", "Extension passive de la hanche genou fléchi à 90°.", "Positif si douleur à la face antérieure de la cuisse (L3-L4).") }
+      ]
+    },
+    hernie_discale: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Hernie Discale Lombaire / Sciatique Aiguë",
+      tests: [
+        { id: "t_hd_1", label: "Test de Lasègue Croisé", info: buildTestDetailHtml("29%", "88%", "Décubitus dorsal.", "Élévation de la jambe SAINE.", "Positif si reproduction de la douleur radiculaire du côté ATTEINT.") }
+      ]
+    },
+    stenose_canalaire: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Sténose du Canal Lombaire (Canal Lombaire Étroit)",
+      tests: [
+        { id: "t_cle_1", label: "Test du Caddy (Shopping Cart Sign)", info: buildTestDetailHtml("80%", "50%", "Marche debout vs marche penché en avant sur un caddy.", "Évaluer la claudication neurogène.", "Positif si nette amélioration des symptômes en flexion antérieure.") }
+      ]
+    },
+    spondylolisthesis: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Spondylolisthésis / Instabilité Lombaire",
+      tests: [
+        { id: "t_spo_1", label: "Prone Instability Test", info: buildTestDetailHtml("71%", "57%", "Décubitus ventral, pieds au sol.", "Pression postéro-antérieure sur l'épineuse puis répétition pieds décollés du sol.", "Positif si douleur en repos soulagée lorsque les extenseurs se contractent.") }
       ]
     },
     sacro_iliaque: {
       categorie: "3. Rachis Lombaire, Bassin & Hanche",
       nom: "Dysfonction Articulaire Sacro-Iliaque",
       tests: [
-        {
-          id: "t_si_1", label: "Cluster de Laslett (Distraction / Compression / Thigh Thrust)",
-          info: buildTestDetailHtml("91%", "87% (si 3/5 pos)", "Selon les sous-tests du cluster.", "Application de contraintes en cisaillement et distraction sur l'anneau pelvien.", "Au moins 3 tests positifs sur 5 confirment l'origine sacro-iliaque.")
-        },
-        {
-          id: "t_si_2", label: "Test de Patrick (FABER)",
-          info: buildTestDetailHtml("85%", "60%", "Décubitus dorsal, cheville posée sur le genou opposé.", "Pression douce vers le bas sur le genou fléchi.", "Positif si douleur postérieure dans l'articulation sacro-iliaque ipsilatérale.")
-        }
+        { id: "t_si_1", label: "Cluster de Laslett", info: buildTestDetailHtml("91%", "87% (si 3/5 pos)", "Selon les 5 sous-tests (Distraction, Compression, Thigh Thrust, Gaenslen, Sacral Thrust).", "Contraintes combinées sur l'anneau pelvien.", "3/5 tests positifs confirment la provenance sacro-iliaque.") },
+        { id: "t_si_2", label: "Test FABER (Patrick)", info: buildTestDetailHtml("85%", "60%", "Décubitus dorsal, cheville sur le genou opposé.", "Pression vers le bas sur le genou fléchi.", "Positif si douleur sacro-iliaque postérieure ipsilatérale.") }
+      ]
+    },
+    syndrome_piriforme: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Syndrome du Piriforme / Pseudo-Sciatique",
+      tests: [
+        { id: "t_pir_1", label: "Test de Freiberg / FAIR Test", info: buildTestDetailHtml("88%", "83%", "Décubitus latéral, hanche fléchie à 60°, adduction et rotation interne.", "Maintenir la tension passive du piriforme.", "Positif si reproduction du trajet douloureux sciatique fessier.") }
       ]
     },
     coxarthrose: {
       categorie: "3. Rachis Lombaire, Bassin & Hanche",
-      nom: "Coxarthrose / Conflit Fémoro-Acétabulaire (CFA)",
+      nom: "Coxarthrose / Arthrose de Hanche",
       tests: [
-        {
-          id: "t_cox_1", label: "Test FADDIR (Flexion, Adduction, Int. Rotation)",
-          info: buildTestDetailHtml("94%", "30%", "Décubitus dorsal.", "Flexion de hanche à 90°, adduction et rotation interne maximale.", "Positif si douleur vive ou pincement profond dans le pli de l'aine.")
-        }
+        { id: "t_cox_1", label: "Restriction de Rotation Interne de Hanche", info: buildTestDetailHtml("86%", "75%", "Décubitus dorsal, hanche à 90° de flexion.", "Rotation interne passive.", "Positif si RI < 15° avec douleur à l'aine.") }
+      ]
+    },
+    conflit_femoro_acetabulaire: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Conflit Fémoro-Acétabulaire (CFA / CAM-Pincer)",
+      tests: [
+        { id: "t_cfa_1", label: "Test FADDIR", info: buildTestDetailHtml("94%", "30%", "Décubitus dorsal.", "Flexion 90°, adduction et rotation interne de hanche.", "Positif si pince ou douleur vive dans l'aine.") }
+      ]
+    },
+    tendinopathy_moyen_fessier: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Tendinopathie du Moyen Fessier / GTPS",
+      tests: [
+        { id: "t_mf_1", label: "Single Leg Stance Test (30s) / Signe de Trendelenburg", info: buildTestDetailHtml("38%", "93%", "Appui unipodal pendant 30s.", "Observer la bascule du bassin.", "Positif si douleur grand trochanter ou chute du bassin opposé.") }
+      ]
+    },
+    pubalgie: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Pubalgie / Tendinopathie des Adducteurs",
+      tests: [
+        { id: "t_pub_1", label: "Squeeze Test des Adducteurs", info: buildTestDetailHtml("84%", "89%", "Décubitus dorsal, ballon entre les genoux fléchis à 45°.", "Serrer le ballon contre résistance maximale.", "Positif si douleur vive symphysaire ou insertionnelle.") }
+      ]
+    },
+    droit_femoral: {
+      categorie: "3. Rachis Lombaire, Bassin & Hanche",
+      nom: "Rétraction / Lésion du Droit Fémoral",
+      tests: [
+        { id: "t_df_1", label: "Test de Thomas", info: buildTestDetailHtml("89%", "92%", "Décubitus dorsal, une cuisse fléchie sur la poitrine.", "Observer la jambe contro-latérale.", "Positif si la cuisse opposée se décolle de la table.") }
       ]
     },
 
@@ -847,52 +949,115 @@
       categorie: "4. Genou, Cheville & Pied",
       nom: "Rupture du Ligament Croisé Antérieur (LCA)",
       tests: [
-        {
-          id: "t_lca_1", label: "Test de Lachman",
-          info: buildTestDetailHtml("85%", "94%", "Décubitus dorsal, genou fléchi à 20-30°.", "Traction antérieure brusque du tibia proximal en fixant le fémur.", "Positif si translation antérieure excessive avec arrêt mou.")
-        },
-        {
-          id: "t_lca_2", label: "Pivot Shift Test",
-          info: buildTestDetailHtml("24%", "98%", "Décubitus dorsal, jambe relâchée.", "Combinaison de valgus, rotation interne et passage de l'extension vers la flexion.", "Positif si ressaut ou subluxation du plateau tibial latéral à 30° de flexion.")
-        }
+        { id: "t_lca_1", label: "Test de Lachman", info: buildTestDetailHtml("85%", "94%", "Décubitus dorsal, genou fléchi à 20-30°.", "Traction antérieure brusque du tibia proximal.", "Positif si translation antérieure excessive avec arrêt mou.") },
+        { id: "t_lca_2", label: "Pivot Shift Test", info: buildTestDetailHtml("24%", "98%", "Décubitus dorsal, jambe relâchée.", "Valgus, rotation interne et passage extension-flexion.", "Positif si ressaut du plateau tibial latéral à 30°.") }
+      ]
+    },
+    lcp: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Rupture du Ligament Croisé Postérieur (LCP)",
+      tests: [
+        { id: "t_lcp_1", label: "Tiroir Postérieur du Genou", info: buildTestDetailHtml("90%", "99%", "Décubitus dorsal, genou fléchi à 90°.", "Pression postérieure sur le tibia proximal.", "Positif si recul excessif du tibia sous le fémur.") }
+      ]
+    },
+    lli_lle: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Entorse Ligamentaire Collatérale (LCI / LCE)",
+      tests: [
+        { id: "t_lig_1", label: "Stress en Valgus & Varus à 30°", info: buildTestDetailHtml("86%", "91%", "Genou fléchi à 30°.", "Application de contraintes en valgus (LCI) et varus (LCE).", "Positif si laximétrie asymétrique ou douleur vive.") }
       ]
     },
     menisque: {
       categorie: "4. Genou, Cheville & Pied",
       nom: "Lésion Méniscale (Médiale / Latérale)",
       tests: [
-        {
-          id: "t_men_1", label: "Test de Thessaly (20°)",
-          info: buildTestDetailHtml("89%", "97%", "Appui unipodal sur la jambe testée, genou fléchi à 20°. Tester le côté sain d'abord.", "3 rotations du tronc et du fémur sur le tibia en gardant le pied à plat au sol.", "Positif si douleur dans l'interligne articulaire, blocage ou ressaut.<br>• Douleur médiale = Ménisque médial.<br>• Douleur latérale = Ménisque latéral.")
-        },
-        {
-          id: "t_men_2", label: "Test de McMurray",
-          info: buildTestDetailHtml("70%", "71%", "Décubitus dorsal, flexion maximale du genou.", "Rotation externe du tibia pour le ménisque médial (rotation interne pour le latéral) puis extension du genou.", "Positif si déclic, ressaut douloureux ou blocage perçu sur l'interligne.")
-        }
+        { id: "t_men_1", label: "Test de Thessaly (20°)", info: buildTestDetailHtml("89%", "97%", "Appui unipodal, genou fléchi à 20°. Tester la jambe saine d'abord.", "3 rotations du tronc sur le tibia, pied à plat.", "Positif si douleur dans l'interligne, blocage ou ressaut.<br>• Douleur médiale = Ménisque médial.<br>• Douleur latérale = Ménisque latéral.") },
+        { id: "t_men_2", label: "Test de McMurray", info: buildTestDetailHtml("70%", "71%", "Décubitus dorsal, flexion maximale.", "Rotation externe (médial) ou interne (latéral) puis extension.", "Positif si déclic ou douleur sur l'interligne.") }
+      ]
+    },
+    syndrome_femoropatellaire: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Syndrome Fémoro-Patellaire (SFP)",
+      tests: [
+        { id: "t_sfp_1", label: "Test de Rabot / Appréhension Patellaire", info: buildTestDetailHtml("80%", "70%", "Décubitus dorsal, genou tendu.", "Compression et rabot de la patella dans la trochlée fémorale.", "Positif si douleur, crépitation ou appréhension.") }
+      ]
+    },
+    tendinopathie_rotulienne: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Tendinopathie Patellaire (Jumper's Knee)",
+      tests: [
+        { id: "t_tp_1", label: "Single Leg Decline Squat (Squat Unipodal Pente)", info: buildTestDetailHtml("88%", "80%", "Appui unipodal sur un plan incliné à 25°.", "Flexion lente du genou.", "Positif si douleur vive à l'apex inférieur de la patella.") }
+      ]
+    },
+    syndrome_essuie_glace: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Syndrome de la Bandelette Ilio-Tibiale (SBIT)",
+      tests: [
+        { id: "t_sbit_1", label: "Test de Noble / Test d'Ober", info: buildTestDetailHtml("84%", "88%", "Décubitus dorsal, pression sur le condyle latéral à 90° de flexion.", "Passage passif vers l'extension.", "Positif si reproduction de la douleur habituelle à 30° de flexion.") }
+      ]
+    },
+    gonarthrose: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Gonarthrose / Arthrose du Genou",
+      tests: [
+        { id: "t_gon_1", label: "Critères de Altman (Gonarthrose)", info: buildTestDetailHtml("92%", "75%", "Évaluation clinique combinée.", "Douleur genou + raideur matinale < 30 min + crépitations + déformation osseuse.", "Présence de 3 critères confirme la gonarthrose.") }
       ]
     },
     entorse_cheville: {
       categorie: "4. Genou, Cheville & Pied",
       nom: "Entorse Latérale de Cheville (LTFA)",
       tests: [
-        {
-          id: "t_ech_1", label: "Tiroir Antérieur de Cheville",
-          info: buildTestDetailHtml("73%", "91%", "Décubitus dorsal, cheville en légère flexion plantaire.", "Traction antérieure du calcanéum en stabilisant le tibia.", "Positif si subluxation antérieure du talus sous la pince tibio-fibulaire.")
-        },
-        {
-          id: "t_ech_2", label: "Règles d'Ottawa (Diagnostic Radiologique)",
-          info: buildTestDetailHtml("98%", "40%", "Patient debout ou allongé.", "Palpation des 6 cm postérieurs des malléoles, base du 5e métatarsien, naviculaire et incapacité de faire 4 pas.", "Positif si indication stricte d'exécuter une radiographie pour éliminer une fracture.")
-        }
+        { id: "t_ech_1", label: "Tiroir Antérieur de Cheville", info: buildTestDetailHtml("73%", "91%", "Décubitus dorsal, cheville en légère flexion plantaire.", "Traction antérieure du calcanéum.", "Positif si subluxation antérieure du talus.") },
+        { id: "t_ech_2", label: "Règles d'Ottawa", info: buildTestDetailHtml("98%", "40%", "Palpation des 6 cm postérieurs des 2 malléoles, du 5e méta, du naviculaire et incapacité de marcher 4 pas.", "Évaluation de la marche immédiate.", "Positif si indication de radiographie.") }
+      ]
+    },
+    syndesmose: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Entorse de la Syndesmose Tibio-Fibulaire",
+      tests: [
+        { id: "t_syn_1", label: "Squeeze Test de la Jambe", info: buildTestDetailHtml("30%", "93%", "Patient assis, jambe pendante.", "Compression bimanuelle mi-jambe du tibia et de la fibula.", "Positif si douleur reproduite distalement à la syndesmose.") }
       ]
     },
     tendinopathie_achille: {
       categorie: "4. Genou, Cheville & Pied",
-      nom: "Tendinopathie / Rupture du Tendon d'Achille",
+      nom: "Tendinopathie / Rupture d'Achille",
       tests: [
-        {
-          id: "t_ach_1", label: "Test de Thompson (Squeeze Test)",
-          info: buildTestDetailHtml("96%", "98%", "Décubitus ventral, pieds hors de la table.", "Pression/pression ferme du corps charnu du mollet (gastrocnémiens).", "Positif si absence de flexion plantaire passive automatique (rupture complète du tendon d'Achille).")
-        }
+        { id: "t_ach_1", label: "Test de Thompson (Squeeze Test)", info: buildTestDetailHtml("96%", "98%", "Décubitus ventral, pieds hors de la table.", "Pression du mollet.", "Positif si absence de flexion plantaire passive (rupture complète).") }
+      ]
+    },
+    aponevrosite_plantaire: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Fasciite / Aponévrosite Plantaire",
+      tests: [
+        { id: "t_ap_1", label: "Windlass Test", info: buildTestDetailHtml("32%", "100%", "Patient debout en charge.", "Dorsiflexion passive maximale du hallux.", "Positif si reproduction de la douleur au tubercule calcanéen médial.") }
+      ]
+    },
+    hallux_valgus: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Hallux Valgus / Oignon",
+      tests: [
+        { id: "t_hv_1", label: "Évaluation Angulaire MTP1 & Palpation", info: buildTestDetailHtml("95%", "90%", "Examen en charge.", "Mesure de la déviation latérale MTP1 (> 15°).", "Positif si exostose douloureuse et bursite.") }
+      ]
+    },
+    neurome_morton: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Névrome de Morton",
+      tests: [
+        { id: "t_mor_1", label: "Signe de Mulder (Mulder's Click)", info: buildTestDetailHtml("92%", "83%", "Patient assis, compression transversale des têtes métatarsiennes.", "Pression digitale directe de l'espace inter-métartarsien 3-4.", "Positif si déclic douloureux (click) avec paresthésies.") }
+      ]
+    },
+    periostite_tibiale: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Périostite Tibiale (MTSS)",
+      tests: [
+        { id: "t_per_1", label: "Palpation du Bord Postéro-Médial du Tibia (> 5cm)", info: buildTestDetailHtml("88%", "72%", "Patient en décubitus.", "Palpation continue du bord postéro-médial du tibia.", "Positif si douleur diffuse sur une zone de palpation > 5 cm (différent d'une fracture de fatigue).") }
+      ]
+    },
+    instabilite_cheville: {
+      categorie: "4. Genou, Cheville & Pied",
+      nom: "Instabilité Chronique de Cheville (CAI)",
+      tests: [
+        { id: "t_cai_1", label: "Test d'Inversion Passive (Talar Tilt)", info: buildTestDetailHtml("50%", "88%", "Décubitus, cheville en position neutre.", "Inversion passive forcée du talus.", "Positif si laxité angulaire excessive par rapport au côté sain.") }
       ]
     }
   };
@@ -1003,18 +1168,8 @@
     const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docxLib;
 
     const children = [
-      new Paragraph({
-        text: `PROGRAMME D'EXERCICES À DOMICILE (HEP)`,
-        heading: HeadingLevel.HEADING_1,
-        spacing: { after: 200 }
-      }),
-      new Paragraph({
-        children: [
-          new TextRun({ text: `Patient : `, bold: true }),
-          new TextRun(`${prenom} ${nom}`),
-        ],
-        spacing: { after: 300 }
-      })
+      new Paragraph({ text: `PROGRAMME D'EXERCICES À DOMICILE (HEP)`, heading: HeadingLevel.HEADING_1, spacing: { after: 200 } }),
+      new Paragraph({ children: [new TextRun({ text: `Patient : `, bold: true }), new TextRun(`${prenom} ${nom}`)], spacing: { after: 300 } })
     ];
 
     const cards = document.querySelectorAll('.exo-card');
@@ -1025,10 +1180,7 @@
       const eCons = card.querySelector('.exo-consignes').value || "-";
 
       children.push(
-        new Paragraph({
-          children: [new TextRun({ text: `${idx + 1}. ${eNom}`, bold: true, size: 26 })],
-          spacing: { before: 200, after: 100 }
-        }),
+        new Paragraph({ children: [new TextRun({ text: `${idx + 1}. ${eNom}`, bold: true, size: 26 })], spacing: { before: 200, after: 100 } }),
         new Paragraph({ children: [new TextRun({ text: `• Séries & Répétitions : `, bold: true }), new TextRun(eSeries)] }),
         new Paragraph({ children: [new TextRun({ text: `• Fréquence : `, bold: true }), new TextRun(eFreq)] }),
         new Paragraph({ children: [new TextRun({ text: `• Consignes : `, bold: true }), new TextRun(eCons)], spacing: { after: 200 } })
@@ -1037,18 +1189,13 @@
 
     if (conseils.trim() !== "") {
       children.push(
-        new Paragraph({
-          children: [new TextRun({ text: `💡 CONSEILS & RECOMMANDATIONS :`, bold: true, size: 24 })],
-          spacing: { before: 300, after: 100 }
-        }),
+        new Paragraph({ children: [new TextRun({ text: `💡 CONSEILS & RECOMMANDATIONS :`, bold: true, size: 24 })], spacing: { before: 300, after: 100 } }),
         new Paragraph({ children: [new TextRun(conseils)], spacing: { after: 200 } })
       );
     }
 
     const doc = new Document({ sections: [{ properties: {}, children: children }] });
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Fiche_Exercices_${prenom}_${nom}.docx`);
-    });
+    Packer.toBlob(doc).then(blob => { saveAs(blob, `Fiche_Exercices_${prenom}_${nom}.docx`); });
   }
 
   function exporterBilanCompletWord() {
@@ -1071,9 +1218,7 @@
       }]
     });
 
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Bilan_Complet_${prenom}_${nom}.docx`);
-    });
+    Packer.toBlob(doc).then(blob => { saveAs(blob, `Bilan_Complet_${prenom}_${nom}.docx`); });
   }
 
   function exporterSyntheseMedecinWord() {
@@ -1096,9 +1241,7 @@
       }]
     });
 
-    Packer.toBlob(doc).then(blob => {
-      saveAs(blob, `Synthese_Medecin_${prenom}_${nom}.docx`);
-    });
+    Packer.toBlob(doc).then(blob => { saveAs(blob, `Synthese_Medecin_${prenom}_${nom}.docx`); });
   }
 
   function imprimerPDF() { window.print(); }
