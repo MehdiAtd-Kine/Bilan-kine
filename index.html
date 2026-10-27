@@ -720,7 +720,6 @@
 
   // BASE DE DONNÉES COMPLÈTE DES 50 PATHOLOGIES EBP
   const pathologiesDB = {
-    // 1. RACHIS CERVICAL, THORACIQUE & TÊTE
     cervicalgie: {
       categorie: "1. Rachis Cervical, Thoracique & Tête",
       nom: "Cervicalgie commune / Dysfonction cervicale",
@@ -779,8 +778,6 @@
         { id: "t_atm_1", label: "Mesure de l'Ouverture Buccale & Palpation Condylienne", info: buildTestDetailHtml("88%", "80%", "Patient assis, ouverture buccale maximale.", "Mesure de la distance inter-incisive (normale > 40 mm) et palpation des condyles.", "Positif si ouverture < 35 mm, déviation ou cliquetis douloureux.") }
       ]
     },
-
-    // 2. ÉPAULE & MEMBRE SUPÉRIEUR
     coiffe_rotateurs: {
       categorie: "2. Épaule & Membre Supérieur",
       nom: "Tendinopathie Coiffe / Conflit Sous-Acromial",
@@ -884,8 +881,6 @@
         { id: "t_rh_1", label: "Grind Test de la Trapezo-Métacarpienne", info: buildTestDetailHtml("64%", "93%", "Saisir le 1er métacarpien.", "Compression axiale et rotation de la base du 1er métacarpien.", "Positif si crépitation ou douleur vive à la base du pouce.") }
       ]
     },
-
-    // 3. RACHIS LOMBAIRE, BASSIN & HANCHE
     lombalgie: {
       categorie: "3. Rachis Lombaire, Bassin & Hanche",
       nom: "Lombalgie Commune / Radiculopathie Lombaire",
@@ -965,8 +960,6 @@
         { id: "t_df_1", label: "Test de Thomas", info: buildTestDetailHtml("89%", "92%", "Décubitus dorsal, une cuisse fléchie sur la poitrine.", "Observer la jambe contro-latérale.", "Positif si la cuisse opposée se décolle de la table.") }
       ]
     },
-
-    // 4. GENOU, CHEVILLE & PIED
     lca: {
       categorie: "4. Genou, Cheville & Pied",
       nom: "Rupture du Ligament Croisé Antérieur (LCA)",
@@ -1183,102 +1176,39 @@
     window.print();
   }
 
+  // NOUVELLE FONCTION PERMANENTE VIA GITHUB PAGES
   function genererWebPagePatient() {
-  const nom = document.getElementById('nom').value || "Patient";
-  const prenom = document.getElementById('prenom').value || "";
-  const conseils = document.getElementById('conseilsPatient').value || "";
-  
-  let exos = [];
-  document.querySelectorAll('.exo-card').forEach((card) => {
-    exos.push({
-      nom: card.querySelector('.exo-nom').value || "Exercice",
-      series: card.querySelector('.exo-series').value || "Selon tolérance",
-      freq: card.querySelector('.exo-freq').value || "Quotidien",
-      consignes: card.querySelector('.exo-consignes').value || "-"
+    const nom = document.getElementById('nom').value || "Patient";
+    const prenom = document.getElementById('prenom').value || "";
+    const conseils = document.getElementById('conseilsPatient').value || "";
+    
+    let exos = [];
+    document.querySelectorAll('.exo-card').forEach((card) => {
+      exos.push({
+        nom: card.querySelector('.exo-nom').value || "Exercice",
+        series: card.querySelector('.exo-series').value || "Selon tolérance",
+        freq: card.querySelector('.exo-freq').value || "Quotidien",
+        consignes: card.querySelector('.exo-consignes').value || "-"
+      });
     });
-  });
 
-  const payload = { nom, prenom, conseils, exos };
-  
-  // Compression et encodage sécurisé des données dans l'URL
-  const jsonString = JSON.stringify(payload);
-  const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
-  
-  // URL permanente sur votre GitHub Pages
-  const permanentUrl = `https://mehdiatd-kin.github.io/Bilan-kine/patient.html?data=${base64Data}`;
-
-  const container = document.getElementById('qrCodeContainer');
-  container.style.display = 'block';
-  
-  document.getElementById('qrcode').innerHTML = "";
-
-  // Génération du QR Code permanent
-  new QRCode(document.getElementById("qrcode"), {
-    text: permanentUrl,
-    width: 180,
-    height: 180,
-    colorDark : "#3C1B70",
-    colorLight : "#ffffff",
-    correctLevel : QRCode.CorrectLevel.M
-  });
-
-  window.open(permanentUrl, '_blank');
-}
-
-
-    const webPageContent = `
-      <!DOCTYPE html>
-      <html lang="fr">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mon Programme d'Exercices Kiné - ${prenom} ${nom}</title>
-        <style>
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #FAF5FF; color: #3C1B70; padding: 20px; margin: 0; line-height: 1.5; }
-          .header { background: #3C1B70; color: white; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
-          .exo-card { background: white; border: 1.5px solid #E9D5FF; border-radius: 14px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(60,27,112,0.05); }
-          .exo-title { font-size: 17px; font-weight: 800; color: #9B5DE5; margin-bottom: 8px; }
-          .badge { display: inline-block; background: #F3E8FF; color: #3C1B70; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-right: 6px; }
-          .check-btn { width: 100%; background: #2ECC71; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; margin-top: 10px; cursor: pointer; }
-          .check-btn.done { background: #95A5A6; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h2 style="margin:0;">🏋️ Mon Programme d'Exercices Kiné</h2>
-          <div style="font-size:14px; opacity:0.9; margin-top:5px;">Patient : ${prenom} ${nom}</div>
-        </div>
-
-        <div style="background:#FEF9E7; border:1px solid #F1C40F; padding:15px; border-radius:12px; margin-bottom:20px; font-size:13px;">
-          💡 <strong>Conseils de votre kinésithérapeute :</strong><br>${conseils}
-        </div>
-
-        <h3 style="font-size:16px;">Exercices à réaliser :</h3>
-        ${exos.map(e => `
-          <div class="exo-card">
-            <div class="exo-title">${e.id}. ${e.nom}</div>
-            <div style="margin-bottom:8px;">
-              <span class="badge">📊 ${e.series}</span>
-              <span class="badge">📅 ${e.freq}</span>
-            </div>
-            <p style="font-size:13px; color:#555; margin:0 0 10px 0;"><strong>Consignes :</strong> ${e.consignes}</p>
-            <button class="check-btn" onclick="this.classList.toggle('done'); this.innerText = this.classList.contains('done') ? '✓ Exercice validé aujourd\\'hui' : 'Marquer comme fait';">Marquer comme fait</button>
-          </div>
-        `).join('')}
-      </body>
-      </html>
-    `;
-
-    const blob = new Blob([webPageContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
+    const payload = { nom, prenom, conseils, exos };
+    
+    // Compression et encodage sécurisé des données dans l'URL
+    const jsonString = JSON.stringify(payload);
+    const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
+    
+    // URL permanente sur votre GitHub Pages
+    const permanentUrl = `https://mehdiatd-kin.github.io/Bilan-kine/patient.html?data=${base64Data}`;
 
     const container = document.getElementById('qrCodeContainer');
     container.style.display = 'block';
     
     document.getElementById('qrcode').innerHTML = "";
 
+    // Génération du QR Code permanent
     new QRCode(document.getElementById("qrcode"), {
-      text: url,
+      text: permanentUrl,
       width: 180,
       height: 180,
       colorDark : "#3C1B70",
@@ -1286,7 +1216,7 @@
       correctLevel : QRCode.CorrectLevel.M
     });
 
-    window.open(url, '_blank');
+    window.open(permanentUrl, '_blank');
   }
 
   function exporterFicheExercicesWord() {
