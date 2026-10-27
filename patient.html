@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Programme d'Exercices Kiné</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #FAF5FF; color: #3C1B70; padding: 20px; margin: 0; line-height: 1.5; }
+    .header { background: #3C1B70; color: white; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+    .exo-card { background: white; border: 1.5px solid #E9D5FF; border-radius: 14px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(60,27,112,0.05); }
+    .exo-title { font-size: 17px; font-weight: 800; color: #9B5DE5; margin-bottom: 8px; }
+    .badge { display: inline-block; background: #F3E8FF; color: #3C1B70; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-right: 6px; }
+    .check-btn { width: 100%; background: #2ECC71; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; margin-top: 10px; cursor: pointer; }
+    .check-btn.done { background: #95A5A6; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2 style="margin:0;">🏋️ Mon Programme d'Exercices Kiné</h2>
+    <div id="patientInfo" style="font-size:14px; opacity:0.9; margin-top:5px;"></div>
+  </div>
+
+  <div id="conseilsBox" style="background:#FEF9E7; border:1px solid #F1C40F; padding:15px; border-radius:12px; margin-bottom:20px; font-size:13px; display:none;">
+    💡 <strong>Conseils de votre kinésithérapeute :</strong><br><span id="conseilsText"></span>
+  </div>
+
+  <h3 style="font-size:16px;">Exercices à réaliser :</h3>
+  <div id="exosContainer"></div>
+
+  <script>
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const dataEncoded = urlParams.get('data');
+      if (dataEncoded) {
+        const jsonString = decodeURIComponent(escape(window.atob(dataEncoded)));
+        const data = JSON.parse(jsonString);
+
+        document.getElementById('patientInfo').innerText = `Patient : ${data.prenom} ${data.nom}`;
+        
+        if (data.conseils) {
+          document.getElementById('conseilsBox').style.display = 'block';
+          document.getElementById('conseilsText').innerText = data.conseils;
+        }
+
+        const container = document.getElementById('exosContainer');
+        data.exos.forEach((e, idx) => {
+          container.innerHTML += `
+            <div class="exo-card">
+              <div class="exo-title">${idx + 1}. ${e.nom}</div>
+              <div style="margin-bottom:8px;">
+                <span class="badge">📊 ${e.series}</span>
+                <span class="badge">📅 ${e.freq}</span>
+              </div>
+              <p style="font-size:13px; color:#555; margin:0 0 10px 0;"><strong>Consignes :</strong> ${e.consignes}</p>
+              <button class="check-btn" onclick="this.classList.toggle('done'); this.innerText = this.classList.contains('done') ? '✓ Exercice validé aujourd\\'hui' : 'Marquer comme fait';">Marquer comme fait</button>
+            </div>
+          `;
+        });
+      } else {
+        document.body.innerHTML = "<p style='text-align:center; margin-top:50px;'>Aucun programme trouvé.</p>";
+      }
+    } catch (err) {
+      document.body.innerHTML = "<p style='text-align:center; margin-top:50px;'>Erreur lors du chargement du programme.</p>";
+    }
+  </script>
+</body>
+</html>
