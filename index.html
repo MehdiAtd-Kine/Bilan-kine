@@ -1184,20 +1184,47 @@
   }
 
   function genererWebPagePatient() {
-    const nom = document.getElementById('nom').value || "Patient";
-    const prenom = document.getElementById('prenom').value || "";
-    const conseils = document.getElementById('conseilsPatient').value || "Suivez attentivement le programme d'auto-rééducation prescrit.";
-    
-    let exos = [];
-    document.querySelectorAll('.exo-card').forEach((card, idx) => {
-      exos.push({
-        id: idx + 1,
-        nom: card.querySelector('.exo-nom').value || `Exercice ${idx + 1}`,
-        series: card.querySelector('.exo-series').value || "Selon tolérance",
-        freq: card.querySelector('.exo-freq').value || "Quotidien",
-        consignes: card.querySelector('.exo-consignes').value || "-"
-      });
+  const nom = document.getElementById('nom').value || "Patient";
+  const prenom = document.getElementById('prenom').value || "";
+  const conseils = document.getElementById('conseilsPatient').value || "";
+  
+  let exos = [];
+  document.querySelectorAll('.exo-card').forEach((card) => {
+    exos.push({
+      nom: card.querySelector('.exo-nom').value || "Exercice",
+      series: card.querySelector('.exo-series').value || "Selon tolérance",
+      freq: card.querySelector('.exo-freq').value || "Quotidien",
+      consignes: card.querySelector('.exo-consignes').value || "-"
     });
+  });
+
+  const payload = { nom, prenom, conseils, exos };
+  
+  // Compression et encodage sécurisé des données dans l'URL
+  const jsonString = JSON.stringify(payload);
+  const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
+  
+  // URL permanente sur votre GitHub Pages
+  const permanentUrl = `https://mehdiatd-kin.github.io/Bilan-kine/patient.html?data=${base64Data}`;
+
+  const container = document.getElementById('qrCodeContainer');
+  container.style.display = 'block';
+  
+  document.getElementById('qrcode').innerHTML = "";
+
+  // Génération du QR Code permanent
+  new QRCode(document.getElementById("qrcode"), {
+    text: permanentUrl,
+    width: 180,
+    height: 180,
+    colorDark : "#3C1B70",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.M
+  });
+
+  window.open(permanentUrl, '_blank');
+}
+
 
     const webPageContent = `
       <!DOCTYPE html>
